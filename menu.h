@@ -885,19 +885,39 @@ QMenu *MainWindow::rdpMenu()
     QPushButton *vncButton= new QPushButton;
     vncButton->setFixedSize(220, 30);
     vncButton->setIconSize(QSize(150,30));
-    vncButton->setText(" Vnc-Seçili Pc'ye Bağlan(Login)");
+    vncButton->setText(" Vnc-Seçili Pc'ye Bağlan");
     vncButton->setFlat(true);
     vncButton->setStyleSheet("Text-align:left");
    // kilitButton->setIcon(QIcon(":icons/saveprofile.png"));
+  //  sshpass -p 1 ssh -o StrictHostKeyChecking=no -n etapadmin@192.168.1.121 "echo 1 | sudo -S loginctl user-status Debian-gdm|grep 'State'"
 
     connect(vncButton, &QPushButton::clicked, [=]() {
+       QString km="loginctl user-status Debian-gdm|grep 'State'";
+        QString kmt="sshpass -p "+remotePassword->text()+" ssh -o StrictHostKeyChecking=no -n "+
+                remoteUsername->text()+"@"+pcIp->text()+" 'echo "+remotePassword->text()+" | sudo -S' "+km;
+        QString display=0;
+        QString result;
+        QStringList arguments;
+                arguments << "-c" <<kmt;
+                QProcess process;
+                process.start("/bin/bash",arguments);
+                 if(process.waitForFinished())
+        {
+            result = process.readAll();
+              result.chop(1);
+             // qDebug()<<"gelen Sonuç:"<<result;
+              QRegularExpression re("online");
+             if (result.contains(re)) display="1"; else display="0";
+        }
+
         QString  komut;
-        komut.append("nohup vncviewer ").append(pcIp->text()).append(":0 \-passwd \/usr\/bin\/x11vncpasswd &");
+        komut.append("nohup vncviewer ").append(pcIp->text()).append(":"+display+" \-passwd \/usr\/bin\/x11vncpasswd &");
      system(komut.toStdString().c_str());
 
         menu->close();
+
  });
-    QPushButton *vncButton1= new QPushButton;
+   /* QPushButton *vncButton1= new QPushButton;
     vncButton1->setFixedSize(220, 30);
     vncButton1->setIconSize(QSize(150,30));
     vncButton1->setText(" Vnc-Seçili Pc'ye Bağlan(Desktop)");
@@ -912,7 +932,7 @@ QMenu *MainWindow::rdpMenu()
 
         menu->close();
  });
-
+*/
    QPushButton *serverEkranYansitButton= new QPushButton;
    serverEkranYansitButton->setFixedSize(180, 30);
    serverEkranYansitButton->setIconSize(QSize(150,30));
@@ -1036,7 +1056,7 @@ qDebug()<<komut;
     layout->setVerticalSpacing(0);
   //  layout->setColumnMinimumWidth(0, 37);
     layout->addWidget(vncButton, 4,0,1,2);
-    layout->addWidget(vncButton1, 5,0,1,2);
+  //  layout->addWidget(vncButton1, 5,0,1,2);
 
     layout->addWidget(serverEkranYansitButton, 6,0,1,2);
    layout->addWidget(serverEkranYansitKapatButton, 7,0,1,2);
@@ -1056,7 +1076,7 @@ qDebug()<<komut;
     wa->setDefaultWidget(widget);
     menu->addAction(wa);
 
-     menu->setStyleSheet("QMenu { width: 220 px; height: 210 px; }");
+     menu->setStyleSheet("QMenu { width: 220 px; height: 180 px; }");
    return menu;
 }
 
