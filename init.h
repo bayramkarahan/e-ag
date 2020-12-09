@@ -7,9 +7,12 @@
 #include<selectpc.h>
 
 void MainWindow::init(){
-    //qDebug()<<"mesaj";
-boy=5;
-en=5.5;
+
+    QSize screenSize = qApp->screens()[0]->size();
+     //qDebug()<<"screenSize"<<screenSize.height()/153.6;
+boy=screenSize.height()/153.6;
+     //boy=5;
+en=boy*1.1;
 int e=en;
 int b=boy;
 

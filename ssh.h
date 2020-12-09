@@ -23,12 +23,21 @@ void MainWindow::ssh()
                           "Dosya Yolu\n"
                           "Duyuru");
 
+    commandExampleButton=new QPushButton(sshWidget);
+    commandExampleButton->setFixedSize(e*12,b*13);
+  //  commandExecuteButton->move(710,50);
+    commandExampleButton->setText("Hazır\nKomutlar");
+   // connect(commandExecuteButton, SIGNAL(clicked()),this, SLOT(commandExecuteSlot()));
+    connect(commandExampleButton, &QPushButton::clicked, [=]() {
+        QMenu *commandExampleMenus=commandExampleMenu();
+        commandExampleMenus->exec(mapToGlobal(commandExampleButton->pos() + QPoint(0,b*22)));
+});
 
     lineEdit_message=new QLineEdit(sshWidget);
-    lineEdit_message->setFixedSize(126*e,b*13);
+    lineEdit_message->setFixedSize(114*e,b*13);
    // lineEdit_message->move(80,50);
    // lineEdit_message->setStyleSheet("font-size: 30px");
-    QFont ff( "Arial", 30, 0);
+    QFont ff( "Arial", 20, 0);
     lineEdit_message->setFont(ff);
 
     connect(lineEdit_message, &QLineEdit::textChanged,this, &MainWindow::enableButton);
@@ -39,6 +48,8 @@ void MainWindow::ssh()
   //  commandExecuteButton->move(710,50);
     commandExecuteButton->setText("Çalıştır");
     connect(commandExecuteButton, SIGNAL(clicked()),this, SLOT(commandExecuteSlot()));
+
+
     //commandExecuteButton->setFlat(true);
    // commandExecuteButton->setAutoFillBackground(true);
     //commandExecuteButton->setStyleSheet("background-color: #dcdcdc");
@@ -74,8 +85,10 @@ void MainWindow::ssh()
     layouts->setVerticalSpacing(0);
   //  layout->setColumnMinimumWidth(0, 37);
     layouts->addWidget(commandLabel, 0,0,2,1);
-    layouts->addWidget(lineEdit_message, 0,1,2,1);
-   layouts->addWidget(commandExecuteButton, 0,3,1,2);
+    layouts->addWidget(commandExampleButton, 0,1,2,1);
+    layouts->addWidget(lineEdit_message, 0,2,2,1);
+
+    layouts->addWidget(commandExecuteButton, 0,3,1,2);
     layouts->addWidget(commandExecuteAllButton, 0,5,1,1);
 
      layouts->addWidget(fileSelectButton, 1,3,1,1);

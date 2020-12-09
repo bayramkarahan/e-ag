@@ -345,6 +345,7 @@ void MainWindow::hostListReset()
 
 void MainWindow::sshAramaButtonSlot()
 {
+   /// qDebug()<<"ssh Tarama Başlatıldı";
 
      textBrowser_receivedMessages->clear();
       mesajSlot("ssh Tarama Başlatıldı");
@@ -676,20 +677,20 @@ void MainWindow::createTable()
     tw->setColumnCount(14);
     tw->setRowCount(0);
    // tw->setColumnWidth(0, 40);
-    tw->setColumnWidth(0, 100);
-    tw->setColumnWidth(1, 115);
-    tw->setColumnWidth(2, 60);
-    tw->setColumnWidth(3, 60);
-    tw->setColumnWidth(4, 60);
-    tw->setColumnWidth(5, 60);
-    tw->setColumnWidth(6, 45);
-    tw->setColumnWidth(7, 100);
-    tw->setColumnWidth(8, 5);
-    tw->setColumnWidth(9, 77);
-    tw->setColumnWidth(10, 80);
-    tw->setColumnWidth(11, 5);
-    tw->setColumnWidth(12, 5);
-    tw->setColumnWidth(13, 5);
+    tw->setColumnWidth(0, boy*20);
+    tw->setColumnWidth(1, boy*23);
+    tw->setColumnWidth(2,boy*12);
+    tw->setColumnWidth(3, boy*12);
+    tw->setColumnWidth(4, boy*12);
+    tw->setColumnWidth(5, boy*12);
+    tw->setColumnWidth(6, boy*9);
+    tw->setColumnWidth(7, boy*20);
+    tw->setColumnWidth(8, boy);
+    tw->setColumnWidth(9, boy*15);
+    tw->setColumnWidth(10, boy*16);
+    tw->setColumnWidth(11, boy);
+    tw->setColumnWidth(12, boy);
+    tw->setColumnWidth(13, boy);
 
    //  tw->setHorizontalHeaderItem(0, new QTableWidgetItem("Sıra"));
     tw->setHorizontalHeaderItem(0, new QTableWidgetItem("İp Adres"));
@@ -730,24 +731,24 @@ void MainWindow::cellDoubleClicked(int iRow, int iColumn)
     //QMessageBox::StandardButton reply;
     // reply = QMessageBox::question(this, "Uyarı", "Bilgisayar Silinecek! Emin misiniz?",
       //                             QMessageBox::Yes|tr(QMessageBox::No);
-      QMessageBox messageBox(this);
-      messageBox.setText("Uyarı");
-      messageBox.setInformativeText("Host İçin İşlem Seçiniz!");
-      QAbstractButton *evetButton =messageBox.addButton(tr("Sil"), QMessageBox::ActionRole);
-      QAbstractButton *hayirButton =messageBox.addButton(tr("Düzenle"), QMessageBox::ActionRole);
-      messageBox.setIcon(QMessageBox::Question);
-              messageBox.exec();
-              if (messageBox.clickedButton() == evetButton) {
-                 // qDebug()<<"evet basıldı";
-                  list=listRemove(list,mac);
-                  listToFile(list,"iplistname");
-                  mesajSlot("Bilgisayar Listeden Silindi!");
-                  macListButtonSlot();
+     QMessageBox messageBox(this);
+     messageBox.setText("Uyarı");
+     messageBox.setInformativeText("Host İçin İşlem Seçiniz!");
+     QAbstractButton *evetButton =messageBox.addButton(tr("Sil"), QMessageBox::ActionRole);
+     QAbstractButton *hayirButton =messageBox.addButton(tr("Düzenle"), QMessageBox::ActionRole);
+     messageBox.setIcon(QMessageBox::Question);
+             messageBox.exec();
+             if (messageBox.clickedButton() == evetButton) {
+                // qDebug()<<"evet basıldı";
+                 list=listRemove(list,mac);
+                 listToFile(list,"iplistname");
+                 mesajSlot("Bilgisayar Listeden Silindi!");
+                 macListButtonSlot();
 
-              }
-              if (messageBox.clickedButton() == hayirButton) {
-                  //qDebug()<<"hayır basıldı";
-              }
+             }
+             if (messageBox.clickedButton() == hayirButton) {
+                 //qDebug()<<"hayır basıldı";
+             }
 
 
 }

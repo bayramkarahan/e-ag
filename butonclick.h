@@ -125,9 +125,7 @@ void MainWindow::bilgiAlButtonSlot()
 void MainWindow::timerClickSlot()
 {
 
-    /********************************************/
-
-    //qDebug()<<"copy timer";
+   //qDebug()<<"copy timer";
     FileCrud *fc=new FileCrud();
     fc->dosya=localDir+"click";
 

@@ -2,6 +2,107 @@
 #define MENU_H
 #include<QWidgetAction>
 
+QMenu *MainWindow::commandExampleMenu()
+{   QMenu *menu = new QMenu(this);
+
+   QPushButton *updateCommandButton= new QPushButton;
+   updateCommandButton->setFixedSize(200, 30);
+   updateCommandButton->setIconSize(QSize(200,30));
+   updateCommandButton->setText(" Güncelle");
+   updateCommandButton->setStyleSheet("Text-align:left");
+   updateCommandButton->setFlat(true);
+
+   connect(updateCommandButton, &QPushButton::clicked, [=]() {
+
+       lineEdit_message->setText("apt-get update");
+       menu->close();
+});
+
+   QPushButton *updateProblemCommandButton= new QPushButton;
+   updateProblemCommandButton->setFixedSize(200, 30);
+   updateProblemCommandButton->setIconSize(QSize(200,30));
+   updateProblemCommandButton->setText(" Paket Problemleri Düzelt");
+   updateProblemCommandButton->setStyleSheet("Text-align:left");
+   updateProblemCommandButton->setFlat(true);
+
+   connect(updateProblemCommandButton, &QPushButton::clicked, [=]() {
+
+       lineEdit_message->setText("apt-get install -f");
+       menu->close();
+});
+
+   QPushButton *installCommandButton= new QPushButton;
+   installCommandButton->setFixedSize(200, 30);
+   installCommandButton->setIconSize(QSize(200,30));
+   installCommandButton->setText(" Paket Yükleme");
+   installCommandButton->setStyleSheet("Text-align:left");
+   installCommandButton->setFlat(true);
+
+   connect(installCommandButton, &QPushButton::clicked, [=]() {
+
+       lineEdit_message->setText("apt-get install paket");
+       menu->close();
+});
+
+   QPushButton *removeCommandButton= new QPushButton;
+   removeCommandButton->setFixedSize(200, 30);
+   removeCommandButton->setIconSize(QSize(200,30));
+   removeCommandButton->setText(" Paket Kaldırma");
+   removeCommandButton->setStyleSheet("Text-align:left");
+   removeCommandButton->setFlat(true);
+
+   connect(removeCommandButton, &QPushButton::clicked, [=]() {
+
+       lineEdit_message->setText("apt-get remove paket ");
+       menu->close();
+});
+
+   QPushButton *mkdirCommandButton= new QPushButton;
+   mkdirCommandButton->setFixedSize(200, 30);
+   mkdirCommandButton->setIconSize(QSize(200,30));
+   mkdirCommandButton->setText(" Klasör Oluştur");
+   mkdirCommandButton->setStyleSheet("Text-align:left");
+   mkdirCommandButton->setFlat(true);
+
+   connect(mkdirCommandButton, &QPushButton::clicked, [=]() {
+
+       lineEdit_message->setText("mkdir klasor ");
+       menu->close();
+});
+   QPushButton *rmdirCommandButton= new QPushButton;
+   rmdirCommandButton->setFixedSize(200, 30);
+   rmdirCommandButton->setIconSize(QSize(200,30));
+   rmdirCommandButton->setText(" Klasör Sil");
+   rmdirCommandButton->setStyleSheet("Text-align:left");
+   rmdirCommandButton->setFlat(true);
+
+   connect(rmdirCommandButton, &QPushButton::clicked, [=]() {
+
+       lineEdit_message->setText("rmdir klasor");
+       menu->close();
+});
+    auto widget = new QWidget;
+    auto layout = new QGridLayout(widget);
+    layout->setContentsMargins(0, 0, 0,0);
+    layout->setVerticalSpacing(0);
+  //  layout->setColumnMinimumWidth(0, 37);
+    layout->addWidget(updateCommandButton, 5,0,1,2);
+    layout->addWidget(updateProblemCommandButton, 10,0,1,2);
+    layout->addWidget(installCommandButton, 15,0,1,2);
+    layout->addWidget(removeCommandButton, 20,0,1,2);
+    layout->addWidget(mkdirCommandButton, 25,0,1,2);
+    layout->addWidget(rmdirCommandButton, 30,0,1,2);
+
+    // add a widget action to the context menu
+    auto wa = new QWidgetAction(this);
+  //  wa->setIcon(QIcon(":/icon1"));
+    wa->setDefaultWidget(widget);
+    menu->addAction(wa);
+
+     menu->setStyleSheet("QMenu { width: 170 px; height: 200 px; }");
+   return menu;
+}
+
 
 QMenu *MainWindow::kilitMenu()
 {   QMenu *menu = new QMenu(this);
@@ -885,19 +986,40 @@ QMenu *MainWindow::rdpMenu()
     QPushButton *vncButton= new QPushButton;
     vncButton->setFixedSize(220, 30);
     vncButton->setIconSize(QSize(150,30));
-    vncButton->setText(" Vnc-Seçili Pc'ye Bağlan(Login)");
+    vncButton->setText(" Vnc-Seçili Pc'ye Bağlan");
     vncButton->setFlat(true);
     vncButton->setStyleSheet("Text-align:left");
    // kilitButton->setIcon(QIcon(":icons/saveprofile.png"));
+  //  sshpass -p 1 ssh -o StrictHostKeyChecking=no -n etapadmin@192.168.1.121 "echo 1 | sudo -S loginctl user-status Debian-gdm|grep 'State'"
 
     connect(vncButton, &QPushButton::clicked, [=]() {
+
+       QString km="loginctl user-status Debian-gdm|grep 'State'";
+        QString kmt="sshpass -p "+remotePassword->text()+" ssh -o StrictHostKeyChecking=no -n "+
+                remoteUsername->text()+"@"+pcIp->text()+" 'echo "+remotePassword->text()+" | sudo -S' "+km;
+        QString display=0;
+        QString result;
+        QStringList arguments;
+                arguments << "-c" <<kmt;
+                QProcess process;
+                process.start("/bin/bash",arguments);
+                 if(process.waitForFinished())
+        {
+            result = process.readAll();
+              result.chop(1);
+             // qDebug()<<"gelen Sonuç:"<<result;
+              QRegularExpression re("online");
+             if (result.contains(re)) display="1"; else display="0";
+        }
+
         QString  komut;
-        komut.append("nohup vncviewer ").append(pcIp->text()).append(":0 \-passwd \/usr\/bin\/x11vncpasswd &");
+        komut.append("nohup vncviewer ").append(pcIp->text()).append(":"+display+" \-passwd \/usr\/bin\/x11vncpasswd &");
      system(komut.toStdString().c_str());
 
         menu->close();
+
  });
-    QPushButton *vncButton1= new QPushButton;
+   /* QPushButton *vncButton1= new QPushButton;
     vncButton1->setFixedSize(220, 30);
     vncButton1->setIconSize(QSize(150,30));
     vncButton1->setText(" Vnc-Seçili Pc'ye Bağlan(Desktop)");
@@ -912,7 +1034,7 @@ QMenu *MainWindow::rdpMenu()
 
         menu->close();
  });
-
+*/
    QPushButton *serverEkranYansitButton= new QPushButton;
    serverEkranYansitButton->setFixedSize(180, 30);
    serverEkranYansitButton->setIconSize(QSize(150,30));
@@ -1015,7 +1137,7 @@ QMenu *MainWindow::rdpMenu()
    QPushButton *rdpConnectButton= new QPushButton;
    rdpConnectButton->setFixedSize(180, 30);
    rdpConnectButton->setIconSize(QSize(150,30));
-   rdpConnectButton->setText(" Seçili Pc'ye rdp Bağlan");
+   rdpConnectButton->setText(" Rdp-Seçili Pc'ye Bağlan");
    rdpConnectButton->setFlat(true);
    rdpConnectButton->setStyleSheet("Text-align:left");
   // kilitButton->setIcon(QIcon(":icons/saveprofile.png"));
@@ -1023,7 +1145,7 @@ QMenu *MainWindow::rdpMenu()
    connect(rdpConnectButton, &QPushButton::clicked, [=]() {
         hostAddressMacButtonSlot();
         QString  komut;
-        komut.append("nohup rdesktop ").append(" -u ").append(remoteUsername->text()).append(" -p ").append(remotePassword->text()+" ").append(pcIp->text()).append(" -g 75% &");
+        komut.append("nohup sudo rdesktop ").append(" -u ").append(remoteUsername->text()).append(" -p ").append(remotePassword->text()+" ").append(pcIp->text()).append(" -g 75% &");
      system(komut.toStdString().c_str());
 
 qDebug()<<komut;
@@ -1036,7 +1158,7 @@ qDebug()<<komut;
     layout->setVerticalSpacing(0);
   //  layout->setColumnMinimumWidth(0, 37);
     layout->addWidget(vncButton, 4,0,1,2);
-    layout->addWidget(vncButton1, 5,0,1,2);
+  //  layout->addWidget(vncButton1, 5,0,1,2);
 
     layout->addWidget(serverEkranYansitButton, 6,0,1,2);
    layout->addWidget(serverEkranYansitKapatButton, 7,0,1,2);
@@ -1056,7 +1178,7 @@ qDebug()<<komut;
     wa->setDefaultWidget(widget);
     menu->addAction(wa);
 
-     menu->setStyleSheet("QMenu { width: 220 px; height: 210 px; }");
+     menu->setStyleSheet("QMenu { width: 170 px; height: 180 px; }");
    return menu;
 }
 
