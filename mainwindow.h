@@ -126,6 +126,7 @@ private:
     QPushButton *taramaButton;
     QToolButton* listePcButton;
 
+    QPushButton *commandExampleButton;
     QPushButton *commandExecuteButton;
     QPushButton *commandExecuteAllButton;
     QPushButton *fileSelectButton;
@@ -192,6 +193,7 @@ private:
      QMenu *taramaMenu();
      QMenu *panoMenu();
      QMenu *rdpMenu();
+     QMenu *commandExampleMenu();
 
      QUdpSocket *ekranSocketServer;
      QImage *ekranImages;
