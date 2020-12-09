@@ -1,0 +1,19 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/about.png</file>
+        <file>icons/close.png</file>
+        <file>icons/save.png</file>
+        <file>icons/command.png</file>
+        <file>icons/liste.png</file>
+        <file>icons/lock.png</file>
+        <file>icons/maclist.png</file>
+        <file>icons/message.png</file>
+        <file>icons/screenimage.png</file>
+        <file>icons/vnc.png</file>
+        <file>icons/ftp.png</file>
+        <file>icons/ssh.png</file>
+        <file>icons/messagee.png</file>
+        <file>icons/pano.png</file>
+        <file>icons/E-Ag.ico</file>
+    </qresource>
+</RCC>
