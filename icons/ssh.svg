@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="36px"
+   height="36px"
+   viewBox="0 0 36 36"
+   version="1.1"
+   preserveAspectRatio="xMidYMid meet"
+   id="svg8"
+   sodipodi:docname="ssh.svg"
+   inkscape:version="0.92.4 (5da689c313, 2019-01-14)">
+  <metadata
+     id="metadata14">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>command-solid</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs12" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1024"
+     inkscape:window-height="710"
+     id="namedview10"
+     showgrid="false"
+     inkscape:zoom="6.5555556"
+     inkscape:cx="43.818008"
+     inkscape:cy="18"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg8" />
+  <title
+     id="title2">command-solid</title>
+  <path
+     d="M 33.744707,4.9999998 H 2.4078394 A 2.2383477,2.2698826 0 0 0 0.16949168,7.2698824 V 32.238591 A 2.2383477,2.2698826 0 0 0 2.4078394,34.508474 H 33.744707 a 2.2383477,2.2698826 0 0 0 2.238348,-2.269883 V 7.2698824 A 2.2383477,2.2698826 0 0 0 33.744707,4.9999998 Z M 5.5415261,17.268715 V 14.27247 l 11.1917379,5.209381 v 2.360678 L 5.5415261,27.051909 V 24.044315 L 12.827348,20.639491 Z M 24.119812,28.152802 h -7.162713 v -2.723859 h 7.162713 z M 2.4078394,9.7667533 V 7.2698824 H 33.744707 v 2.4968709 z"
+     class="clr-i-solid clr-i-solid-path-1"
+     id="path4"
+     style="fill:#333366;stroke-width:1"
+     inkscape:connector-curvature="0" />
+  <rect
+     x="0"
+     y="0"
+     width="36"
+     height="36"
+     fill-opacity="0"
+     id="rect6" />
+  <rect
+     style="opacity:1;fill:#333366;fill-opacity:1;stroke:none;stroke-width:6.00000095;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     id="rect819"
+     width="24.419342"
+     height="18.762712"
+     x="4.4111667"
+     y="11.898305" />
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-weight:normal;font-size:18.69220161px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.99999988"
+     x="2.3853784"
+     y="24.669226"
+     id="text823"
+     transform="scale(0.79670095,1.2551761)"><tspan
+       sodipodi:role="line"
+       id="tspan821"
+       x="2.3853784"
+       y="24.669226"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';fill:#ffffff;fill-opacity:1;stroke-width:0.99999988">SSH</tspan></text>
+</svg>

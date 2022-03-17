@@ -1,0 +1,14 @@
+[Desktop Entry]
+Version=1.0
+Name=E-Ag Application
+Name[tr]=E-Ag Uygulaması
+Type=Application
+Comment=Network Manager Application
+Comment[tr]=Ag Yönetimi Uygulaması
+Terminal=false
+Exec=/usr/bin/e-ag
+Icon=/usr/share/e-ag/e-ag.svg
+Categories=Qt;Utility;
+Keywords=ag;eag;e-ag;
+GenericName=e-ag
+GenericName[tr]=e-ag

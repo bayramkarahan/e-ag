@@ -1,0 +1,24 @@
+#!/bin/sh
+
+#systemctl disable ssh.service
+#systemctl stop ssh.service
+
+#systemctl disable vsftpd.service
+#systemctl stop vsftpd.service
+
+#systemctl disable x11vnc-e-ag.service
+#systemctl stop x11vnc-e-ag.service
+
+
+#rm -rf  /usr/share/e-ag
+#chmod 777 /usr/share/e-ag
+
+systemctl disable e-ag-x11vncdesktop.service
+systemctl stop e-ag-x11vncdesktop.service
+
+systemctl disable e-ag-x11vnclogin.service
+systemctl stop e-ag-x11vnclogin.service
+
+systemctl daemon-reload
+
+exit 0

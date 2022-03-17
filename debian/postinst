@@ -1,0 +1,31 @@
+#!/bin/sh
+
+sed -i 's/#WaylandEnable=false/WaylandEnable=false/' /etc/gdm3/daemon.conf
+sed -i 's/WaylandEnable=false/WaylandEnable=false/' /etc/gdm3/daemon.conf
+sed -i 's/#WaylandEnable=true/WaylandEnable=false/' /etc/gdm3/daemon.conf
+sed -i 's/WaylandEnable=true/WaylandEnable=false/' /etc/gdm3/daemon.conf
+
+mkdir /usr/share/e-ag
+chmod 777 /usr/share/e-ag
+
+
+systemctl daemon-reload
+
+systemctl enable ssh.service
+systemctl start ssh.service
+
+systemctl enable vsftpd.service
+systemctl start vsftpd.service
+
+#systemctl enable x11vnc-e-ag.service
+#systemctl start x11vnc-e-ag.service
+
+systemctl restart nginx
+
+systemctl enable e-ag-x11vnclogin.service
+systemctl start e-ag-x11vnclogin.service
+
+systemctl enable e-ag-x11vncdesktop.service
+systemctl start e-ag-x11vncdesktop.service
+
+exit 0
