@@ -371,6 +371,7 @@ pcClickSlot(btnlist[btnlist.count()-1]->mac);
                    // cpc->setMouseTracking(true);
                     cpc->setSshConnect(false);
                     cpc->setVncConnect(false);
+                    cpc->vncport="0";
                     cpc->setFtpConnect(false);
                     cpc->setUser("noLogin");
                     cpc->pcname=ls[7];

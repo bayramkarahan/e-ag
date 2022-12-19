@@ -118,8 +118,14 @@ void MainWindow::udpSocketServerRead()
                     else
                         btnlist[i]->setSshConnect(false);
 
-                    if(mesaj[17]=="1")btnlist[i]->setVncConnect(true);
-                    else btnlist[i]->setVncConnect(false);
+                    if(mesaj[17]!="0"){
+                        btnlist[i]->setVncConnect(true);
+                        btnlist[i]->vncport=mesaj[17];
+                    }
+                    else {
+                        btnlist[i]->setVncConnect(false);
+                        btnlist[i]->vncport=mesaj[17];
+                    }
 
                     if(mesaj[18]=="1")btnlist[i]->setFtpConnect(true);
                     else btnlist[i]->setFtpConnect(false);

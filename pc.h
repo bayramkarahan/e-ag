@@ -79,6 +79,7 @@ QString ip;
 QString display;
 QString user;
 QString os;
+QString vncport=0;
 bool select;
 bool multiSelect;
 protected:

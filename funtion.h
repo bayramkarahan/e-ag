@@ -220,8 +220,17 @@ void MainWindow::cellDoubleClicked(int iRow, int iColumn)
 void MainWindow::slotVnc(QString _dsp){
     QString display=_dsp;
     QString  komut;
-     komut.append("nohup ssvncviewer -scale 0.75 ").append(pcIp->text()).append(":"+display+" \-passwd \/usr\/bin\/x11vncpasswd &");
-   ///   qDebug()<<"vnc:"<<komut;
+    for(int i=0;i<btnlist.count();i++)
+  {
+      if(btnlist[i]->cs=="online"&&(btnlist[i]->select))
+      {
+          display=btnlist[i]->vncport;
+         // qDebug()<<"vnc:"<<btnlist[i]->vncport;
+          // udpSendData("x11komut",kmt,btnlist[i]->ip);
+      }
+  }
+     komut.append("nohup ssvncviewer -scale 0.9 ").append(pcIp->text()).append(":"+display+" \-passwd \/usr\/bin\/x11vncpasswd &");
+      qDebug()<<"vnc:"<<komut;
     system(komut.toStdString().c_str());
     mesajSlot("Seçili Hostda Vnc Başlatıldı.");
 
