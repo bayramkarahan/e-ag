@@ -156,10 +156,12 @@ void Pc::setTcpConnect(bool state){
         cs="offline";
           btnpc->setStyleSheet("background-color:rgba(125,255,125,50)");
     }
-    QStringList list=fileToList("iplistname");
-    list=listReplace(list, "offline", cs, 6,mac);//connectstate
-    listToFile(list,"iplistname");
+   ///iptal QStringList list=fileToList("iplistname");
+    QStringList list=PcData::onlinePcListe;
 
+    list=listReplace(list, "offline", cs, 6,mac);//connectstate
+   ///iptal  listToFile(list,"iplistname");
+PcData::onlinePcListe=list;
 
 }
 void Pc::setPcState(bool state){
@@ -180,9 +182,12 @@ void Pc::setPcState(bool state){
        // palette->setColor(QPalette::Button, QColor(255,255,125,50));
           btnpc->setStyleSheet("background-color:rgba(125,255,125,50)");
           // emit pcListeSignal();
-          QStringList list=fileToList("iplistname");
+          ///iptal QStringList list=fileToList("iplistname");
+          QStringList list=PcData::onlinePcListe;
+
           list=listReplace(list, "pcclose", ps, 2,mac);//pcstate
-          listToFile(list,"iplistname");
+          ///iptal listToFile(list,"iplistname");
+          PcData::onlinePcListe=list;
 
     }
     else
@@ -200,10 +205,12 @@ void Pc::setPcState(bool state){
         setSshConnect(false);
         setVncConnect(false);
         setFtpConnect(false);
-        QStringList list=fileToList("iplistname");
-        list=listReplace(list, "pcclose", ps, 2,mac);//pcstate
-        listToFile(list,"iplistname");
+        ///iptal QStringList list=fileToList("iplistname");
+        QStringList list=PcData::onlinePcListe;
 
+        list=listReplace(list, "pcclose", ps, 2,mac);//pcstate
+       ///iptal listToFile(list,"iplistname");
+        PcData::onlinePcListe=list;
        /// emit pcListeSignal();
 
     }
@@ -238,10 +245,12 @@ void Pc::setSshConnect(bool state){
                                   "background-color: #ff0000;");
 
   }
-    QStringList list=fileToList("iplistname");
-    list=listReplace(list, "sshclose", ss, 3,mac);//sshstate
-    listToFile(list,"iplistname");
+   ///iptal  QStringList list=fileToList("iplistname");
+    QStringList list=PcData::onlinePcListe;
 
+    list=listReplace(list, "sshclose", ss, 3,mac);//sshstate
+    ///listToFile(list,"iplistname");
+    PcData::onlinePcListe=list;
 }
 void Pc::setVncConnect(bool state){
 //qDebug()<<"vncopen";
@@ -274,10 +283,12 @@ void Pc::setVncConnect(bool state){
 
        //  vncConnectButton->setEnabled(false);
     }
-    QStringList list=fileToList("iplistname");
-    list=listReplace(list, "vncclose", vs, 4,mac);//vncstate
-    listToFile(list,"iplistname");
+   ///iptal  QStringList list=fileToList("iplistname");
+    QStringList list=PcData::onlinePcListe;
 
+    list=listReplace(list, "vncclose", vs, 4,mac);//vncstate
+   ///iptal  listToFile(list,"iplistname");
+    PcData::onlinePcListe=list;
 }
 void Pc::setFtpConnect(bool state){
 //qDebug()<<"ftpopen";
@@ -311,10 +322,11 @@ void Pc::setFtpConnect(bool state){
                                     "background-color: #ff0000;");
        //  vncConnectButton->setEnabled(false);
     }
-    QStringList list=fileToList("iplistname");
+    ///iptal QStringList list=fileToList("iplistname");
+     QStringList list=PcData::onlinePcListe;
     list=listReplace(list, "ftpclose", fs, 5,mac);//ftpstate
-    listToFile(list,"iplistname");
-
+    ///iptal listToFile(list,"iplistname");
+    PcData::onlinePcListe=list;
 }
 void Pc::setKilitControlState(bool state){
    // qDebug()<<"kilitstate"<<cs;
@@ -585,16 +597,17 @@ void Pc::slotPcAyar()
     if(result == QDialog::Accepted)
     {
         if(lineEditA->text()!="") pcname=lineEditA->text(); else pcname="";
-         if(cha->checkState()==Qt::Unchecked)lss="e"; else lss="h";
-         QStringList list=fileToList("iplistname");
+        if(cha->checkState()==Qt::Unchecked)lss="e"; else lss="h";
+        ///iptal  QStringList list=fileToList("iplistname");
+        QStringList list=PcData::onlinePcListe;
         QString line=listGetLine(list,mac);
         list=listRemove(list,mac); //değişecek satır siliniyor
 
         list<<ip+"|"+mac+"|" +ps+"|" +ss+"|" +vs+"|"+fs+"|"+ cs+"|"+pcname+"|"+lss;
-        listToFile(list,"iplistname");
+        ///listToFile(list,"iplistname");
+        PcData::onlinePcListe=list;
 
-
-           QStringList persistlist=fileToList("persistlist");
+        QStringList persistlist=fileToList("persistlist");
         persistlist=listRemove(persistlist,mac); //değişecek satır siliniyor
         persistlist<<ip+"|"+mac+"|" +ps+"|" +ss+"|" +vs+"|"+fs+"|"+ cs+"|"+pcname+"|"+lss;
 
@@ -626,16 +639,20 @@ void Pc::slotServisControl()
 
    /// servisStateUpdate();
 
-    QStringList list=fileToList("iplistname");
+   ///iptal QStringList list=fileToList("iplistname");
+    QStringList list=PcData::onlinePcListe;
+
     QString line=listGetLine(list,mac);
     list=listRemove(list,mac); //değişecek satır siliniyor
 
     list<<ip+"|"+mac+"|" +ps+"|" +ss+"|" +vs+"|"+fs+"|"+ cs+"|"+nameLabel->text()+"|"+line.split("|")[8];
-    listToFile(list,"iplistname");
+    ///iptal listToFile(list,"iplistname");
+    PcData::onlinePcListe=list;
 }
 void Pc::slotVnc0(){
     // emit pcClickSignal(mac);//nesneler arası data transferi***
-    emit pcMenuSignal(mac,ip,"slotVnc0");
+
+     emit pcMenuSignal(mac,ip,"slotVnc0");
   }
 void Pc::slotVnc1(){
      //emit pcClickSignal(mac);//nesneler arası data transferi***
@@ -751,48 +768,7 @@ void Pc::slotUnselectPc(){
         selectLabel->setStyleSheet("QLabel{border: 1px solid gray;border-radius: 5px;}");
     }
 }
-QString Pc::getIpPortNmapStatus(QString ip_,QString port)
-{
-    QString result="";
-    QStringList arguments;
-    arguments << "-c" << QString("nmap  -n -p %2 %1 | awk '/%2\\/tcp/{print $2;}'").arg(ip_,port);
-    QProcess process;
-    process.start("/bin/bash",arguments);
-    if(process.waitForFinished())
-    {
-        result = process.readAll();
-        result.chop(1);
-    }
-    qDebug()<<"Port Sorgulama(Nmap):"<<ip_<<result<<port;
-    if(result.toInt()>0){ return "open";}
-    else {return "close";}
-}
 
-QString  Pc::sshCommandSlot(QString ip_,QString port)
-{
-   /// QString komut="sshpass -p 1 ssh -o StrictHostKeyChecking=no -n etapadmin@192.168.1.110 'echo 1 | sudo -S' lsof -i:22|wc -l";
-
-    QString komut="sshpass -p "+remotePassword+" ssh -o StrictHostKeyChecking=no -n "+
-            remoteUserName+"@"+ip_+" 'echo "+remotePassword+" | sudo -S' lsof -i:"+port+"|wc -l";
-
-///    mesajSlot(komut);
-   /// qDebug()<<komut;
-    QStringList arguments;
-    //QString  komut;
-    //komut.append("vncviewer ").append(pcIp->text()).append(" \-passwd \/usr\/bin\/x11vncpasswd");
-    arguments << "-c" << komut;
-    QString result;
-    QProcess process;
-    process.start("/bin/bash",arguments);
-    if(process.waitForFinished())
-    {
-        result = process.readAll();
-        result.chop(1);
-    }
-
-    if(result.toInt()>0){ return "open";}
-    else {return "close";}
-}
 
 QString Pc::getIpPortStatus(QString ip_,QString port)
 {
@@ -814,7 +790,9 @@ QString Pc::getIpPortStatus(QString ip_,QString port)
 void Pc::timerPortControlSlot()
 {
     qDebug()<<"*************port kontrol*******************";
-     QStringList list=fileToList("iplistname");
+     ///iptal QStringList list=fileToList("iplistname");
+     QStringList list=PcData::onlinePcListe;
+
      if(iconControlState&&ps=="pcopen") {
          //setIcon(false);
          setIconControlState(true);

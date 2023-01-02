@@ -449,7 +449,17 @@ QMenu *MainWindow::sessionMenu()
        slotLogoutAll();
          menu->close();
  });
-
+   QPushButton *loginAllButton= new QPushButton;
+   loginAllButton->setFixedSize(yukseklik*1.7, yukseklik/3);
+   loginAllButton->setIconSize(QSize(yukseklik*1.7,yukseklik/3));
+   loginAllButton->setIcon(QIcon(":icons/login.svg"));
+   loginAllButton->setStyleSheet("Text-align:left; font-size:"+QString::number(font.toInt()-2)+"px;");
+    loginAllButton->setText("Oturumları Aç");
+   loginAllButton->setFlat(true);
+  connect(loginAllButton, &QPushButton::clicked, [=]() {
+      slotLoginAll();
+        menu->close();
+});
 
     auto widget = new QWidget;
     auto layout = new QGridLayout(widget);
@@ -457,7 +467,7 @@ QMenu *MainWindow::sessionMenu()
     layout->setVerticalSpacing(0);
   //  layout->setColumnMinimumWidth(0, 37);
    layout->addWidget(logoutAllButton, 5,0,1,1);
-   ///layout->addWidget(helpButton, 6,0,1,1);
+   layout->addWidget(loginAllButton, 6,0,1,1);
 
   // add a widget action to the context menu
     auto wa = new QWidgetAction(this);
@@ -465,7 +475,7 @@ QMenu *MainWindow::sessionMenu()
     wa->setDefaultWidget(widget);
     menu->addAction(wa);
 
-     menu->setStyleSheet("QMenu { width: "+QString::number(yukseklik*1.7)+" px; height: "+QString::number(yukseklik/2.5) +"px; }");
+     menu->setStyleSheet("QMenu { width: "+QString::number(yukseklik*1.7)+" px; height: "+QString::number(yukseklik/1.5) +"px; }");
    return menu;
 
 
@@ -473,156 +483,6 @@ QMenu *MainWindow::sessionMenu()
 
 }
 
-QMenu *MainWindow::settingMenu()
-{   QMenu *menu = new QMenu(this);
-
-    QPushButton *macListe1Button= new QPushButton;
-    macListe1Button->setFixedSize(150, 30);
-    macListe1Button->setIconSize(QSize(25,25));
-    macListe1Button->setText(" Mac Liste");
-    macListe1Button->setFlat(true);
-    macListe1Button->setStyleSheet("Text-align:left; font-size:"+font+"px;");
-    macListe1Button->setIcon(QIcon(":icons/maclist.png"));
-
-    connect(macListe1Button, &QPushButton::clicked, [=]() {
-       hostListe->hide();
-      maclistwidget->hide();
-      maclistwidget=macListWidget();
-      maclistwidget->move(0,boy*17);
-      maclistwidget->show();
-
-       maclistwidget->show();
-       menu->close();
- });
-
-
-
-   QPushButton *acountButton= new QPushButton;
-   acountButton->setFixedSize(200, 30);
-   acountButton->setIconSize(QSize(25,25));
-   acountButton->setText(" Yerel/Uzak Hesaplar");
-   acountButton->setFlat(true);
-   acountButton->setStyleSheet("Text-align:left; font-size:"+font+"px;");
-  acountButton->setIcon(QIcon(":icons/login.png"));
-
-   connect(acountButton, &QPushButton::clicked, [=]() {
-     acountButtonSlot();
-        menu->close();
-});
-
-
-   QPushButton *webblockButton= new QPushButton;
-   webblockButton->setFixedSize(200, 30);
-   webblockButton->setIconSize(QSize(25,25));
-   webblockButton->setText(" Web Adresi Engelleme");
-   webblockButton->setFlat(true);
-   webblockButton->setStyleSheet("Text-align:left; font-size:"+font+"px;");
-  webblockButton->setIcon(QIcon(":icons/webblock.png"));
-
-   connect(webblockButton, &QPushButton::clicked, [=]() {
-    webBlockSlot();
-        menu->close();
-});
-
-
-
-
-   QPushButton *clienthostportCopyButton= new QPushButton;
-   clienthostportCopyButton->setFixedSize(225, 30);
-   clienthostportCopyButton->setIconSize(QSize(25,25));
-   clienthostportCopyButton->setText(" Client Ayarlarını Güncelle");
-   clienthostportCopyButton->setFlat(true);
-   clienthostportCopyButton->setStyleSheet("Text-align:left; font-size:"+font+"px;");
-  clienthostportCopyButton->setIcon(QIcon(":icons/clientrefresh.png"));
-
-  connect(clienthostportCopyButton, &QPushButton::clicked, [=]() {
-      QString kmt="rm "+QDir::homePath()+"/.ssh/known_hosts";
-      system(kmt.toStdString().c_str());
-      ///sshCommandAllSlot("chmod 777 /usr/share/e-ag/*");
-      //fileHostportCopyAllSlot();
-      //sshCommandAllSlot("systemctl restart e-ag-client.service");
-     // system("sleep 1");
-      sshCommandAllSlot("sed -i 's/#write_enable=YES/write_enable=YES/' /etc/vsftpd.conf");
-      system("sleep 1");
-      sshCommandAllSlot("systemctl restart vsftpd.service");
-
-
-      menu->close();
-  });
-
-   QPushButton *clientShowButton= new QPushButton;
-   clientShowButton->setFixedSize(200, 30);
-   clientShowButton->setIconSize(QSize(200,30));
-   clientShowButton->setText(" Gizli Hostları Göster");
-   clientShowButton->setFlat(true);
-   clientShowButton->setStyleSheet("Text-align:left; font-size:"+font+"px;");
-   clientShowButton->setIcon(QIcon(":icons/showhost.png"));
-
-   connect(clientShowButton, &QPushButton::clicked, [=]() {
-
-       QStringList liste2=fileToList("iplistname");
-       QStringList liste3=fileToList("persistlist");
-
-       QStringList liste_;
-    /*********** iplistname dosyası sshclose yapılıyor***********************************/
-      for(int i=0;i<liste2.count();i++)
-      {
-          QString line=liste2[i];
-         if(line!="")
-          {
-          QStringList lst=line.split("|");
-          liste_<<(lst[0]+"|"+lst[1]+"|" +lst[2]+"|" +lst[3]+"|" +lst[4]+"|" +lst[5]+"|"+lst[6]+"|" +lst[7]+"|e");
-          liste3=listRemove(liste3,lst[1]); //değişecek satır siliniyor
-          liste3<<(lst[0]+"|"+lst[1]+"|" +lst[2]+"|" +lst[3]+"|" +lst[4]+"|" +lst[5]+"|"+lst[6]+"|" +lst[7]+"|e");
-
-         }
-      }
-      listToFile(liste3,"persistlist");
-
-       listToFile(liste_,"iplistname");
-       pcListeSlot();
-        menu->close();
-});
-
-   QPushButton *bilgiButton= new QPushButton;
-   bilgiButton->setFixedSize(200, 30);
-   bilgiButton->setIconSize(QSize(25,25));
-   bilgiButton->setText(" Hakkında");
-   bilgiButton->setFlat(true);
-   bilgiButton->setStyleSheet("Text-align:left; font-size:"+font+"px;");
-  bilgiButton->setIcon(QIcon(":icons/about.png"));
-
-   connect(bilgiButton, &QPushButton::clicked, [=]() {
-    bilgiAlButtonSlot();
-  ///
-
-            menu->close();
-});
-
-   auto widget = new QWidget;
-   auto layout = new QGridLayout(widget);
-   layout->setContentsMargins(0, 0, 0,0);
-   layout->setVerticalSpacing(0);
-   //  layout->setColumnMinimumWidth(0, 37);
-   layout->addWidget(acountButton, 1,0,1,2);
-   layout->addWidget(macListe1Button, 2,0,1,2);
-   layout->addWidget(clientShowButton, 3,0,1,2);
-   layout->addWidget(webblockButton, 4,0,1,2);
-   layout->addWidget(clienthostportCopyButton, 12,0,1,2);
-    layout->addWidget(bilgiButton, 13,0,1,2);
-
-    // layout->addWidget(new QLabel("<font size=1>Ayarları Kaydet</font>"),6,1,1,1,Qt::AlignHCenter);
-      //layout->setColumnStretch(6, 255);
-
-    // add a widget action to the context menu
-    auto wa = new QWidgetAction(this);
-  //  wa->setIcon(QIcon(":/icon1"));
-    wa->setDefaultWidget(widget);
-    menu->addAction(wa);
-
-     menu->setStyleSheet("QMenu { width: 200 px; height: 180 px; }");
-   return menu;
-}
 
 QMenu *MainWindow::rdpMenu()
 {   QMenu *menu = new QMenu(this);

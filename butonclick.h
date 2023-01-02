@@ -34,13 +34,8 @@ void MainWindow::ayarKaydetButtonSlot()
     QString kmt26="echo "+localPassword+"|sudo -S chmod 777 /usr/share/e-ag/*";
     system(kmt26.toStdString().c_str());
 
-    QStringList lst;
+
     hostAddressMacButtonSlot();
-    //if(tcpPort=="")tcpPort="7879";
-    //lst.append(myIpAddress+"|"+tcpPort+"|Server");
-
-    listToFile(lst,"hostport");
-
     QStringList ayar;
     QString ru="remoteUser|"+remoteUserName+"|"+remotePassword;
     QString lu="localUser|"+localUserName+"|"+localPassword;
@@ -85,9 +80,10 @@ void MainWindow::wolSlot()
     twl->setColumnWidth(1, boy*25);
     twl->setColumnWidth(2,boy*30);
     twl->setColumnWidth(3,boy*30);
-    QStringList iplist=fileToList("iplistname");
+    ///iptal QStringList iplist=fileToList("iplistname");
+ QStringList iplist=PcData::onlinePcListe;
 
-    QStringList list=fileToList("persistlist");
+    QStringList list=fileToList("persistlist",localDir);
     int sr=0;
     for(int i=0;i<list.count();i++)
     {
@@ -204,7 +200,7 @@ void MainWindow::webBlockSlot()
     webadresEkleButton->setText("Web Listesine Kaydet");
 
     connect(webadresEkleButton, &QPushButton::clicked, [=]() {
-        QStringList webblocklist=fileToList("webblocklist");
+        QStringList webblocklist=fileToList("webblocklist",localDir);
 
             webblocklist<<webadres->text();
 
@@ -233,7 +229,7 @@ void MainWindow::webBlockSlot()
     //connect(tw, &QTableWidget::cellClicked, this, cellClicked());
     connect(twl, SIGNAL(cellDoubleClicked(int,int)),SLOT(webTableCellDoubleClicked(int,int)));
     twl->setRowCount(0);
-    QStringList list=fileToList("webblocklist");
+    QStringList list=fileToList("webblocklist",localDir);
     for(int i=0;i<list.count();i++)
     {
         QString line=list[i];
@@ -373,7 +369,7 @@ void MainWindow::webBlockSlot()
 void MainWindow::webTableCellDoubleClicked(int iRow, int iColumn)
 {
      QString webadres= twl->item(iRow, 0)->text();
-     QStringList list=fileToList("webblocklist");
+     QStringList list=fileToList("webblocklist",localDir);
 /******************************************************************/
     //QMessageBox::StandardButton reply;
     // reply = QMessageBox::question(this, "Uyarı", "Bilgisayar Silinecek! Emin misiniz?",
@@ -496,7 +492,7 @@ QWidget* MainWindow::macListWidget()
 
     /**************************************************************************/
     tablewidget->setRowCount(0);
-    QStringList list=fileToList("persistlist");
+    QStringList list=fileToList("persistlist",localDir);
    //qDebug()<<"liste sayısı................:"<<list.count();
     int sr=0;
     for(int i=0;i<list.count();i++)
@@ -1091,23 +1087,39 @@ QWidget* MainWindow::videoWidget()
      kamera->setFixedSize(e*33,yukseklik);
     // kamera->setFont(ff);
      kamera->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
+     /**********************************video giriş listesi alma işlemi******************************************************/
 
-      system("ls /dev/video*|awk '{print $0}'>/usr/share/e-ag/kameralist");
-      QStringList kameralst=fileToList("kameralist");
-      kamera->addItems(kameralst);
+     QStringList kameralst;
+     if(QFile::exists("/dev/video0"))kameralst<<"/dev/video0";
+     if(QFile::exists("/dev/video1"))kameralst<<"/dev/video1";
+     if(QFile::exists("/dev/video2"))kameralst<<"/dev/video2";
+     if(QFile::exists("/dev/video3"))kameralst<<"/dev/video3";
+     if(QFile::exists("/dev/video4"))kameralst<<"/dev/video4";
+     kamera->addItems(kameralst);
+     /****************************************************************************************/
 
       QComboBox * ses = new QComboBox();
       ses->setFixedSize(e*33,yukseklik);
      // ses->setFont(ff);
       ses->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
-
-      system("pactl list short sources|grep 'input'|awk '{print $1,\"|\",$2}'>/usr/share/e-ag/seslist");
-      QStringList seslst=fileToList("seslist");
-      ses->addItems(seslst);
-
-
-    // ses->addItems(QStringList()<<"" <<varMain0<<varMain1 << varMain2);
-
+      /**********************************ses giriş listesi alma işlemi******************************************************/
+      QString result="";
+      QStringList arguments;
+      arguments << "-c" << QString("pactl list short sources|grep 'input'|awk '{print $1,\"|\",$2}'");
+      QProcess process;
+      process.start("/bin/bash",arguments);
+      if(process.waitForFinished(-1))
+      {
+         result = process.readAll();
+         result.chop(1);
+      }
+      if(result!="")
+      {
+          QStringList seslst;
+          seslst=result.split("\n");
+          ses->addItems(seslst);
+      }
+      /****************************************************************************************/
     QLabel *pathLabel=new QLabel("Kamera ve Ses:");
     pathLabel->setFixedSize(e*20,yukseklik);
     pathLabel->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
@@ -1652,21 +1664,19 @@ QWidget* MainWindow::ayarlarWidget()
 
 
 
-      QToolButton *clienthostportCopyButton= new QToolButton;
-      clienthostportCopyButton->setFixedSize(e*29,yukseklik);
-      clienthostportCopyButton->setAutoRaise(true);
-     // clienthostportCopyButton->setAutoFillBackground(true);
-      clienthostportCopyButton->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
-      clienthostportCopyButton->setText("İstemci Ayarlarını Güncelle");
-      clienthostportCopyButton->setIcon(QIcon(":/icons/clientrefresh.svg"));
-      clienthostportCopyButton->setIconSize(QSize(b*8,yukseklik/2));
-      clienthostportCopyButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+      QToolButton *clientUpdateButton= new QToolButton;
+      clientUpdateButton->setFixedSize(e*29,yukseklik);
+      clientUpdateButton->setAutoRaise(true);
+     // clientUpdateButton->setAutoFillBackground(true);
+      clientUpdateButton->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
+      clientUpdateButton->setText("İstemci Ayarlarını Güncelle");
+      clientUpdateButton->setIcon(QIcon(":/icons/clientrefresh.svg"));
+      clientUpdateButton->setIconSize(QSize(b*8,yukseklik/2));
+      clientUpdateButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
-      connect(clienthostportCopyButton, &QToolButton::clicked, [=]() {
+      connect(clientUpdateButton, &QToolButton::clicked, [=]() {
          QString kmt="rm "+QDir::homePath()+"/.ssh/known_hosts";
          system(kmt.toStdString().c_str());
-         ///sshCommandAllSlot("chmod 777 /usr/share/e-ag/*");
-         //fileHostportCopyAllSlot();
          sshCommandAllSlot("systemctl stop e-ag-client.service");
          system("sleep 1");
          sshCommandAllSlot("systemctl start e-ag-client.service");
@@ -1691,8 +1701,10 @@ QWidget* MainWindow::ayarlarWidget()
 
       connect(clientShowButton, &QToolButton::clicked, [=]() {
 
-          QStringList liste2=fileToList("iplistname");
-          QStringList liste3=fileToList("persistlist");
+         ///iptal QStringList liste2=fileToList("iplistname");
+          QStringList liste2=PcData::onlinePcListe;
+
+          QStringList liste3=fileToList("persistlist",localDir);
 
           QStringList liste_;
        /*********** iplistname dosyası sshclose yapılıyor***********************************/
@@ -1710,7 +1722,8 @@ QWidget* MainWindow::ayarlarWidget()
          }
          listToFile(liste3,"persistlist");
 
-          listToFile(liste_,"iplistname");
+          ///iptal listToFile(liste_,"iplistname");
+          PcData::onlinePcListe=liste_;
           pcListeSlot();
 
    });
@@ -1797,7 +1810,7 @@ QWidget* MainWindow::ayarlarWidget()
    layout->setHorizontalSpacing(0);
 
    layout->addWidget(acountButton, 0,0,1,1,Qt::AlignCenter);
-   layout->addWidget(clienthostportCopyButton, 0,1,1,1,Qt::AlignCenter);
+   layout->addWidget(clientUpdateButton, 0,1,1,1,Qt::AlignCenter);
    layout->addWidget(macListe1Button, 0,2,1,1,Qt::AlignCenter);
    layout->addWidget(webblockButton, 0,3,1,1,Qt::AlignCenter);
    layout->addWidget(clientShowButton, 0,4,1,1,Qt::AlignCenter);
@@ -2393,34 +2406,33 @@ QWidget* MainWindow::logoutWidget()
     });
 
 
-    QToolButton* portKontrol = new QToolButton(0);
-    portKontrol->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
-    portKontrol->setIcon(QIcon(":/icons/about.svg"));
-    portKontrol->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-   // portKontrol->setIconSize(QSize(yukseklik,yukseklik*0.75));
+    QToolButton* loginPc = new QToolButton(0);
+    loginPc->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
+    loginPc->setIcon(QIcon(":/icons/login.svg"));
+    loginPc->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+   // loginPc->setIconSize(QSize(yukseklik,yukseklik*0.75));
 
-    portKontrol->setFixedSize(yukseklik*1.5,boy*7);
-    portKontrol->setAutoRaise(true);
+    loginPc->setFixedSize(yukseklik*1.5,boy*7);
+    loginPc->setAutoRaise(true);
    // portKontrol->setAutoFillBackground(true);
-    portKontrol->setText("Servis Sorgula");
-    connect(portKontrol, &QToolButton::clicked, [=]() {
-        slotServisControl();
+    loginPc->setText("Oturum Aç");
+    connect(loginPc, &QToolButton::clicked, [=]() {
+        slotLogin();
     });
-
     QToolButton *sessionMenuButton= new QToolButton();
-   // sessionMenuButton->setIcon(QIcon(":/icons/transparanlock.svg"));
-    sessionMenuButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-    sessionMenuButton->setFixedSize(e*5,b*2);
-    sessionMenuButton->setAutoRaise(true);
-    //sessionMenuButton->setAutoFillBackground(true);
-     sessionMenuButton->setText("");
-    sessionMenuButton->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
-    sessionMenuButton->setMenu(sessionMenu());
-    sessionMenuButton->setPopupMode(QToolButton::InstantPopup);
+      // sessionMenuButton->setIcon(QIcon(":/icons/transparanlock.svg"));
+       sessionMenuButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+       sessionMenuButton->setFixedSize(e*5,b*2);
+       sessionMenuButton->setAutoRaise(true);
+       //sessionMenuButton->setAutoFillBackground(true);
+        sessionMenuButton->setText("");
+       sessionMenuButton->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
+       sessionMenuButton->setMenu(sessionMenu());
+       sessionMenuButton->setPopupMode(QToolButton::InstantPopup);
 
-    connect(sessionMenuButton, &QPushButton::clicked, [=]() {
-       // slotKilitAcAll();
-     });
+       connect(sessionMenuButton, &QPushButton::clicked, [=]() {
+          // slotKilitAcAll();
+        });
 
     auto widget = new QWidget;
     auto layout = new QGridLayout(sor);
@@ -2431,8 +2443,7 @@ QWidget* MainWindow::logoutWidget()
     //layout->addWidget(cb, 4,0,1,2);
     layout->addWidget(logoutPc, 4,0,1,1,Qt::AlignCenter);
   ///  layout->addWidget(closePcAll, 5,0,1,1,Qt::AlignCenter);
-   layout->addWidget(portKontrol, 6,0,1,1,Qt::AlignCenter);
-
+   layout->addWidget(loginPc, 6,0,1,1,Qt::AlignCenter);
   layout->addWidget(sessionMenuButton, 7,0,1,1,Qt::AlignRight);
 
   return sor;
@@ -2548,6 +2559,19 @@ QWidget* MainWindow::pcInfo()
         wolSlot();
     });
 
+    QToolButton* portKontrol = new QToolButton(0);
+    portKontrol->setFixedSize(yukseklik*0.9, yukseklik*1.5);
+    portKontrol->setIconSize(QSize(yukseklik,boy*8));
+    portKontrol->setIcon(QIcon(":/icons/about.svg"));
+    portKontrol->setStyleSheet("Text-align:left; font-size:"+QString::number(font.toInt()-2)+"px;");
+    portKontrol->setAutoRaise(true);
+    portKontrol->setText("Servisler");
+    portKontrol->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+
+    connect(portKontrol, &QToolButton::clicked, [=]() {
+        slotServisControl();
+    });
+
     QToolButton *helpButton= new QToolButton;
     helpButton->setFixedSize(yukseklik*0.9, yukseklik*1.5);
     helpButton->setIconSize(QSize(yukseklik,boy*8));
@@ -2631,7 +2655,9 @@ QWidget* MainWindow::pcInfo()
     layout->addWidget(poweroffrebootWidget(), 0,20,3,1);
 
     layout->addWidget(logoutWidget(), 0,25,3,1);
-    layout->addWidget(helpButton, 0,26,3,1);
+    layout->addWidget(portKontrol, 0,26,3,1);
+
+    layout->addWidget(helpButton, 0,27,3,1);
 
 
 

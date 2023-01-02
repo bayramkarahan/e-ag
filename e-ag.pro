@@ -27,13 +27,15 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    pc.cpp
+    pc.cpp \
+    pcdata.cpp
 
 HEADERS += \
         mainwindow.h \
     filecrud.h \
     menu.h \
     butonclick.h \
+    pcdata.h \
     tcpudp.h \
     init.h \
     pc.h \

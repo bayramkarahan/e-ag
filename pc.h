@@ -30,6 +30,7 @@
 #include<QObject>
 #include<QDesktopWidget>
 #include<QScreen>
+#include<pcdata.h>
 
 class Pc : public QWidget
 {
@@ -45,7 +46,6 @@ public:
             return Type;
         }
 //createPc(QString pcname, QString mac,QString ps,QString ss,QString vs,QString cs,int w,int h,bool setImage,QString iconname)
-
 
 bool iconState=false;
 bool iconControlState=false;
@@ -131,9 +131,6 @@ QStringList fileToList(QString filename);
 void listToFile(QStringList list, QString filename);
 QString listGetLine(QStringList list,QString data);
 QStringList listReplace(QStringList list, QString oldData, QString newData, int index, QString _mac);
-QString getIpPortNmapStatus(QString ip_, QString port);
-
-QString  sshCommandSlot(QString ip_, QString port);
 QString  getIpPortStatus(QString ip_,QString port);
 
 void slotVnc0();

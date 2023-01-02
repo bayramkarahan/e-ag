@@ -60,37 +60,10 @@ MainWindow::MainWindow(QWidget *parent) :
 //installEventFilter(this);
     setWindowTitle("e-ag 2.0");
 
-
-/****************************************************/
-    QString kmt23="echo "+localPassword+"|sudo -S mkdir /usr/share/e-ag > /dev/null 2>&1";
-    system(kmt23.toStdString().c_str());
-    QString kmt24="echo "+localPassword+"|sudo -S chmod 777 /usr/share/e-ag";
-    system(kmt24.toStdString().c_str());
-
-
-    QString kmt26="echo "+localPassword+"|sudo -S chmod 777 /usr/share/e-ag/*";
-    system(kmt26.toStdString().c_str());
-/****************************************************/
     auto appIcon = QIcon(":/icons/e-ag.svg");
     this->setWindowIcon(appIcon);
 
-
-
-    FileCrud *filecdr=new FileCrud();
-    filecdr->dosya=localDir+"e-ag-acilis";
-
-    if (!filecdr->fileExists())
-    {
-      qDebug()<<"dosya yok...";
-       system("touch /usr/share/e-ag/e-ag-acilis");
-    }else
-    {
-        qDebug()<<"Yazılım beklenmedik bir kapanış yapmış..";
-        QString kmt29="echo "+localPassword+"|sudo -S rm /usr/share/e-ag/iplistname";
-        system(kmt29.toStdString().c_str());
-    }
-   //    qDebug()<<"aşama-1";
-    /************************************************************/
+   /************************************************************/
     pcMac=new QLabel();
     pcName=new QLabel();
     pcIp=new QLabel();
@@ -156,7 +129,7 @@ MainWindow::MainWindow(QWidget *parent) :
     timerUdpSocketSend = new QTimer(this);
     newPcDetectTimer= new QTimer(this);
     connect(newPcDetectTimer, SIGNAL(timeout()), this, SLOT(newPcDetect()));
-    newPcDetectTimer->start(15000);
+    newPcDetectTimer->start(5000);
     connect(timerUdpSocketSend, SIGNAL(timeout()), this, SLOT(sendBroadcastDatagram()));
     timerUdpSocketSend->start(10000);
 
@@ -186,7 +159,7 @@ setMinimumSize(width(),height());
 mainWidget->setLayout(layoutMain);
 this->setCentralWidget(mainWidget);
 
-//qDebug()<<"aşama7";
+
 statusbar->addPermanentWidget(sliderWidget(),0);
 
 /*************************************************************************/
@@ -291,11 +264,14 @@ pcClickSlot(btnlist[btnlist.count()-1]->mac);
     layoutTemizle();
 
    QStringList mactoiplist=arpListInit();
-    listToFile(mactoiplist,"iplistname");
+   ///iptal listToFile(mactoiplist,"iplistname");
+    PcData::onlinePcListe=mactoiplist;
 
        /*****************************************************/
     QStringList list;
-    QStringList list_=fileToList("iplistname");
+   ////iptal QStringList list_=fileToList("iplistname");
+    QStringList list_=PcData::onlinePcListe;
+
     gercekliste=0;pcopencount=0;
     for(int i=0;i<list_.count();i++)
      {
@@ -367,6 +343,8 @@ pcClickSlot(btnlist[btnlist.count()-1]->mac);
                  /****************************************************************/
 
                     Pc *cpc=new Pc();
+                   // cpc->onlinePcListe=this->onlinePcListe;
+
                    //cpc->installEventFilter(this);///************
                    // cpc->setMouseTracking(true);
                     cpc->setSshConnect(false);
@@ -482,10 +460,16 @@ void MainWindow::newPcDetect()
 
     /*************hiç olmayan hostun bulunması için gerekli bölüm..*********/
    /// qDebug()<<"olmayan hostlar bulunacak";
-    system("cat /proc/net/arp |awk '$3==\"0x2\" {print $1\"|\"$4}'>/usr/share/e-ag/pcarplist");
-    QStringList arpList=fileToList("pcarplist");
-    QStringList arpListTemp=fileToList("pcarplist");
-    QStringList iplist=fileToList("iplistname");
+   ///iptal system("cat /proc/net/arp |awk '$3==\"0x2\" {print $1\"|\"$4}'>/usr/share/e-ag/pcarplist");
+   ///iptal QStringList arpList=fileToList("pcarplist",localDir);
+   QStringList arpList=readArp();
+   ///iptal QStringList arpListTemp=fileToList("pcarplist",localDir);
+   QStringList arpListTemp=readArp();
+
+   ///iptal  QStringList iplist=fileToList("iplistname");
+
+    QStringList iplist=PcData::onlinePcListe;
+
     /*************tekrar eden mac adresleri düzenleniyor***************/
         for(int i=0;i<arpListTemp.count();i++)
         {
@@ -635,7 +619,9 @@ void MainWindow::layoutTemizle()
 void MainWindow::hostListReset()
 {
     qDebug()<<"hosts reset çalıştı";
-    QStringList list=fileToList("iplistname");
+    ///iptal QStringList list=fileToList("iplistname");
+    QStringList list=PcData::onlinePcListe;
+
     QStringList list_;
     for(int i=0;i<list.count();i++)
      {
@@ -648,18 +634,24 @@ void MainWindow::hostListReset()
 
         }
     }
-    listToFile(list_,"iplistname");
+   ///iptal listToFile(list_,"iplistname");
+    PcData::onlinePcListe=list_;
+
  mesajSlot("Hosts Reset Yapıldı.");
 }
 
 QStringList MainWindow::arpListInit()
 {
     qDebug()<<"Hosts Arp Listesi Alındı";
-    system("cat /proc/net/arp |awk '$3==\"0x2\" {print $1\"|\"$4}'>/usr/share/e-ag/mactoiplist");
-    QStringList arpList=fileToList("mactoiplist");
-    QStringList arpListTemp=fileToList("mactoiplist");
-    QStringList list=fileToList("iplistname");
-    QStringList perlist=fileToList("persistlist");
+   ///iptal system("cat /proc/net/arp |awk '$3==\"0x2\" {print $1\"|\"$4}'>/usr/share/e-ag/mactoiplist");
+   ///iptal QStringList arpList=fileToList("mactoiplist",localDir);
+   ///iptal QStringList arpListTemp=fileToList("mactoiplist",localDir);
+    QStringList arpList=readArp();
+    QStringList arpListTemp=readArp();
+
+    ///iptal QStringList list=fileToList("iplistname");
+    QStringList list=PcData::onlinePcListe;
+    QStringList perlist=fileToList("persistlist",localDir);
 
 /*************tekrar eden mac adresleri düzenleniyor***************/
     for(int i=0;i<arpListTemp.count();i++)
@@ -700,7 +692,7 @@ QStringList MainWindow::arpListInit()
                 list<<lst[0]+"|"+lst[1]+"|" +"pcopen|sshclose|vncclose|ftpclose|offline|"+name+"|"+visible;
                if(perline==""){
                    //qDebug()<<"Kalıcı Listede Yok: "<<lst[1]<<name;
-                   QStringList per=fileToList("persistlist");
+                   QStringList per=fileToList("persistlist",localDir);
                    per=listRemove(per,lst[1]); //değişecek satır siliniyor
                    per<<lst[0]+"|"+lst[1]+"|" +"pcopen|sshclose|vncclose|ftpclose|offline|"+name+"|"+visible;
 
@@ -720,7 +712,7 @@ QStringList MainWindow::arpListInit()
 
                 if(perline==""){
                    // qDebug()<<"Kalıcı Listede Yok: "<<lst[1]<<name;
-                    QStringList per=fileToList("persistlist");
+                    QStringList per=fileToList("persistlist",localDir);
                     per=listRemove(per,lst[1]); //değişecek satır siliniyor
                     per<<lst[0]+"|"+lst[1]+"|" +"pcopen|sshclose|vncclose|ftpclose|offline|"+name+"|"+visible;
 
@@ -824,18 +816,7 @@ MainWindow::~MainWindow()
 {
     qDebug()<<"Kapatıldı.";
     videoProcess.terminate();
-    FileCrud *filecdr=new FileCrud();
-    filecdr->dosya=localDir+"e-ag-acilis";
 
-    if (!filecdr->fileExists())
-    {
-      //qDebug()<<"dosya yok";
-      // system("touch /usr/share/e-ag/e-ag-acilis");
-    }else
-    {
-    //qDebug()<<"dosya var";
-    system("rm /usr/share/e-ag/e-ag-acilis");
-    }
 }
 
 QStringList MainWindow::listMerge(QStringList list1, QStringList list2, int dataIndex)
@@ -973,10 +954,10 @@ QString MainWindow::listGetLine(QStringList list,QString data)
      //qDebug()<<list;
      return "";
  }
-QStringList MainWindow::fileToList(QString filename)
+QStringList MainWindow::fileToList(QString filename,QString path)
  {
     FileCrud *fcc=new FileCrud();
-    fcc->dosya=localDir+filename;
+    fcc->dosya=path+filename;
     QStringList list;
     for(int i=1;i<=fcc->fileCount();i++)
     {
@@ -1061,7 +1042,9 @@ void MainWindow::fileSelectSlot()
 bool MainWindow::vncState(QString _mac)
 {
     bool state=false;
-    QStringList liste=fileToList("iplistname");
+    ///iptal QStringList liste=fileToList("iplistname");
+    QStringList liste=PcData::onlinePcListe;
+
     for(int i=0;i<liste.count();i++)
     {
         QString line=liste[i];
@@ -1077,8 +1060,9 @@ bool MainWindow::vncState(QString _mac)
 
 bool MainWindow::ftpState(QString _mac)
 {
-    bool state=false;
-    QStringList liste=fileToList("iplistname");
+    ///iptal QStringList liste=fileToList("iplistname");
+    QStringList liste=PcData::onlinePcListe;
+
     for(int i=0;i<liste.count();i++)
     {
         QString line=liste[i];

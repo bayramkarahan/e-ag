@@ -34,7 +34,7 @@ void MainWindow::acountLoad()
      ayarKaydetButtonSlot();
 }
 
-    QStringList ayarlst=fileToList("e-ag.conf");
+    QStringList ayarlst=fileToList("e-ag.conf",localDir);
     QString lu=listGetLine(ayarlst,"localUser");
     if(lu!="") {
      //   qDebug()<<"local:"<<lu;

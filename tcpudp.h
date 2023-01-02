@@ -195,27 +195,85 @@ ipmaclist.clear();
 
 
 }
+QStringList MainWindow::readArp()
+{
+    QStringList list;
+    const int size = 256;
 
+        char ip_address[size];
+        int hw_type;
+        int flags;
+        char mac_address[size];
+        char mask[size];
+        char device[size];
+
+        FILE* fp = fopen("/proc/net/arp", "r");
+        if(fp == NULL)
+        {
+            perror("Error opening /proc/net/arp");
+        }
+
+        char line[size];
+        fgets(line, size, fp);    // Skip the first line, which consists of column headers.
+        while(fgets(line, size, fp))
+        {
+            sscanf(line, "%s 0x%x 0x%x %s %s %s\n",
+                   ip_address,
+                   &hw_type,
+                   &flags,
+                   mac_address,
+                   mask,
+                   device);
+            if(flags==2)
+            {
+                ///qDebug()<< ip_address<< mac_address<<hw_type<<flags;
+                list<<QString(ip_address)+"|"+ QString(mac_address);
+
+
+            }
+        }
+
+        fclose(fp);
+   return list;
+}
 QString MainWindow::getMacForIP(QString ipAddress)
 {
     // qDebug()<<"mac adresleri:";
-    system("cat /proc/net/arp |awk '$3==\"0x2\" {print $1\"|\"$4}'>/usr/share/e-ag/mactoiplist");
-    QStringList mactoiplist=fileToList("mactoiplist");
-     for(int i=0;i<mactoiplist.count();i++)
-     {
-        if(mactoiplist[i]!="")
+    QString mac="";
+    const int size = 256;
+
+        char ip_address[size];
+        int hw_type;
+        int flags;
+        char mac_address[size];
+        char mask[size];
+        char device[size];
+
+        FILE* fp = fopen("/proc/net/arp", "r");
+        if(fp == NULL)
         {
-            QStringList line=mactoiplist[i].split("|");
-            QString ip = line[0];
-            QString mac = line[1].toLower();
-            if(mac!=""&&ip==ipAddress)
-            {
-                return mac;
-                //qDebug()<<"mac adresi"<<ip<<mac<<ipAddress;
-            }
+            perror("Error opening /proc/net/arp");
         }
-    }
-     return "";
+
+        char line[size];
+        fgets(line, size, fp);    // Skip the first line, which consists of column headers.
+        while(fgets(line, size, fp))
+        {
+            sscanf(line, "%s 0x%x 0x%x %s %s %s\n",
+                   ip_address,
+                   &hw_type,
+                   &flags,
+                   mac_address,
+                   mask,
+                   device);
+            if(ipAddress==QString(ip_address))
+                mac=QString(mac_address);
+
+        }
+
+        fclose(fp);
+
+     return mac;
 }
 
 QString MainWindow::getIpPortStatus(QString service)
@@ -235,244 +293,6 @@ QString MainWindow::getIpPortStatus(QString service)
     else {return "close";}
 }
 
-
-void MainWindow::sshAramaButtonSlot()
-{
-   /// qDebug()<<"ssh Tarama Başlatıldı";
-
-     textBrowser_receivedMessages->clear();
-      mesajSlot("ssh Tarama Başlatıldı");
-
-   /************************ip dosyası oluşturuluyor***************/
-    QStringList liste=fileToList("iplistname");
-    QStringList ip_liste;
-
-   for(int i=0;i<liste.count();i++)
-   {
-       QString line=liste[i];
-        if(line!="")
-       {
-       QStringList lst=line.split("|");
-
-           if(lst[2]=="pcopen"&&lst[8]=="e") ip_liste<<lst[0];
-       }
-   }
-   listToFile(ip_liste,"ip");
-/*************************ssiplist oluşturuldu*************************************/
-
-    QStringList arguments;
-    QString  komut;
-//    echo '1'|sudo -S nmap  -n -p 22 -iL ip | awk '/Nmap scan report/{print $5;}'
-    komut.append("echo ").append(localPassword).append(" | sudo -S ").append("nmap  -n -p 22 --open ").append("-iL "+localDir+"/ip").append(" | awk '/Nmap scan report/{print $5;}'>"+localDir+"/sshiplist");
-   // komut= QString("").arg();
-
-    //qDebug()<<komut;
-    arguments << "-c" << komut;
-     QProcess process;
-    process.start("/bin/bash",arguments);
-    process.waitForFinished(-1); // will wait forever until finished
-     mesajSlot("ssh Tarama Tamamlandı");
-  /*********************************************************/
-     QStringList liste2=fileToList("iplistname");
-    // qDebug()<<"komut çalışacak";
-     QStringList sshiplist=fileToList("sshiplist");
-    //  qDebug()<<"komut çalışacak";
-     QStringList liste_;
-  /*********** iplistname dosyası sshclose yapılıyor***********************************/
-    for(int i=0;i<liste2.count();i++)
-    {
-        QString line=liste2[i];
-       if(line!="")
-        {
-        QStringList lst=line.split("|");
-        liste_<<(lst[0]+"|"+lst[1]+"|" +lst[2]+"|" +"sshclose"+"|" +lst[4]+"|" +lst[5]+"|"+lst[6]+"|" +lst[7]+"|" +lst[8]);
-        }
-    }
-     //listToFile(liste_,"iplistname");
-    /***********sshiplist dosyasında bulunan satırlar iplistname dosyasında sshopen yapılıyor***********************************/
-    for(int i=0;i<sshiplist.count();i++)
-    {
-        QString line=sshiplist[i];
-        if(line!="")
-        {
-            QStringList lst=line.split("|");
-            QString mac=getMacForIP(lst[0]);
-            QString iplistnameline=listGetLine(liste_,mac); // satır çekiliyor
-
-            liste_=listRemove(liste_,mac);//listeden önceki siliniyor
-            if(iplistnameline!="")
-            {
-                QStringList lst1=iplistnameline.split("|");
-                liste_<<lst1[0]+"|"+lst1[1]+"|" +lst1[2]+"|" +"sshopen"+"|" +lst1[4]+"|" +lst1[5]+"|"+lst1[6]+"|" +lst1[7]+"|" +lst1[8];
-            }
-            listToFile(liste_,"iplistname");
-
-            for(int i=0;i<btnlist.count();i++)
-            {
-                if(btnlist[i]->mac== mac)
-                    btnlist[i]->setSshConnect(true);
-            }
-        }
-
-    }
-
-     /****************************************************************/
-//pcListeGuncelleSlot();
-}
-
-void MainWindow::vncAramaButtonSlot()
-{
- textBrowser_receivedMessages->clear();
-    /************************ip dosyası oluşturuluyor***************/
-     QStringList liste=fileToList("iplistname");
-     QStringList ip_liste;
-
-    for(int i=0;i<liste.count();i++)
-    {
-        QString line=liste[i];
-         if(line!="")
-        {
-        QStringList lst=line.split("|");
-        if(lst[2]=="pcopen"&&lst[8]=="e")
-            ip_liste<<lst[0];
-        }
-    }
-    listToFile(ip_liste,"ip");
- /*************************vnciplist oluşturuldu*************************************/
-    mesajSlot("vnc Tarama Başlatıldı");
-     QStringList arguments;
-     QString  komut;
- //    echo '1'|sudo -S nmap  -n -p 5900  -iL ip | awk '/Nmap scan report/{print $5;}'
-     komut.append("echo ").append(localPassword).append(" | sudo -S ").append("nmap  -n -p 5900 --open ").append("-iL "+localDir+"/ip").append(" | awk '/Nmap scan report/{print $5;}'>"+localDir+"/vnciplist");
-     //qDebug()<<komut;
-     arguments << "-c" << komut;
-      QProcess process;
-     process.start("/bin/bash",arguments);
-     process.waitForFinished(-1); // will wait forever until finished
-      mesajSlot("vnc Tarama Tamamlandı");
-   /*********************************************************/
-      QStringList liste2=fileToList("iplistname");
-     // qDebug()<<"komut çalışacak";
-      QStringList sshiplist=fileToList("vnciplist");
-     //  qDebug()<<"komut çalışacak";
-      QStringList liste_;
-   /*********** iplistname dosyası vncclose yapılıyor***********************************/
-     for(int i=0;i<liste2.count();i++)
-     {
-         QString line=liste2[i];
-        if(line!="")
-         {
-         QStringList lst=line.split("|");
-         liste_<<(lst[0]+"|"+lst[1]+"|" +lst[2]+"|" +lst[3]+"|" +"vncclose"+"|" +lst[5]+"|"+lst[6]+"|"+lst[7]+"|" +lst[8]);
-         }
-     }
-      //listToFile(liste_,"iplistname");
-     /***********sshiplist dosyasında bulunan satırlar iplistname dosyasında vncopen yapılıyor***********************************/
-     for(int i=0;i<sshiplist.count();i++)
-     {
-         QString line=sshiplist[i];
-         if(line!="")
-         {
-             QStringList lst=line.split("|");
-             QString mac=getMacForIP(lst[0]);
-             QString iplistnameline=listGetLine(liste_,mac); // satır çekiliyor
-
-             liste_=listRemove(liste_,mac);//listeden önceki siliniyor
-             if(iplistnameline!="")
-             {
-                 QStringList lst1=iplistnameline.split("|");
-                 liste_<<lst1[0]+"|"+lst1[1]+"|" +lst1[2]+"|" +lst1[3]+"|" +"vncopen"+"|" +lst1[5]+"|"+lst1[6]+"|" +lst1[7]+"|" +lst1[8];
-             }
-             listToFile(liste_,"iplistname");
-             for(int i=0;i<btnlist.count();i++)
-             {
-                 if(btnlist[i]->mac== mac)
-                     btnlist[i]->setVncConnect(true);
-             }
-
-         }
-     }
-     //  listToFile(liste_,"iplistname");
-      /****************************************************************/
-//pcListeGuncelleSlot();
-}
-
-void MainWindow::ftpAramaButtonSlot()
-{
- textBrowser_receivedMessages->clear();
-    /************************ip dosyası oluşturuluyor***************/
-     QStringList liste=fileToList("iplistname");
-     QStringList ip_liste;
-
-    for(int i=0;i<liste.count();i++)
-    {
-        QString line=liste[i];
-         if(line!="")
-        {
-        QStringList lst=line.split("|");
-        if(lst[2]=="pcopen"&&lst[8]=="e")
-            ip_liste<<lst[0];
-        }
-    }
-    listToFile(ip_liste,"ip");
- /*************************vnciplist oluşturuldu*************************************/
-    mesajSlot("ftp Tarama Başlatıldı");
-     QStringList arguments;
-     QString  komut;
- //    echo '1'|sudo -S nmap  -n -p 21  -iL ip | awk '/Nmap scan report/{print $5;}'
-     komut.append("echo ").append(localPassword).append(" | sudo -S ").append("nmap  -n -p 21 --open ").append("-iL "+localDir+"/ip").append(" | awk '/Nmap scan report/{print $5;}'>"+localDir+"/ftpiplist");
-     //qDebug()<<komut;
-     arguments << "-c" << komut;
-      QProcess process;
-     process.start("/bin/bash",arguments);
-     process.waitForFinished(-1); // will wait forever until finished
-      mesajSlot("ftp Tarama Tamamlandı");
-   /*********************************************************/
-      QStringList liste2=fileToList("iplistname");
-     // qDebug()<<"komut çalışacak";
-      QStringList sshiplist=fileToList("ftpiplist");
-     //  qDebug()<<"komut çalışacak";
-      QStringList liste_;
-   /*********** iplistname dosyası vncclose yapılıyor***********************************/
-     for(int i=0;i<liste2.count();i++)
-     {
-         QString line=liste2[i];
-        if(line!="")
-         {
-         QStringList lst=line.split("|");
-         liste_<<(lst[0]+"|"+lst[1]+"|" +lst[2]+"|" +lst[3]+"|" +lst[4]+"|" +"ftpclose"+"|"+lst[6]+"|"+lst[7]+"|" +lst[8]);
-         }
-     }
-      //listToFile(liste_,"iplistname");
-     /***********sshiplist dosyasında bulunan satırlar iplistname dosyasında vncopen yapılıyor***********************************/
-     for(int i=0;i<sshiplist.count();i++)
-     {
-         QString line=sshiplist[i];
-         if(line!="")
-         {
-             QStringList lst=line.split("|");
-             QString mac=getMacForIP(lst[0]);
-             QString iplistnameline=listGetLine(liste_,mac); // satır çekiliyor
-
-             liste_=listRemove(liste_,mac);//listeden önceki siliniyor
-             if(iplistnameline!="")
-             {
-                 QStringList lst1=iplistnameline.split("|");
-                 liste_<<lst1[0]+"|"+lst1[1]+"|" +lst1[2]+"|" +lst1[3]+"|" +lst1[4]+"|" +"ftpopen"+"|"+lst1[6]+"|" +lst1[7]+"|" +lst1[8];
-             }
-             listToFile(liste_,"iplistname");
-             for(int i=0;i<btnlist.count();i++)
-             {
-                 if(btnlist[i]->mac== mac)
-                     btnlist[i]->setFtpConnect(true);
-             }
-
-         }
-     }
-     //listToFile(liste_,"iplistname");
-      /****************************************************************/
-//pcListeGuncelleSlot();
-}
 
 
 #endif // TCPUDP_H

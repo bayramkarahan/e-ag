@@ -55,6 +55,9 @@
 #include<QTabWidget>
 #include<QScrollArea>
 #include<QStatusBar>
+#include<pcdata.h>
+
+
 namespace Ui {
 class MainWindow;
 }
@@ -75,6 +78,7 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
       QString _display="2";
+
  signals:
 
 protected:
@@ -84,7 +88,8 @@ protected:
      void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 
 private slots:
-       void udpSocketServerRead();
+     QStringList readArp();
+     void udpSocketServerRead();
      QString getIpPortStatus(QString service);
      void udpSendData(QString _mesajTur,QString _mesaj,QString _ip);
      void layoutTemizle();
@@ -131,13 +136,10 @@ private slots:
     void webTableCellDoubleClicked(int iRow, int iColumn);
     void init();
     void acountLoad();
-     void selectPc();
+    void selectPc();
 
 
-     void sshAramaButtonSlot();
-    void vncAramaButtonSlot();
-    void ftpAramaButtonSlot();
-    void printButtonSlot();
+     void printButtonSlot();
 
 
     void macListSaveButtonSlot();
@@ -153,7 +155,6 @@ private slots:
     void sshSelectPcCommandSlot(QString kmt);
     void sshCommandSlot(QString kmt,QString _ip);
 
-    void fileHostportCopyAllSlot();
     void pcListeGuncelleSlot(int _ColumnSayisi, int pcw, int pch);
     void bilgiAlButtonSlot();
     void ayarKaydetButtonSlot();
@@ -161,7 +162,7 @@ private slots:
     void mesajSlot(QString msg);
     QStringList listRemoveToList(QStringList sourceList, QStringList removeList, int dataIndex);
     void listToFile(QStringList list, QString filename);
-    QStringList fileToList(QString filename);
+    QStringList fileToList(QString filename,QString path);
     QString listGetLine(QStringList list,QString data);
     QStringList listRemove(QStringList list,QString data);
     QStringList listReplace(QStringList list,QString oldData,QString newData,int index);
@@ -193,6 +194,8 @@ private slots:
     void slotLogin();
     void slotLogout();
     void slotLogoutAll();
+    void slotLoginAll();
+
     void slotReboot();
     void slotRebootAll();
     void slotPowerOff();
@@ -315,7 +318,6 @@ private:
      QMenu *duyuruMesajMenu();
      QMenu *ekranImageMenu();
      QMenu *komutMenu();
-     QMenu *settingMenu();
 
      QMenu *rdpMenu();
      QMenu *commandExampleMenu();

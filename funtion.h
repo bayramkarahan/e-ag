@@ -1,5 +1,7 @@
 #ifndef FUNTION_H
 #define FUNTION_H
+#include <stdio.h>
+#include <stdlib.h>
 void MainWindow::updateSlider(int val)
 {
      sliderValuelabel->setText(QString::number(val));
@@ -78,7 +80,7 @@ void MainWindow::slotWakeOnLan(QString _ip,QString _mac)
 }
 void MainWindow::macListSaveButtonSlot()
 {
-    QStringList iplistname=fileToList("persistlist");  //liste olşturuluyor
+    QStringList iplistname=fileToList("persistlist",localDir);  //liste olşturuluyor
 
     for(int i=0;i<=tablewidget->rowCount()-1;i++)
                {
@@ -106,9 +108,9 @@ void MainWindow::macListSaveButtonSlot()
                   // QString F=tablewidget->item(i, 13)->text();
 
                  iplistname<<ip+"|"+mac+"|" +pcstate+"|" +sshstate+"|" +vncstate+"|" +ftpstate+"|"+connectstate+"|"+pcname+"|"+iptaleh+"|||||";
-                 listToFile(iplistname,"iplistname");
-
-                 QStringList persistlist=fileToList("persistlist");
+                 ///iptall listToFile(iplistname,"iplistname");
+                PcData::onlinePcListe=iplistname;
+                 QStringList persistlist=fileToList("persistlist",localDir);
                  persistlist=listRemove(persistlist,mac); //değişecek satır siliniyor
                  persistlist<<ip+"|"+mac+"|" +pcstate+"|" +sshstate+"|" +vncstate+"|" +ftpstate+"|"+connectstate+"|"+pcname+"|"+iptaleh+"|||||";
                  listToFile(persistlist,"persistlist");
@@ -187,7 +189,7 @@ void MainWindow::printButtonSlot()
 void MainWindow::cellDoubleClicked(int iRow, int iColumn)
 {
      QString mac= tablewidget->item(iRow, 2)->text();
-     QStringList list=fileToList("persistlist");
+     QStringList list=fileToList("persistlist",localDir);
 /******************************************************************/
     //QMessageBox::StandardButton reply;
     // reply = QMessageBox::question(this, "Uyarı", "Bilgisayar Silinecek! Emin misiniz?",
@@ -475,9 +477,7 @@ void MainWindow::slotTransparanKilitAcAll(){
     mesajSlot("Tüm Hostlarda Şeffaf Kilit Açıldı.");
 
 }
-void MainWindow::slotLogin(){
 
- }
 void MainWindow::slotLogout(){
     QString komut="loginctl terminate-seat seat0";
     for(int i=0;i<btnlist.count();i++)
@@ -502,6 +502,32 @@ void MainWindow::slotLogoutAll(){
     mesajSlot("Tüm Hostlarda Oturum Kapatıldı.");
 
 }
+void MainWindow::slotLogin(){
+    QString komut="parduslogin "+remoteUserName+" "+remotePassword;
+   for(int i=0;i<btnlist.count();i++)
+    {
+        if(btnlist[i]->cs=="online"&&(btnlist[i]->select||btnlist[i]->multiSelect))
+        {
+            udpSendData("pckapat",komut,btnlist[i]->ip);
+        }
+    }
+    mesajSlot("Seçili Hostlarda Oturum Kapatıldı.");
+
+}
+
+void MainWindow::slotLoginAll(){
+    QString komut="parduslogin "+remoteUserName+" "+remotePassword;
+    for(int i=0;i<btnlist.count();i++)
+    {
+        if(btnlist[i]->cs=="online")
+        {
+            udpSendData("pckapat",komut,btnlist[i]->ip);
+        }
+    }
+    mesajSlot("Tüm Hostlarda Oturum Açıldı.");
+
+}
+
 void MainWindow::slotReboot(){
     for(int i=0;i<btnlist.count();i++)
     {
@@ -707,12 +733,15 @@ void MainWindow::slotServisControl()
 
    /// servisStateUpdate();
 
-    QStringList list=fileToList("iplistname");
+    ///iptal QStringList list=fileToList("iplistname");
+    QStringList list=PcData::onlinePcListe;
+
     QString line=listGetLine(list,pcMac->text());
     list=listRemove(list,pcMac->text()); //değişecek satır siliniyor
 
     list<<pcIp->text()+"|"+pcMac->text()+"|" +ps+"|" +ss+"|" +vs+"|"+fs+"|"+ cs+"|"+line.split("|")[7]+"|"+line.split("|")[8];
-    listToFile(list,"iplistname");
+    ///iptal listToFile(list,"iplistname");
+    PcData::onlinePcListe=list;
     mesajSlot("Hosta ait servisler kontrol edildi.");
 
 }
@@ -760,36 +789,7 @@ void MainWindow::sshSelectFileCopySlot(QString _sourcePath,QString _targetPath)
     }
     mesajSlot("Dosya Seçili Pc'lere Kopyalandı");
 }
-void MainWindow::fileHostportCopyAllSlot()
-{
-    QStringList liste=fileToList("iplistname");
-/*********************************************************/
 
-    for(int i=0;i<liste.count();i++)
-    {
-        QString line=liste[i];
-        line.chop(1);
-        QStringList lst=line.split("|");
-
-        // qDebug()<<lst[0]<<lst[3];
-        if (lst[6]=="online")//sshstate
-        {
-            //sshpass -p $parola scp $dosya $username@$name:/home/$username/
-            QString komut="nohup sshpass -p "+remotePassword+" scp -o StrictHostKeyChecking=no "+localDir+"hostport "+
-                    remoteUserName+"@"+lst[0]+":/usr/share/e-ag/&";
-            ///qDebug()<<komut;
-            mesajSlot(komut);
-            QStringList arguments;
-            arguments << "-c" << komut;
-            QProcess process;
-            process.start("/bin/bash",arguments);
-            process.waitForFinished(-1); // will wait forever until finished
-
-        }
-
-    }
-    mesajSlot("Dosya Ağ'da Bütün Pc'lere Kopyalandı");
-}
 void MainWindow::sshCommandAllSlot(QString kmt)
 {
     for(int i=0;i<btnlist.count();i++)
