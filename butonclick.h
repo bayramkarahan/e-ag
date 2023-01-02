@@ -401,6 +401,8 @@ void MainWindow::webTableCellDoubleClicked(int iRow, int iColumn)
 
 
 }
+
+
 QWidget* MainWindow::macListWidget()
 {
     int bw,bh;
@@ -1618,8 +1620,8 @@ QWidget* MainWindow::ayarlarWidget()
     acountButton->setAutoRaise(true);
    // duyuruButton->setAutoFillBackground(true);
     acountButton->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
-    acountButton->setText("Yerel/Uzak Hesaplar");
-    acountButton->setIcon(QIcon(":/icons/login.svg"));
+    acountButton->setText("Ağ Profilleri");
+    acountButton->setIcon(QIcon(":/icons/session.svg"));
     acountButton->setIconSize(QSize(b*8,b*8));
     acountButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
@@ -1857,7 +1859,7 @@ QWidget* MainWindow::rdpWidget()
     vncPc->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
     vncPc->setIcon(QIcon(":/icons/vnc.svg"));
     vncPc->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    vncPc->setFixedSize(e*25,yukseklik);
+    vncPc->setFixedSize(e*30,yukseklik);
     vncPc->setAutoRaise(true);
    // vncPc->setAutoFillBackground(true);
     vncPc->setText("Vnc Ekran Erişimi");
@@ -1869,7 +1871,7 @@ QWidget* MainWindow::rdpWidget()
     rdpPc->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
     rdpPc->setIcon(QIcon(":/icons/rdp.svg"));
     rdpPc->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    rdpPc->setFixedSize(e*25,yukseklik);
+    rdpPc->setFixedSize(e*30,yukseklik);
     rdpPc->setAutoRaise(true);
    // rdpPc->setAutoFillBackground(true);
     rdpPc->setText("Rdp Ekran Erişimi");
@@ -1897,7 +1899,7 @@ QWidget* MainWindow::rdpWidget()
 
 
     QToolButton *serverEkranYansitSeciliPcButton= new QToolButton();
-    serverEkranYansitSeciliPcButton->setFixedSize(e*30,yukseklik);
+    serverEkranYansitSeciliPcButton->setFixedSize(e*36,yukseklik);
     //serverEkranYansitSeciliPcButton->setIconSize(QSize(150,30));
     serverEkranYansitSeciliPcButton->setText("Ekranı Seçili Pc'lere Yansıt");
     serverEkranYansitSeciliPcButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
@@ -1916,7 +1918,7 @@ QWidget* MainWindow::rdpWidget()
 
  });
     QToolButton *serverEkranYansitButton= new QToolButton();
-    serverEkranYansitButton->setFixedSize(e*30,yukseklik);
+    serverEkranYansitButton->setFixedSize(e*36,yukseklik);
    // serverEkranYansitButton->setIconSize(QSize(150,30));
     serverEkranYansitButton->setText("Ekranı Tüm Pc'lere Yansıt");
    serverEkranYansitButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
@@ -1941,10 +1943,10 @@ QWidget* MainWindow::rdpWidget()
     ekranYansitDurdur->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
     ekranYansitDurdur->setIcon(QIcon(":/icons/networkvncstop.svg"));
     ekranYansitDurdur->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    ekranYansitDurdur->setFixedSize(e*30,yukseklik);
+    ekranYansitDurdur->setFixedSize(e*36,yukseklik);
     ekranYansitDurdur->setAutoRaise(true);
    // ekranYansitDurdur->setAutoFillBackground(true);
-    ekranYansitDurdur->setText("Seçililerde Yansıtmayı Durdur");
+    ekranYansitDurdur->setText("Seçilen Pc'lerde Yansıtmayı Durdur");
     connect(ekranYansitDurdur, &QToolButton::clicked, [=]() {
         //slotEkranIzleDurdur();
         slotVncFlipStop();
@@ -1953,7 +1955,7 @@ QWidget* MainWindow::rdpWidget()
     ekranYansitDurdurAll->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
     ekranYansitDurdurAll->setIcon(QIcon(":/icons/networkvncallstop.svg"));
     ekranYansitDurdurAll->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    ekranYansitDurdurAll->setFixedSize(e*30,yukseklik);
+    ekranYansitDurdurAll->setFixedSize(e*36,yukseklik);
     ekranYansitDurdurAll->setAutoRaise(true);
   //  ekranYansitDurdurAll->setAutoFillBackground(true);
     ekranYansitDurdurAll->setText("Tümünde Yansıtmayı Durdur");
@@ -2056,7 +2058,7 @@ QWidget* MainWindow::kilitWidget()
     sor->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
 
     sor->setWindowFlags(Qt::WindowStaysOnTopHint|Qt::Tool);
-    sor->setFixedSize(yukseklik*1.5,boy*16);
+    sor->setFixedSize(yukseklik*1.4,boy*16);
     //sor->setStyleSheet("background-color: #dceded;font-size:"+QString::number(font.toInt()-2)+"px;");
 
     QRect screenGeometry = QApplication::desktop()->screenGeometry();
@@ -2068,7 +2070,7 @@ QWidget* MainWindow::kilitWidget()
     lockPc->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
     lockPc->setIcon(QIcon(":/icons/lock.svg"));
     lockPc->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    lockPc->setFixedSize(yukseklik*1.5,b*7);
+    lockPc->setFixedSize(yukseklik*1.4,b*7);
     lockPc->setAutoRaise(true);
    // lockPc->setAutoFillBackground(true);
     lockPc->setText("Kilitle");
@@ -2085,7 +2087,7 @@ QWidget* MainWindow::kilitWidget()
     unlockPc->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
     unlockPc->setIcon(QIcon(":/icons/unlock.svg"));
     unlockPc->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    unlockPc->setFixedSize(yukseklik*1.5,b*7);
+    unlockPc->setFixedSize(yukseklik*1.4,b*7);
     unlockPc->setAutoRaise(true);
     //unlockPc->setAutoFillBackground(true);
     unlockPc->setText("Kilit Aç");
@@ -2145,7 +2147,7 @@ QWidget* MainWindow::kilittransparanWidget()
     sor->setStyleSheet("font-size:"+QString::number(font.toInt())+"px;");
 
     sor->setWindowFlags(Qt::WindowStaysOnTopHint|Qt::Tool);
-    sor->setFixedSize(yukseklik*1.5,boy*16);
+    sor->setFixedSize(yukseklik*1.4,boy*16);
     sor->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
 
     QRect screenGeometry = QApplication::desktop()->screenGeometry();
@@ -2158,7 +2160,7 @@ QWidget* MainWindow::kilittransparanWidget()
     transparanUnlockPc->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
     transparanUnlockPc->setIcon(QIcon(":/icons/transparanunlock.svg"));
     transparanUnlockPc->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    transparanUnlockPc->setFixedSize(yukseklik*1.5,boy*7);
+    transparanUnlockPc->setFixedSize(yukseklik*1.4,boy*7);
     transparanUnlockPc->setAutoRaise(true);
    // transparanUnlockPc->setAutoFillBackground(true);
     transparanUnlockPc->setText("Şeffaf Kilit Aç");
@@ -2174,7 +2176,7 @@ QWidget* MainWindow::kilittransparanWidget()
     transparanLockPc->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
     transparanLockPc->setIcon(QIcon(":/icons/transparanlock.svg"));
     transparanLockPc->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    transparanLockPc->setFixedSize(yukseklik*1.5,boy*7);
+    transparanLockPc->setFixedSize(yukseklik*1.4,boy*7);
     transparanLockPc->setAutoRaise(true);
    // transparanLockPc->setAutoFillBackground(true);
     transparanLockPc->setText("Şeffaf Kilitle");
@@ -2226,7 +2228,7 @@ QWidget* MainWindow::ekranWidget()
     QWidget *sor=new QWidget();
     sor->setWindowTitle("Ekran Yansıtma Seçenekleri");
     sor->setWindowFlags(Qt::WindowStaysOnTopHint|Qt::Tool);
-    sor->setFixedSize(yukseklik*1.5,boy*16);
+    sor->setFixedSize(yukseklik*1.4,boy*16);
     sor->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
 
     QRect screenGeometry = QApplication::desktop()->screenGeometry();
@@ -2238,7 +2240,7 @@ QWidget* MainWindow::ekranWidget()
     screenImagePc->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
     screenImagePc->setIcon(QIcon(":/icons/monitor.svg"));
     screenImagePc->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    screenImagePc->setFixedSize(yukseklik*1.5,boy*7);
+    screenImagePc->setFixedSize(yukseklik*1.4,boy*7);
     screenImagePc->setAutoRaise(true);
    // screenImagePc->setAutoFillBackground(true);
     screenImagePc->setText("Ekran İzle");
@@ -2253,7 +2255,7 @@ QWidget* MainWindow::ekranWidget()
     screenImagePcStop->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
     screenImagePcStop->setIcon(QIcon(":/icons/monitorstop.svg"));
     screenImagePcStop->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    screenImagePcStop->setFixedSize(yukseklik*1.5,boy*7);
+    screenImagePcStop->setFixedSize(yukseklik*1.4,boy*7);
     screenImagePcStop->setAutoRaise(true);
    // screenImagePcStop->setAutoFillBackground(true);
     screenImagePcStop->setText("İzleme Durdur");
@@ -2302,7 +2304,7 @@ QWidget* MainWindow::poweroffrebootWidget()
     sor->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
 
     sor->setWindowFlags(Qt::WindowStaysOnTopHint|Qt::Tool);
-    sor->setFixedSize(yukseklik*1.5,boy*16);
+    sor->setFixedSize(yukseklik*1.4,boy*16);
 
     QRect screenGeometry = QApplication::desktop()->screenGeometry();
     int x = (screenGeometry.width() - sor->width())/2;
@@ -2315,7 +2317,7 @@ QWidget* MainWindow::poweroffrebootWidget()
     closePc->setIcon(QIcon(":/icons/close.svg"));
     closePc->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
-    closePc->setFixedSize(yukseklik*1.5,boy*7);
+    closePc->setFixedSize(yukseklik*1.4,boy*7);
     closePc->setAutoRaise(true);
     //closePc->setAutoFillBackground(true);
     closePc->setText("Kapat");
@@ -2329,7 +2331,7 @@ QWidget* MainWindow::poweroffrebootWidget()
     rebootPc->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
     rebootPc->setIcon(QIcon(":/icons/reboot.svg"));
     rebootPc->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    rebootPc->setFixedSize(yukseklik*1.5,boy*7);
+    rebootPc->setFixedSize(yukseklik*1.4,boy*7);
     rebootPc->setAutoRaise(true);
     //rebootPc->setAutoFillBackground(true);
     rebootPc->setText("Yeniden Başlat");
@@ -2380,7 +2382,7 @@ QWidget* MainWindow::logoutWidget()
     sor->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
 
     sor->setWindowFlags(Qt::WindowStaysOnTopHint|Qt::Tool);
-    sor->setFixedSize(yukseklik*1.5,boy*16);
+    sor->setFixedSize(yukseklik*1.4,boy*16);
 
     QRect screenGeometry = QApplication::desktop()->screenGeometry();
     int x = (screenGeometry.width() - sor->width())/2;
@@ -2394,7 +2396,7 @@ QWidget* MainWindow::logoutWidget()
     logoutPc->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
   //  logoutPc->setIconSize(QSize(yukseklik,yukseklik*0.75));
 
-    logoutPc->setFixedSize(yukseklik*1.5,boy*7);
+    logoutPc->setFixedSize(yukseklik*1.4,boy*7);
     logoutPc->setAutoRaise(true);
    // logoutPc->setAutoFillBackground(true);
     logoutPc->setText("Oturum Kapat");
@@ -2412,7 +2414,7 @@ QWidget* MainWindow::logoutWidget()
     loginPc->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
    // loginPc->setIconSize(QSize(yukseklik,yukseklik*0.75));
 
-    loginPc->setFixedSize(yukseklik*1.5,boy*7);
+    loginPc->setFixedSize(yukseklik*1.4,boy*7);
     loginPc->setAutoRaise(true);
    // portKontrol->setAutoFillBackground(true);
     loginPc->setText("Oturum Aç");
@@ -2665,54 +2667,92 @@ QWidget* MainWindow::pcInfo()
     return d;
 }
 
-void MainWindow::acountButtonSlot()
+QWidget* MainWindow::acountButtonSlot1()
 {
-   // qDebug()<<"ayar click";
-   // if(localNetwork=="") localNetwork=(broadCastAddress);
-     if(tcpPort=="") tcpPort="7879";
-    QDialog * d = new QDialog();
+    if(tcpPort1=="") tcpPort1="7879";
+    if(agProfil1=="") agProfil1="Ag-1";
+
+
+    QWidget * d = new QWidget();
     d->setWindowTitle("Yerel/Uzak Kullanıcı");
-    d->setFixedSize(QSize(boy*70,boy*50));
+    d->setFixedSize(QSize(boy*70,boy*65));
     auto appIcon = QIcon(":/icons/e-ag.svg");
     d->setWindowIcon(appIcon);
 
     d->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
-
+    QLineEdit * agprofilLE = new QLineEdit();agprofilLE->setFixedSize(boy*20,en*5);
     QLineEdit * remoteUserNameLE = new QLineEdit();remoteUserNameLE->setFixedSize(boy*20,en*5);
     QLineEdit * remotePasswordLE = new QLineEdit();remotePasswordLE->setFixedSize(boy*20,en*5);
     QLineEdit * localUserNameLE = new QLineEdit();localUserNameLE->setFixedSize(boy*20,en*5);
     QLineEdit * localPasswordLE = new QLineEdit();localPasswordLE->setFixedSize(boy*20,en*5);
     QLineEdit * localNetworkLE1 = new QLineEdit();localNetworkLE1->setFixedSize(boy*20,en*5);
     QLineEdit * localNetworkLE2 = new QLineEdit();localNetworkLE2->setFixedSize(boy*20,en*5);
-     QLineEdit * tcpPortLE = new QLineEdit();tcpPortLE->setFixedSize(boy*20,en*5);
+    QLineEdit * tcpPortLE = new QLineEdit();tcpPortLE->setFixedSize(boy*20,en*5);
 
-    QLabel *remoteUserNameLabel=new QLabel("Kontrol Edilecek İstemci Kullanıcı Adı");
-    QLabel *remotePasswordLabel=new QLabel("Kontrol Edilecek İstemci Kullanıcı Parolası");
+    QLabel *agProfilLabel=new QLabel("Kullanılan Ağ Profili  Adı");
+    QLabel *remoteUserNameLabel=new QLabel("Uzak Bilgisayar Kullanıcı Adı");
+    QLabel *remotePasswordLabel=new QLabel("Uzak Bilgisayar Kullanıcı Parolası");
     QLabel *localUserNameLabel=new QLabel("Bu Bilgisayarın Kullanıcı Adı");
     QLabel *localPasswordLabel=new QLabel("Bu Bilgisayarın Kullanıcı Parolası");
     QLabel *localNetworkLabel1=new QLabel("Yerel Ağ Yayın Adresi 1");
     QLabel *localNetworkLabel2=new QLabel("Yerel Ağ Yayın Adresi 2");
-
     QLabel *tcpPortLabel=new QLabel("Port");
-    remoteUserNameLE->setText(remoteUserName);
-    remotePasswordLE->setText(remotePassword);
-    localUserNameLE->setText(localUserName);
-    localPasswordLE->setText(localPassword);
-    localNetworkLE1->setText(broadCastAddress1);
-    localNetworkLE2->setText(broadCastAddress2);
 
-    tcpPortLE->setText(tcpPort);
-    // messageBox.setIcon(QMessageBox::Question);
+    agprofilLE->setText(agProfil1);
+    remoteUserNameLE->setText(remoteUserName1);
+    remotePasswordLE->setText(remotePassword1);
+    localUserNameLE->setText(localUserName1);
+    localPasswordLE->setText(localPassword1);
+    localNetworkLE1->setText(broadCastAddress11);
+    localNetworkLE2->setText(broadCastAddress12);
+    tcpPortLE->setText(tcpPort1);
 
-           QDialogButtonBox * buttonBox = new QDialogButtonBox();
+    QToolButton *agProfilKaydet=new QToolButton();
+    agProfilKaydet->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
+    agProfilKaydet->setIcon(QIcon(":/icons/save.svg"));
+    agProfilKaydet->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+    agProfilKaydet->setFixedSize(boy*30,boy*10);
+    agProfilKaydet->setAutoRaise(true);
+    // agProfilKaydet->setAutoFillBackground(true);
+    agProfilKaydet->setText("Ağ Profilini Kaydet");
 
-            buttonBox->addButton("Kaydet", QDialogButtonBox::AcceptRole);
-            buttonBox->addButton("Vazgeç", QDialogButtonBox::RejectRole);
+    connect(agProfilKaydet, &QToolButton::clicked, [=]() {
 
-    QObject::connect(buttonBox, SIGNAL(accepted()), d, SLOT(accept()));
-    QObject::connect(buttonBox, SIGNAL(rejected()), d, SLOT(reject()));
+        // qDebug()<<"tamam";
+        agProfil1=agprofilLE->text();
+        remoteUserName1= remoteUserNameLE->text();
+        remotePassword1= remotePasswordLE->text();
+        localUserName1= localUserNameLE->text();
+        localPassword1= localPasswordLE->text();
+        broadCastAddress11= localNetworkLE1->text();
+        broadCastAddress12= localNetworkLE2->text();
+        tcpPort1= tcpPortLE->text();
+
+        hostAddressMacButtonSlot();
+        QStringList ayar;
+        QString ap1="agProfil1|"+agProfil1;
+        QString ru1="remoteUser1|"+remoteUserName1+"|"+remotePassword1;
+        QString lu1="localUser1|"+localUserName1+"|"+localPassword1;
+        QString rn11="broadCastAddress11|"+broadCastAddress11;
+        QString rn12="broadCastAddress12|"+broadCastAddress12;
+        QString tcp1="tcpPort1|"+tcpPort1;
+        QString webstate1="webblockstate1|"+QString::number(webblockstate1);
+
+        QString ap2="agProfil2|"+agProfil2;
+        QString ru2="remoteUser2|"+remoteUserName2+"|"+remotePassword2;
+        QString lu2="localUser2|"+localUserName2+"|"+localPassword2;
+        QString rn21="broadCastAddress21|"+broadCastAddress21;
+        QString rn22="broadCastAddress22|"+broadCastAddress22;
+        QString tcp2="tcpPort2|"+tcpPort2;
+        QString webstate2="webblockstate2|"+QString::number(webblockstate2);
+
+        ayar<<ap1<<ru1<<lu1<<rn11<<rn12<<tcp1<<webstate1<<ap2<<ru2<<lu2<<rn21<<rn22<<tcp2<<webstate2;
+           listToFile(ayar,"e-ag.conf");
+
+    });
 
     QVBoxLayout * vbox = new QVBoxLayout();
+    QHBoxLayout * hbox0= new QHBoxLayout();
     QHBoxLayout * hbox1= new QHBoxLayout();
     QHBoxLayout * hbox2= new QHBoxLayout();
     QHBoxLayout * hbox3= new QHBoxLayout();
@@ -2720,6 +2760,10 @@ void MainWindow::acountButtonSlot()
     QHBoxLayout * hbox5= new QHBoxLayout();
     QHBoxLayout * hbox6= new QHBoxLayout();
     QHBoxLayout * hbox7= new QHBoxLayout();
+
+
+    hbox0->addWidget(agProfilLabel);
+    hbox0->addWidget(agprofilLE);
 
     hbox1->addWidget(remoteUserNameLabel);
     hbox1->addWidget(remoteUserNameLE);
@@ -2743,6 +2787,7 @@ void MainWindow::acountButtonSlot()
 
 
     //vbox->addWidget(pcnameLabel);
+    vbox->addLayout(hbox0);
     vbox->addLayout(hbox1);
     vbox->addLayout(hbox2);
     vbox->addLayout(hbox3);
@@ -2751,33 +2796,171 @@ void MainWindow::acountButtonSlot()
     vbox->addLayout(hbox6);
     vbox->addLayout(hbox7);
 
-    vbox->addWidget(buttonBox);
+    vbox->addWidget(agProfilKaydet);
 
     d->setLayout(vbox);
-
-    int result = d->exec();
-    if(result == QDialog::Accepted)
-    {
-       // qDebug()<<"tamam";
-       remoteUserName= remoteUserNameLE->text();
-       remotePassword= remotePasswordLE->text();
-       localUserName= localUserNameLE->text();
-       localPassword= localPasswordLE->text();
-       broadCastAddress1= localNetworkLE1->text();
-       broadCastAddress2= localNetworkLE2->text();
-        tcpPort= tcpPortLE->text();
-        ayarKaydetButtonSlot();
-    }
-
-    if(result == QDialog::Rejected)
-    {
-        qDebug()<<"iptal";
-
-    }
-
+return d;
 }
 
+QWidget* MainWindow::acountButtonSlot2()
+{
+    // qDebug()<<"ayar click";
+    // if(localNetwork=="") localNetwork=(broadCastAddress);
+    if(tcpPort2=="") tcpPort2="7879";
+    if(agProfil2=="") agProfil2="Ag-2";
 
+     QWidget * d = new QWidget();
+     d->setWindowTitle("Yerel/Uzak Kullanıcı");
+     d->setFixedSize(QSize(boy*70,boy*65));
+     auto appIcon = QIcon(":/icons/e-ag.svg");
+     d->setWindowIcon(appIcon);
+
+     d->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
+     QLineEdit * agprofilLE = new QLineEdit();agprofilLE->setFixedSize(boy*20,en*5);
+     QLineEdit * remoteUserNameLE = new QLineEdit();remoteUserNameLE->setFixedSize(boy*20,en*5);
+     QLineEdit * remotePasswordLE = new QLineEdit();remotePasswordLE->setFixedSize(boy*20,en*5);
+     QLineEdit * localUserNameLE = new QLineEdit();localUserNameLE->setFixedSize(boy*20,en*5);
+     QLineEdit * localPasswordLE = new QLineEdit();localPasswordLE->setFixedSize(boy*20,en*5);
+     QLineEdit * localNetworkLE1 = new QLineEdit();localNetworkLE1->setFixedSize(boy*20,en*5);
+     QLineEdit * localNetworkLE2 = new QLineEdit();localNetworkLE2->setFixedSize(boy*20,en*5);
+     QLineEdit * tcpPortLE = new QLineEdit();tcpPortLE->setFixedSize(boy*20,en*5);
+
+     QLabel *agProfilLabel=new QLabel("Kullanılan Ağ Profili  Adı");
+     QLabel *remoteUserNameLabel=new QLabel("Uzak Bilgisayar Kullanıcı Adı");
+     QLabel *remotePasswordLabel=new QLabel("Uzak Bilgisayar Kullanıcı Parolası");
+     QLabel *localUserNameLabel=new QLabel("Bu Bilgisayarın Kullanıcı Adı");
+     QLabel *localPasswordLabel=new QLabel("Bu Bilgisayarın Kullanıcı Parolası");
+     QLabel *localNetworkLabel1=new QLabel("Yerel Ağ Yayın Adresi 1");
+     QLabel *localNetworkLabel2=new QLabel("Yerel Ağ Yayın Adresi 2");
+     QLabel *tcpPortLabel=new QLabel("Port");
+
+     agprofilLE->setText(agProfil2);
+     remoteUserNameLE->setText(remoteUserName2);
+     remotePasswordLE->setText(remotePassword2);
+     localUserNameLE->setText(localUserName2);
+     localPasswordLE->setText(localPassword2);
+     localNetworkLE1->setText(broadCastAddress21);
+     localNetworkLE2->setText(broadCastAddress22);
+     tcpPortLE->setText(tcpPort2);
+
+     QToolButton *agProfilKaydet=new QToolButton();
+     agProfilKaydet->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
+     agProfilKaydet->setIcon(QIcon(":/icons/save.svg"));
+     agProfilKaydet->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+     agProfilKaydet->setFixedSize(boy*30,boy*10);
+     agProfilKaydet->setAutoRaise(true);
+     // agProfilKaydet->setAutoFillBackground(true);
+     agProfilKaydet->setText("Ağ Profilini Kaydet");
+
+     connect(agProfilKaydet, &QToolButton::clicked, [=]() {
+
+         // qDebug()<<"tamam";
+         agProfil2=agprofilLE->text();
+         remoteUserName2= remoteUserNameLE->text();
+         remotePassword2= remotePasswordLE->text();
+         localUserName2= localUserNameLE->text();
+         localPassword2= localPasswordLE->text();
+         broadCastAddress21= localNetworkLE1->text();
+         broadCastAddress22= localNetworkLE2->text();
+         tcpPort2= tcpPortLE->text();
+
+         hostAddressMacButtonSlot();
+         QStringList ayar;
+         QString ap1="agProfil1|"+agProfil1;
+         QString ru1="remoteUser1|"+remoteUserName1+"|"+remotePassword1;
+         QString lu1="localUser1|"+localUserName1+"|"+localPassword1;
+         QString rn11="broadCastAddress11|"+broadCastAddress11;
+         QString rn12="broadCastAddress12|"+broadCastAddress12;
+         QString tcp1="tcpPort1|"+tcpPort1;
+         QString webstate1="webblockstate1|"+QString::number(webblockstate1);
+
+         QString ap2="agProfil2|"+agProfil2;
+         QString ru2="remoteUser2|"+remoteUserName2+"|"+remotePassword2;
+         QString lu2="localUser2|"+localUserName2+"|"+localPassword2;
+         QString rn21="broadCastAddress21|"+broadCastAddress21;
+         QString rn22="broadCastAddress22|"+broadCastAddress22;
+         QString tcp2="tcpPort2|"+tcpPort2;
+         QString webstate2="webblockstate2|"+QString::number(webblockstate2);
+
+         ayar<<ap1<<ru1<<lu1<<rn11<<rn12<<tcp1<<webstate1<<ap2<<ru2<<lu2<<rn21<<rn22<<tcp2<<webstate2;
+               listToFile(ayar,"e-ag.conf");
+
+     });
+
+     QVBoxLayout * vbox = new QVBoxLayout();
+     QHBoxLayout * hbox0= new QHBoxLayout();
+     QHBoxLayout * hbox1= new QHBoxLayout();
+     QHBoxLayout * hbox2= new QHBoxLayout();
+     QHBoxLayout * hbox3= new QHBoxLayout();
+     QHBoxLayout * hbox4= new QHBoxLayout();
+     QHBoxLayout * hbox5= new QHBoxLayout();
+     QHBoxLayout * hbox6= new QHBoxLayout();
+     QHBoxLayout * hbox7= new QHBoxLayout();
+
+
+     hbox0->addWidget(agProfilLabel);
+     hbox0->addWidget(agprofilLE);
+
+     hbox1->addWidget(remoteUserNameLabel);
+     hbox1->addWidget(remoteUserNameLE);
+
+     hbox2->addWidget(remotePasswordLabel);
+     hbox2->addWidget(remotePasswordLE);
+
+     hbox3->addWidget(localUserNameLabel);
+     hbox3->addWidget(localUserNameLE);
+
+     hbox4->addWidget(localPasswordLabel);
+     hbox4->addWidget(localPasswordLE);
+
+     hbox5->addWidget(localNetworkLabel1);
+     hbox5->addWidget(localNetworkLE1);
+     hbox6->addWidget(localNetworkLabel2);
+     hbox6->addWidget(localNetworkLE2);
+
+     hbox7->addWidget(tcpPortLabel);
+     hbox7->addWidget(tcpPortLE);
+
+
+     //vbox->addWidget(pcnameLabel);
+     vbox->addLayout(hbox0);
+     vbox->addLayout(hbox1);
+     vbox->addLayout(hbox2);
+     vbox->addLayout(hbox3);
+     vbox->addLayout(hbox4);
+     vbox->addLayout(hbox5);
+     vbox->addLayout(hbox6);
+     vbox->addLayout(hbox7);
+
+     vbox->addWidget(agProfilKaydet);
+
+     d->setLayout(vbox);
+
+
+ return d;
+}
+
+void MainWindow::acountButtonSlot()
+{
+    QDialog * d = new QDialog();
+    d->setWindowTitle("Ağ Profilleri");
+    d->setFixedSize(QSize(boy*80,boy*75));
+    auto appIcon = QIcon(":/icons/e-ag.svg");
+    d->setWindowIcon(appIcon);
+
+    d->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
+
+    tabwidprofil=new QTabWidget();
+    tabwidprofil->setFixedSize(boy*75,boy*70);
+    tabwidprofil->addTab(acountButtonSlot1(),QIcon(":/icons/session.svg"),"Ağ Profili-1");
+    tabwidprofil->addTab(acountButtonSlot2(),QIcon(":/icons/session.svg"),"Ağ Profili-2");
+    tabwidprofil->setTabPosition(QTabWidget::North);
+ QVBoxLayout * vbox = new QVBoxLayout();
+ vbox->addWidget(tabwidprofil);
+ d->setLayout(vbox);
+
+ int result = d->exec();
+}
 void MainWindow::bilgiAlButtonSlot()
 {
 

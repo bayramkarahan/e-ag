@@ -788,11 +788,7 @@ if(remoteUserName==""||remotePassword==""||
         }
       }
     selectMac=pcMac->text();
-    /* tabWidgetIndex= tabwid->currentIndex();
-     tabwid->removeTab(0);
-     tabwid->insertTab(0,pcInfo(),QIcon(":/icons/toolbox.svg"),"Temel İşlemler");
-     tabwid->setCurrentIndex(tabWidgetIndex);
-     */
+
 }
 void MainWindow::ftpConnectButtonSlot()
 {
@@ -937,19 +933,14 @@ QStringList MainWindow::listGetList(QStringList list, QString data,int index)
 
 QStringList MainWindow::listRemove(QStringList list,QString data)
  {
-    // qDebug()<<"deneme-ddd"<<data;
-    // QStringList list;
-     //  qDebug()<<list;
-     QRegularExpression re(data);
+       QRegularExpression re(data);
      for(int i=0;i<list.count();i++)if(list[i].contains(re)) list.removeAt(i);
     // qDebug()<<list;
      return list;
  }
 QString MainWindow::listGetLine(QStringList list,QString data)
  {
-     //QStringList list;
-     //list << "bayram|sun" << "cloud" << "sun|" << "|rain";
-     QRegularExpression re(data);
+      QRegularExpression re(data);
      for(int i=0;i<list.count();i++) if(list[i].contains(re)) return list[i];
      //qDebug()<<list;
      return "";
@@ -1026,19 +1017,6 @@ void MainWindow::listToFile(QStringList list, QString filename)
 
     }
  }
-
-
-
-void MainWindow::fileSelectSlot()
-{
-    pcClickSlot(pcMac->text());
-    QString fileName = QFileDialog::getOpenFileName(this,tr("Dosya Seç"),"/home/etapadmin/", tr("Files (*.*)"));
-//qDebug()<<fileName;
-    lineEdit_message->setText(fileName);
-
-}
-
-
 bool MainWindow::vncState(QString _mac)
 {
     bool state=false;
@@ -1075,4 +1053,3 @@ bool MainWindow::ftpState(QString _mac)
     }
  return false;
 }
-

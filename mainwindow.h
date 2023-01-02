@@ -118,7 +118,10 @@ private slots:
      void updateSlider(int val);
       QString getIpPortStatus(QString ip_,QString port);
     void slotServisControl();
+    QWidget *acountButtonSlot1();
+    QWidget *acountButtonSlot2();
     void acountButtonSlot();
+
     void selectSlot();
     void terminalSlot();
     void vncDisplaySlot();
@@ -130,11 +133,10 @@ private slots:
     void pcKilitTransparanStateControlSignalSlot(QString _mac, QString _ip, bool transparankilitstate);
     void pcIconStateControlSignalSlot(QString _mac, QString _ip, bool iconstate);
     void pcMenuSignalSlot(QString _mac,QString _ip,QString _slot);
-    bool vncState(QString _mac);
-     bool ftpState(QString _mac);
     void cellDoubleClicked(int iRow, int iColumn);
     void webTableCellDoubleClicked(int iRow, int iColumn);
-    void init();
+
+
     void acountLoad();
     void selectPc();
 
@@ -149,8 +151,7 @@ private slots:
     void hostListReset();
     QStringList arpListInit();
     void sshCommandAllSlot(QString kmt);
-    void fileSelectSlot();
-      void sshFileCopyAllSlot(QString _sourcePath, QString _targetPath);
+       void sshFileCopyAllSlot(QString _sourcePath, QString _targetPath);
     void sshSelectFileCopySlot(QString _sourcePath, QString _targetPath);
     void sshSelectPcCommandSlot(QString kmt);
     void sshCommandSlot(QString kmt,QString _ip);
@@ -203,7 +204,9 @@ private slots:
     void slotSelectPcMesaj(QString _msg);
     void slotCommand(QString _kmt);
     void slotPcCommandSelect(QString _kmt);
-     void slotPcCommandAll(QString _kmt);
+    void slotPcCommandAll(QString _kmt);
+    bool vncState(QString _mac);
+    bool ftpState(QString _mac);
 
     void slotEkranIzle();
     void slotEkranIzleDurdur();
@@ -230,10 +233,12 @@ private:
     QLabel *hostsCountLabel;
 
     QTabWidget *tabwid;
+     QTabWidget *tabwidprofil;
     bool streamState;
     QProcess videoProcess;
-     bool webblockstate;
+
      QTableWidget *twl;
+
     int en,boy;
 
     QGridLayout *layout;
@@ -286,22 +291,41 @@ private:
 
     QLabel *socketNumberLabel;
     QLabel *destlabel;
-
-
-    QString remoteUserName;
+    /****************************Ag Profil********************************/
+    QString agProfil;
     QString remotePassword;
+    QString remoteUserName;
     QString localUserName;
     QString localPassword;
     QString tcpPort;
-
+    QString broadCastAddress1;
+    QString broadCastAddress2;
+    bool webblockstate;
+    QString agProfil1;
+    QString remotePassword1;
+    QString remoteUserName1;
+    QString localUserName1;
+    QString localPassword1;
+    QString tcpPort1;
+    QString broadCastAddress11;
+    QString broadCastAddress12;
+     bool webblockstate1;
+    QString agProfil2;
+    QString remotePassword2;
+    QString remoteUserName2;
+    QString localUserName2;
+    QString localPassword2;
+    QString tcpPort2;
+    QString broadCastAddress21;
+    QString broadCastAddress22;
+    bool webblockstate2;
+    /*****************************************************************/
     QLineEdit *status;
     QWidget *hostListe;
     QPalette *palette;
-    QString broadCastAddress1;
-    QString broadCastAddress2;
 
     QTextEdit *te;
-    QTcpServer* m_server;
+//    QTcpServer* m_server;
     QList<QTcpSocket*> connection_list;
     QComboBox *comboBox_receiver;
     QLineEdit *lineEdit_message;

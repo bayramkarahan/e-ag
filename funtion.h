@@ -174,11 +174,8 @@ void MainWindow::printButtonSlot()
     document->setHtml(strStream);
 
     QPrinter printer;
-    //printer.Orientation(QPrinter::Landscape);
-    //printer.setOrientation(QPrinter::Landscape);
     QPrintDialog *dialog = new QPrintDialog(&printer, NULL);
     printer.setOutputFileName(QDir::homePath()+"macliste.pdf");
-  // printer.setOutputFormat(QPrinter::PdfFormat);
     if (dialog->exec() == QDialog::Accepted) {
         document->print(&printer);
     }
@@ -191,10 +188,7 @@ void MainWindow::cellDoubleClicked(int iRow, int iColumn)
      QString mac= tablewidget->item(iRow, 2)->text();
      QStringList list=fileToList("persistlist",localDir);
 /******************************************************************/
-    //QMessageBox::StandardButton reply;
-    // reply = QMessageBox::question(this, "Uyarı", "Bilgisayar Silinecek! Emin misiniz?",
-      //                             QMessageBox::Yes|tr(QMessageBox::No);
-     QMessageBox messageBox(this);
+        QMessageBox messageBox(this);
      messageBox.setText("Uyarı");
 
      messageBox.setInformativeText("Host İçin İşlem Seçiniz!");
@@ -749,12 +743,9 @@ void MainWindow::sshFileCopyAllSlot(QString _sourcePath,QString _targetPath)
 {
     for(int i=0;i<btnlist.count();i++)
     {
-      //  if(btnlist[i]->ss=="sshopen")
-        {
+       {
             QString komut="nohup sshpass -p "+remotePassword+" scp -o StrictHostKeyChecking=no "+_sourcePath+" "+
                     remoteUserName+"@"+btnlist[i]->ip+":"+_targetPath+" &";
-            //         sshpass -p 1299+1923tr  scp -o StrictHostKeyChecking=no iplistname etapadmin@10.107.248.247:/usr/share/e-ag/
-            // qDebug()<<komut;
             mesajSlot(komut);
             QStringList arguments;
             arguments << "-c" << komut;
@@ -772,13 +763,10 @@ void MainWindow::sshSelectFileCopySlot(QString _sourcePath,QString _targetPath)
     {
         if((btnlist[i]->select||btnlist[i]->multiSelect))
         {
-            //if(btnlist[i]->ss=="sshopen")
-            {
+             {
             QString komut="nohup sshpass -p "+remotePassword+" scp -o StrictHostKeyChecking=no "+_sourcePath+" "+
                     remoteUserName+"@"+btnlist[i]->ip+":"+_targetPath+" &";
-            //         sshpass -p 1299+1923tr  scp -o StrictHostKeyChecking=no iplistname etapadmin@10.107.248.247:/usr/share/e-ag/
-            // qDebug()<<komut;
-            mesajSlot(komut);
+             mesajSlot(komut);
             QStringList arguments;
             arguments << "-c" << komut;
             QProcess process;
@@ -794,11 +782,8 @@ void MainWindow::sshCommandAllSlot(QString kmt)
 {
     for(int i=0;i<btnlist.count();i++)
     {
-        //if(btnlist[i]->ss=="sshopen")
         {
-           /* QString komut="nohup sshpass -p "+remotePassword+" ssh -o StrictHostKeyChecking=no -n "+
-                    remoteUserName+"@"+btnlist[i]->ip+" 'echo "+remotePassword+" | sudo -S' "+kmt+" &";
-            */
+
             QString komut="nohup sshpass -p "+remotePassword+" ssh -o CheckHostIP=no -o StrictHostKeyChecking=no -n "+
                   remoteUserName+"@"+btnlist[i]->ip+" 'echo "+remotePassword+" | sudo -S' "+kmt+ "&";
 
@@ -810,12 +795,7 @@ void MainWindow::sshCommandAllSlot(QString kmt)
             arguments << "-c" << komut;
             QString result;
             QProcess process;
-          /*  process.start("/bin/bash",arguments);
-            if(process.waitForFinished())
-            {
-                result = process.readAll();
-            }*/
-           /// return result;
+
         }
     }
      mesajSlot("Komut Tüm Ağ'da Çalıştırıldı.");
@@ -824,16 +804,13 @@ void MainWindow::sshSelectPcCommandSlot(QString kmt)
 {
     for(int i=0;i<btnlist.count();i++)
     {
-      //  qDebug()<<"pc: "<<btnlist[i]->ip<<btnlist[i]->ss<<btnlist[i]->select<<btnlist[i]->multiSelect;
 
         if((btnlist[i]->select||btnlist[i]->multiSelect))
         {
-           // if(btnlist[i]->ss=="sshopen")
             {
                 QString komut="nohup sshpass -p "+remotePassword+" ssh -o CheckHostIP=no -o StrictHostKeyChecking=no -n "+
                         remoteUserName+"@"+btnlist[i]->ip+" 'echo "+remotePassword+" | sudo -S' "+kmt+ "&";
 
-                //system(komut.toStdString().c_str());
 
                 mesajSlot(komut);
                 //qDebug()<<komut;
