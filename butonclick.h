@@ -25,29 +25,56 @@
 #include<QDesktopServices>
 void MainWindow::ayarKaydetButtonSlot()
 {
-    QString kmt23="echo "+localPassword+"|sudo -S mkdir /usr/share/e-ag > /dev/null 2>&1";
-    system(kmt23.toStdString().c_str());
-    QString kmt24="echo "+localPassword+"|sudo -S chmod 777 /usr/share/e-ag";
-    system(kmt24.toStdString().c_str());
-
-
-    QString kmt26="echo "+localPassword+"|sudo -S chmod 777 /usr/share/e-ag/*";
-    system(kmt26.toStdString().c_str());
-
-
-    hostAddressMacButtonSlot();
     QStringList ayar;
-    QString ru="remoteUser|"+remoteUserName+"|"+remotePassword;
-    QString lu="localUser|"+localUserName+"|"+localPassword;
-    QString rn1="broadCastAddress1|"+broadCastAddress1;
-    QString rn2="broadCastAddress2|"+broadCastAddress2;
+    QString ap1="agProfil1|"+agProfil1;
+    QString selectAgProfilState1="selectAgProfil1|"+QString::number(selectAgProfil1);
+    QString ru1="remoteUser1|"+remoteUserName1+"|"+remotePassword1;
+    QString lu1="localUser1|"+localUserName1+"|"+localPassword1;
+    QString rn11="broadCastAddress11|"+broadCastAddress11;
+    QString rn12="broadCastAddress12|"+broadCastAddress12;
+    QString tcp1="tcpPort1|"+tcpPort1;
+    QString webstate1="webblockstate1|"+QString::number(webblockstate1);
 
-    QString tcp="tcpPort|"+tcpPort;
-    QString webstate="webblockstate|"+QString::number(webblockstate);
-    ayar<<ru<<lu<<rn1<<rn2<<tcp<<webstate;
-    listToFile(ayar,"e-ag.conf");
+    QString ap2="agProfil2|"+agProfil2;
+    QString selectAgProfilState2="selectAgProfil2|"+QString::number(selectAgProfil2);
+    QString ru2="remoteUser2|"+remoteUserName2+"|"+remotePassword2;
+    QString lu2="localUser2|"+localUserName2+"|"+localPassword2;
+    QString rn21="broadCastAddress21|"+broadCastAddress21;
+    QString rn22="broadCastAddress22|"+broadCastAddress22;
+    QString tcp2="tcpPort2|"+tcpPort2;
+    QString webstate2="webblockstate2|"+QString::number(webblockstate2);
+    QString selectag="selectAgProfil|"+selectAgProfil;
 
-
+    ayar<<ap1<<ru1<<lu1<<rn11<<rn12<<tcp1<<webstate1<<selectAgProfilState1<<ap2<<ru2<<lu2<<rn21<<rn22<<tcp2<<webstate2<<selectAgProfilState2<<selectag;
+       listToFile(ayar,"e-ag.conf");
+       if(selectAgProfil1)
+       {
+           selectAgProfil=agProfil1;
+           agProfil=agProfil1;
+           localUserName=localUserName1;
+           localPassword=localPassword1;
+           remoteUserName=remoteUserName1;
+           remotePassword=remotePassword1;
+           broadCastAddress1=broadCastAddress11;
+           broadCastAddress2=broadCastAddress12;
+           webblockstate=webblockstate1;
+           tcpPort= tcpPort1;
+       }
+       if(selectAgProfil2)
+       {
+           selectAgProfil=agProfil2;
+           agProfil=agProfil2;
+           localUserName=localUserName2;
+           localPassword=localPassword2;
+           remoteUserName=remoteUserName2;
+           remotePassword=remotePassword2;
+           broadCastAddress1=broadCastAddress21;
+           broadCastAddress2=broadCastAddress22;
+           webblockstate=webblockstate2;
+           tcpPort= tcpPort2;
+       }
+       rb1->setText(agProfil1);
+       rb2->setText(agProfil2);
 
   }
 void MainWindow::wolSlot()
@@ -2454,6 +2481,80 @@ QWidget* MainWindow::logoutWidget()
     //slotVncFlip(ekranScale->currentText());
 }
 
+QWidget* MainWindow::agProfilWidget()
+{
+    int e=en;
+    int b=boy;
+    int yukseklik=e*12;
+
+    QWidget *sor=new QWidget();
+     sor->setObjectName("ag");
+    sor->setWindowTitle("Ağ Profil Seçenekleri");
+    sor->setStyleSheet("QWidget#ag{border: 1px solid #bcbcbc;border-radius: 5px; font-size:"+QString::number(font.toInt()-2)+"px;}");
+
+    sor->setWindowFlags(Qt::WindowStaysOnTopHint|Qt::Tool);
+    sor->setFixedSize(yukseklik*0.9,boy*16);
+
+    QRect screenGeometry = QApplication::desktop()->screenGeometry();
+    int x = (screenGeometry.width() - sor->width())/2;
+    int y = (screenGeometry.height() - sor->height()) / 2;
+    sor->move(x, y);
+    /**************************************************/
+    /******************************************************/
+
+
+    rb1=new QRadioButton();
+    rb2=new QRadioButton();
+    QButtonGroup *buttonGroup = new QButtonGroup(sor);
+    if(selectAgProfil1) rb1->setChecked(true);
+    if(selectAgProfil2) rb2->setChecked(true);
+   ///
+    rb1->setText(agProfil1);
+    rb2->setText(agProfil2);
+
+    if(remoteUserName==""||remotePassword==""||
+            localUserName==""||localPassword=="")
+    {
+          acountButtonSlot();
+    }
+
+    buttonGroup->addButton(rb1, 0);
+    buttonGroup->addButton(rb2, 1);
+    connect(rb1, &QRadioButton::clicked, [=]() {
+    selectAgProfil1=true;
+     selectAgProfil2=false;
+     selectAgProfil=agProfil1;
+    ayarKaydetButtonSlot();
+    });
+    connect(rb2, &QRadioButton::clicked, [=]() {
+    selectAgProfil1=false;
+     selectAgProfil2=true;
+     selectAgProfil=agProfil2;
+    ayarKaydetButtonSlot();
+
+     });
+
+
+
+QLabel *baslik=new QLabel();
+baslik->setText("Ağ Profilleri");
+
+    auto widget = new QWidget;
+    auto layout = new QGridLayout(sor);
+    layout->setContentsMargins(0, 0, 0,0);
+    layout->setVerticalSpacing(0);
+    layout->setHorizontalSpacing(0);
+
+    layout->addWidget(baslik, 3,0,1,1,Qt::AlignCenter);
+    layout->addWidget(rb1, 4,0,1,1,Qt::AlignCenter);
+   layout->addWidget(rb2, 6,0,1,1,Qt::AlignCenter);
+
+  return sor;
+   // sor->show();
+
+    //slotVncFlip(ekranScale->currentText());
+}
+
 QWidget* MainWindow::pcInfo()
 {
     int e=en;
@@ -2561,18 +2662,6 @@ QWidget* MainWindow::pcInfo()
         wolSlot();
     });
 
-    QToolButton* portKontrol = new QToolButton(0);
-    portKontrol->setFixedSize(yukseklik*0.9, yukseklik*1.5);
-    portKontrol->setIconSize(QSize(yukseklik,boy*8));
-    portKontrol->setIcon(QIcon(":/icons/about.svg"));
-    portKontrol->setStyleSheet("Text-align:left; font-size:"+QString::number(font.toInt()-2)+"px;");
-    portKontrol->setAutoRaise(true);
-    portKontrol->setText("Servisler");
-    portKontrol->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-
-    connect(portKontrol, &QToolButton::clicked, [=]() {
-        slotServisControl();
-    });
 
     QToolButton *helpButton= new QToolButton;
     helpButton->setFixedSize(yukseklik*0.9, yukseklik*1.5);
@@ -2657,7 +2746,7 @@ QWidget* MainWindow::pcInfo()
     layout->addWidget(poweroffrebootWidget(), 0,20,3,1);
 
     layout->addWidget(logoutWidget(), 0,25,3,1);
-    layout->addWidget(portKontrol, 0,26,3,1);
+    layout->addWidget(agProfilWidget(), 0,26,3,1);
 
     layout->addWidget(helpButton, 0,27,3,1);
 
@@ -2729,25 +2818,7 @@ QWidget* MainWindow::acountButtonSlot1()
         tcpPort1= tcpPortLE->text();
 
         hostAddressMacButtonSlot();
-        QStringList ayar;
-        QString ap1="agProfil1|"+agProfil1;
-        QString ru1="remoteUser1|"+remoteUserName1+"|"+remotePassword1;
-        QString lu1="localUser1|"+localUserName1+"|"+localPassword1;
-        QString rn11="broadCastAddress11|"+broadCastAddress11;
-        QString rn12="broadCastAddress12|"+broadCastAddress12;
-        QString tcp1="tcpPort1|"+tcpPort1;
-        QString webstate1="webblockstate1|"+QString::number(webblockstate1);
-
-        QString ap2="agProfil2|"+agProfil2;
-        QString ru2="remoteUser2|"+remoteUserName2+"|"+remotePassword2;
-        QString lu2="localUser2|"+localUserName2+"|"+localPassword2;
-        QString rn21="broadCastAddress21|"+broadCastAddress21;
-        QString rn22="broadCastAddress22|"+broadCastAddress22;
-        QString tcp2="tcpPort2|"+tcpPort2;
-        QString webstate2="webblockstate2|"+QString::number(webblockstate2);
-
-        ayar<<ap1<<ru1<<lu1<<rn11<<rn12<<tcp1<<webstate1<<ap2<<ru2<<lu2<<rn21<<rn22<<tcp2<<webstate2;
-           listToFile(ayar,"e-ag.conf");
+         ayarKaydetButtonSlot();
 
     });
 
@@ -2865,26 +2936,7 @@ QWidget* MainWindow::acountButtonSlot2()
          tcpPort2= tcpPortLE->text();
 
          hostAddressMacButtonSlot();
-         QStringList ayar;
-         QString ap1="agProfil1|"+agProfil1;
-         QString ru1="remoteUser1|"+remoteUserName1+"|"+remotePassword1;
-         QString lu1="localUser1|"+localUserName1+"|"+localPassword1;
-         QString rn11="broadCastAddress11|"+broadCastAddress11;
-         QString rn12="broadCastAddress12|"+broadCastAddress12;
-         QString tcp1="tcpPort1|"+tcpPort1;
-         QString webstate1="webblockstate1|"+QString::number(webblockstate1);
-
-         QString ap2="agProfil2|"+agProfil2;
-         QString ru2="remoteUser2|"+remoteUserName2+"|"+remotePassword2;
-         QString lu2="localUser2|"+localUserName2+"|"+localPassword2;
-         QString rn21="broadCastAddress21|"+broadCastAddress21;
-         QString rn22="broadCastAddress22|"+broadCastAddress22;
-         QString tcp2="tcpPort2|"+tcpPort2;
-         QString webstate2="webblockstate2|"+QString::number(webblockstate2);
-
-         ayar<<ap1<<ru1<<lu1<<rn11<<rn12<<tcp1<<webstate1<<ap2<<ru2<<lu2<<rn21<<rn22<<tcp2<<webstate2;
-               listToFile(ayar,"e-ag.conf");
-
+          ayarKaydetButtonSlot();
      });
 
      QVBoxLayout * vbox = new QVBoxLayout();
@@ -2986,7 +3038,7 @@ void MainWindow::bilgiAlButtonSlot()
                  "<br/> Server bilgisayarın ekranını yansıtma"
 
                  "<br/><br/>Bu uygulamayı kullanmaktan doğabilecek her türlü hukuki sorumluluğu kullanıcı kabul etmiş sayılır."
-                  "<br/><br/> Copyright (C) 2022 by Bayram KARAHAN"
+                  "<br/><br/> Copyright (C) 2023 by Bayram KARAHAN"
                  "<br/>  bayramk@gmail.com"
                  "<br/>  www.bayramkarahan.blogspot.com"
 
@@ -3020,7 +3072,7 @@ void MainWindow::bilgiAlButtonSlot()
      vbox->addLayout(hbox1);
      QDialog * d1 = new QDialog();
      d1->setWindowTitle("Program Hakkında");
-     d1->setFixedSize(QSize(boy*120,boy*120));
+     d1->setFixedSize(QSize(boy*100,boy*80));
      auto appIcon = QIcon(":/icons/e-ag.svg");
      d1->setWindowIcon(appIcon);
 

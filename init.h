@@ -108,6 +108,27 @@ void MainWindow::acountLoad()
     if(wbs2!="") {
         if(wbs2.split("|")[1]!="")webblockstate2=(wbs2.split("|")[1]).toInt();
         }
+    /************************************************************************/
+   QString sa1=listGetLine(ayarlst,"selectAgProfil1");
+   if(sa1!="") {
+       if(sa1.split("|")[1]!="")
+       {
+           if(sa1.split("|")[1]=="0")selectAgProfil1=false;
+           else selectAgProfil1=true;
+
+       }
+    }
+
+   QString sa2=listGetLine(ayarlst,"selectAgProfil2");
+   if(sa2!="") {
+       if(sa2.split("|")[1]!="")
+       {
+           if(sa2.split("|")[1]=="0")selectAgProfil2=false;
+           else selectAgProfil2=true;
+
+       }
+    }
+
 
     /*******************************************************************************/
     if(broadCastAddress11==""||(broadCastAddress12==""&&ipmaclist.count()>1))
@@ -132,15 +153,34 @@ void MainWindow::acountLoad()
         }
     }
     /*****************************************************************************/
-    agProfil=agProfil1;
-    localUserName=localUserName1;
-    localPassword=localPassword1;
-    remoteUserName=remoteUserName1;
-    remotePassword=remotePassword1;
-    broadCastAddress1=broadCastAddress11;
-    broadCastAddress2=broadCastAddress12;
-    webblockstate=webblockstate1;
-    tcpPort= tcpPort1;
+
+    if(selectAgProfil1)
+    {
+        selectAgProfil=agProfil1;
+        agProfil=agProfil1;
+        localUserName=localUserName1;
+        localPassword=localPassword1;
+        remoteUserName=remoteUserName1;
+        remotePassword=remotePassword1;
+        broadCastAddress1=broadCastAddress11;
+        broadCastAddress2=broadCastAddress12;
+        webblockstate=webblockstate1;
+        tcpPort= tcpPort1;
+    }
+    if(selectAgProfil2)
+    {
+        selectAgProfil=agProfil2;
+        agProfil=agProfil2;
+        localUserName=localUserName2;
+        localPassword=localPassword2;
+        remoteUserName=remoteUserName2;
+        remotePassword=remotePassword2;
+        broadCastAddress1=broadCastAddress21;
+        broadCastAddress2=broadCastAddress22;
+        webblockstate=webblockstate2;
+        tcpPort= tcpPort2;
+    }
+
 
 
         if(remoteUserName==""||remotePassword==""||

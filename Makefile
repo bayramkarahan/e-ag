@@ -37,7 +37,7 @@ MOVE          = mv -f
 TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = e-ag1.0.0
-DISTDIR = /home/by/Masaüstü/e-ag/.tmp/e-ag1.0.0
+DISTDIR = /home/etapadmin/Masaüstü/e-ag/.tmp/e-ag1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-O1
 LIBS          = $(SUBLIBS) /usr/lib/x86_64-linux-gnu/libQt5PrintSupport.so /usr/lib/x86_64-linux-gnu/libQt5Widgets.so /usr/lib/x86_64-linux-gnu/libQt5Gui.so /usr/lib/x86_64-linux-gnu/libQt5Network.so /usr/lib/x86_64-linux-gnu/libQt5Core.so -lGL -lpthread   
@@ -54,12 +54,14 @@ OBJECTS_DIR   = ./
 
 SOURCES       = main.cpp \
 		mainwindow.cpp \
-		pc.cpp qrc_resources.cpp \
+		pc.cpp \
+		pcdata.cpp qrc_resources.cpp \
 		moc_mainwindow.cpp \
 		moc_pc.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
 		pc.o \
+		pcdata.o \
 		qrc_resources.o \
 		moc_mainwindow.o \
 		moc_pc.o
@@ -101,9 +103,10 @@ DIST          = e-ag.svg \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_input_support_private.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_kms_support_private.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_linuxaccessibility_support_private.pri \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_multimedia.pri \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_multimediawidgets.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_network.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_network_private.pri \
-		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_opengl.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_opengl_private.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_openglextensions.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_openglextensions_private.pri \
@@ -157,13 +160,15 @@ DIST          = e-ag.svg \
 		filecrud.h \
 		menu.h \
 		butonclick.h \
+		pcdata.h \
 		tcpudp.h \
 		init.h \
 		pc.h \
 		selectpc.h \
 		funtion.h main.cpp \
 		mainwindow.cpp \
-		pc.cpp
+		pc.cpp \
+		pcdata.cpp
 QMAKE_TARGET  = e-ag
 DESTDIR       = 
 TARGET        = e-ag
@@ -206,9 +211,10 @@ Makefile: e-ag.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf /u
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_input_support_private.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_kms_support_private.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_linuxaccessibility_support_private.pri \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_multimedia.pri \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_multimediawidgets.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_network.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_network_private.pri \
-		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_opengl.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_opengl_private.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_openglextensions.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_openglextensions_private.pri \
@@ -292,9 +298,10 @@ Makefile: e-ag.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf /u
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_input_support_private.pri:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_kms_support_private.pri:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_linuxaccessibility_support_private.pri:
+/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_multimedia.pri:
+/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_multimediawidgets.pri:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_network.pri:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_network_private.pri:
-/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_opengl.pri:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_opengl_private.pri:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_openglextensions.pri:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_openglextensions_private.pri:
@@ -362,8 +369,8 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents resources.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents mainwindow.h filecrud.h menu.h butonclick.h tcpudp.h init.h pc.h selectpc.h funtion.h $(DISTDIR)/
-	$(COPY_FILE) --parents main.cpp mainwindow.cpp pc.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents mainwindow.h filecrud.h menu.h butonclick.h pcdata.h tcpudp.h init.h pc.h selectpc.h funtion.h $(DISTDIR)/
+	$(COPY_FILE) --parents main.cpp mainwindow.cpp pc.cpp pcdata.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -473,14 +480,16 @@ compiler_moc_header_clean:
 	-$(DEL_FILE) moc_mainwindow.cpp moc_pc.cpp
 moc_mainwindow.cpp: mainwindow.h \
 		pc.h \
+		pcdata.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/by/Masaüstü/e-ag/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/by/Masaüstü/e-ag -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtPrintSupport -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/10 -I/usr/include/x86_64-linux-gnu/c++/10 -I/usr/include/c++/10/backward -I/usr/lib/gcc/x86_64-linux-gnu/10/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include mainwindow.h -o moc_mainwindow.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/etapadmin/Masaüstü/e-ag/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/etapadmin/Masaüstü/e-ag -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtPrintSupport -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/10 -I/usr/include/x86_64-linux-gnu/c++/10 -I/usr/include/c++/10/backward -I/usr/lib/gcc/x86_64-linux-gnu/10/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include mainwindow.h -o moc_mainwindow.cpp
 
 moc_pc.cpp: pc.h \
+		pcdata.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/by/Masaüstü/e-ag/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/by/Masaüstü/e-ag -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtPrintSupport -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/10 -I/usr/include/x86_64-linux-gnu/c++/10 -I/usr/include/c++/10/backward -I/usr/lib/gcc/x86_64-linux-gnu/10/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include pc.h -o moc_pc.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/etapadmin/Masaüstü/e-ag/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/etapadmin/Masaüstü/e-ag -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtPrintSupport -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/10 -I/usr/include/x86_64-linux-gnu/c++/10 -I/usr/include/c++/10/backward -I/usr/lib/gcc/x86_64-linux-gnu/10/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include pc.h -o moc_pc.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -499,11 +508,13 @@ compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_heade
 ####### Compile
 
 main.o: main.cpp mainwindow.h \
-		pc.h
+		pc.h \
+		pcdata.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
 mainwindow.o: mainwindow.cpp mainwindow.h \
 		pc.h \
+		pcdata.h \
 		filecrud.h \
 		menu.h \
 		butonclick.h \
@@ -514,8 +525,12 @@ mainwindow.o: mainwindow.cpp mainwindow.h \
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o mainwindow.cpp
 
 pc.o: pc.cpp pc.h \
+		pcdata.h \
 		filecrud.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pc.o pc.cpp
+
+pcdata.o: pcdata.cpp pcdata.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pcdata.o pcdata.cpp
 
 qrc_resources.o: qrc_resources.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_resources.o qrc_resources.cpp
@@ -551,7 +566,7 @@ uninstall_target: FORCE
 
 install_desktop_file: first FORCE
 	@test -d $(INSTALL_ROOT)/usr/share/applications/ || mkdir -p $(INSTALL_ROOT)/usr/share/applications/
-	$(QINSTALL) /home/by/Masaüstü/e-ag/e-ag.desktop $(INSTALL_ROOT)/usr/share/applications/e-ag.desktop
+	$(QINSTALL) /home/etapadmin/Masaüstü/e-ag/e-ag.desktop $(INSTALL_ROOT)/usr/share/applications/e-ag.desktop
 
 uninstall_desktop_file: FORCE
 	-$(DEL_FILE) -r $(INSTALL_ROOT)/usr/share/applications/e-ag.desktop
@@ -560,7 +575,7 @@ uninstall_desktop_file: FORCE
 
 install_icon: first FORCE
 	@test -d $(INSTALL_ROOT)/usr/share/e-ag || mkdir -p $(INSTALL_ROOT)/usr/share/e-ag
-	$(QINSTALL) /home/by/Masaüstü/e-ag/icons/e-ag.svg $(INSTALL_ROOT)/usr/share/e-ag/e-ag.svg
+	$(QINSTALL) /home/etapadmin/Masaüstü/e-ag/icons/e-ag.svg $(INSTALL_ROOT)/usr/share/e-ag/e-ag.svg
 
 uninstall_icon: FORCE
 	-$(DEL_FILE) -r $(INSTALL_ROOT)/usr/share/e-ag/e-ag.svg
@@ -569,7 +584,7 @@ uninstall_icon: FORCE
 
 install_x11passwd: first FORCE
 	@test -d $(INSTALL_ROOT)/usr/bin/ || mkdir -p $(INSTALL_ROOT)/usr/bin/
-	$(QINSTALL_PROGRAM) /home/by/Masaüstü/e-ag/x11vncpasswd $(INSTALL_ROOT)/usr/bin/x11vncpasswd
+	$(QINSTALL_PROGRAM) /home/etapadmin/Masaüstü/e-ag/x11vncpasswd $(INSTALL_ROOT)/usr/bin/x11vncpasswd
 	-: $(INSTALL_ROOT)/usr/bin/x11vncpasswd
 
 uninstall_x11passwd: FORCE
@@ -579,7 +594,7 @@ uninstall_x11passwd: FORCE
 
 install_ngx: first FORCE
 	@test -d $(INSTALL_ROOT)/etc/nginx/ || mkdir -p $(INSTALL_ROOT)/etc/nginx/
-	$(QINSTALL) /home/by/Masaüstü/e-ag/nginx.conf $(INSTALL_ROOT)/etc/nginx/nginx.conf
+	$(QINSTALL) /home/etapadmin/Masaüstü/e-ag/nginx.conf $(INSTALL_ROOT)/etc/nginx/nginx.conf
 
 uninstall_ngx: FORCE
 	-$(DEL_FILE) -r $(INSTALL_ROOT)/etc/nginx/nginx.conf
@@ -588,7 +603,7 @@ uninstall_ngx: FORCE
 
 install_x11servicedesktop: first FORCE
 	@test -d $(INSTALL_ROOT)/lib/systemd/system/ || mkdir -p $(INSTALL_ROOT)/lib/systemd/system/
-	$(QINSTALL) /home/by/Masaüstü/e-ag/e-ag-x11vncdesktop.service $(INSTALL_ROOT)/lib/systemd/system/e-ag-x11vncdesktop.service
+	$(QINSTALL) /home/etapadmin/Masaüstü/e-ag/e-ag-x11vncdesktop.service $(INSTALL_ROOT)/lib/systemd/system/e-ag-x11vncdesktop.service
 
 uninstall_x11servicedesktop: FORCE
 	-$(DEL_FILE) -r $(INSTALL_ROOT)/lib/systemd/system/e-ag-x11vncdesktop.service
@@ -597,7 +612,7 @@ uninstall_x11servicedesktop: FORCE
 
 install_x11servicelogin: first FORCE
 	@test -d $(INSTALL_ROOT)/lib/systemd/system/ || mkdir -p $(INSTALL_ROOT)/lib/systemd/system/
-	$(QINSTALL) /home/by/Masaüstü/e-ag/e-ag-x11vnclogin.service $(INSTALL_ROOT)/lib/systemd/system/e-ag-x11vnclogin.service
+	$(QINSTALL) /home/etapadmin/Masaüstü/e-ag/e-ag-x11vnclogin.service $(INSTALL_ROOT)/lib/systemd/system/e-ag-x11vnclogin.service
 
 uninstall_x11servicelogin: FORCE
 	-$(DEL_FILE) -r $(INSTALL_ROOT)/lib/systemd/system/e-ag-x11vnclogin.service
@@ -606,7 +621,7 @@ uninstall_x11servicelogin: FORCE
 
 install_filezilla: first FORCE
 	@test -d $(INSTALL_ROOT)/usr/share/e-ag/ || mkdir -p $(INSTALL_ROOT)/usr/share/e-ag/
-	$(QINSTALL) /home/by/Masaüstü/e-ag/filezilla.xml $(INSTALL_ROOT)/usr/share/e-ag/filezilla.xml
+	$(QINSTALL) /home/etapadmin/Masaüstü/e-ag/filezilla.xml $(INSTALL_ROOT)/usr/share/e-ag/filezilla.xml
 
 uninstall_filezilla: FORCE
 	-$(DEL_FILE) -r $(INSTALL_ROOT)/usr/share/e-ag/filezilla.xml

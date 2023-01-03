@@ -56,7 +56,8 @@
 #include<QScrollArea>
 #include<QStatusBar>
 #include<pcdata.h>
-
+#include<QRadioButton>
+#include<QButtonGroup>
 
 namespace Ui {
 class MainWindow;
@@ -109,6 +110,7 @@ private slots:
      QWidget *rdpWidget();
      QWidget *poweroffrebootWidget();
      QWidget *logoutWidget();
+     QWidget *agProfilWidget();
 
      QWidget *pcInfo();
      QWidget *macListWidget();
@@ -292,6 +294,7 @@ private:
     QLabel *socketNumberLabel;
     QLabel *destlabel;
     /****************************Ag Profil********************************/
+    QString selectAgProfil;
     QString agProfil;
     QString remotePassword;
     QString remoteUserName;
@@ -301,6 +304,7 @@ private:
     QString broadCastAddress1;
     QString broadCastAddress2;
     bool webblockstate;
+    bool selectAgProfil1;
     QString agProfil1;
     QString remotePassword1;
     QString remoteUserName1;
@@ -309,7 +313,8 @@ private:
     QString tcpPort1;
     QString broadCastAddress11;
     QString broadCastAddress12;
-     bool webblockstate1;
+    bool webblockstate1;
+    bool selectAgProfil2;
     QString agProfil2;
     QString remotePassword2;
     QString remoteUserName2;
@@ -349,6 +354,8 @@ private:
     QUdpSocket *udpSocketGet;
     QString localDir;
     QLineEdit *commandFileL;
+    QRadioButton *rb1;
+    QRadioButton *rb2;
 
   };
 
