@@ -25,6 +25,7 @@
 #include<QDesktopServices>
 void MainWindow::ayarKaydetButtonSlot()
 {
+
     QStringList ayar;
     QString ap1="agProfil1|"+agProfil1;
     QString selectAgProfilState1="selectAgProfil1|"+QString::number(selectAgProfil1);
@@ -47,6 +48,7 @@ void MainWindow::ayarKaydetButtonSlot()
 
     ayar<<ap1<<ru1<<lu1<<rn11<<rn12<<tcp1<<webstate1<<selectAgProfilState1<<ap2<<ru2<<lu2<<rn21<<rn22<<tcp2<<webstate2<<selectAgProfilState2<<selectag;
        listToFile(ayar,"e-ag.conf");
+
        if(selectAgProfil1)
        {
            selectAgProfil=agProfil1;
@@ -60,6 +62,7 @@ void MainWindow::ayarKaydetButtonSlot()
            webblockstate=webblockstate1;
            tcpPort= tcpPort1;
        }
+
        if(selectAgProfil2)
        {
            selectAgProfil=agProfil2;
@@ -73,6 +76,7 @@ void MainWindow::ayarKaydetButtonSlot()
            webblockstate=webblockstate2;
            tcpPort= tcpPort2;
        }
+
        rb1->setText(agProfil1);
        rb2->setText(agProfil2);
 
@@ -2502,9 +2506,6 @@ QWidget* MainWindow::agProfilWidget()
     /**************************************************/
     /******************************************************/
 
-
-    rb1=new QRadioButton();
-    rb2=new QRadioButton();
     QButtonGroup *buttonGroup = new QButtonGroup(sor);
     if(selectAgProfil1) rb1->setChecked(true);
     if(selectAgProfil2) rb2->setChecked(true);

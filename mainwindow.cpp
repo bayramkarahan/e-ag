@@ -55,6 +55,12 @@ MainWindow::MainWindow(QWidget *parent) :
     mainWidget=new QWidget();
     localDir="/usr/share/e-ag/";
     hostAddressMacButtonSlot();
+
+
+
+    rb1=new QRadioButton();
+    rb2=new QRadioButton();
+
     acountLoad();///hesap ve ayarların yüklenmesi yapılıyor...
 //setMouseTracking(true);
 //installEventFilter(this);

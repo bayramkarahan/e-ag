@@ -153,6 +153,7 @@ void MainWindow::acountLoad()
         }
     }
     /*****************************************************************************/
+if(!selectAgProfil1&&!selectAgProfil1) {selectAgProfil1=true;selectAgProfil2=false;}
 
     if(selectAgProfil1)
     {
@@ -166,6 +167,7 @@ void MainWindow::acountLoad()
         broadCastAddress2=broadCastAddress12;
         webblockstate=webblockstate1;
         tcpPort= tcpPort1;
+        ayarKaydetButtonSlot();
     }
     if(selectAgProfil2)
     {
@@ -179,6 +181,7 @@ void MainWindow::acountLoad()
         broadCastAddress2=broadCastAddress22;
         webblockstate=webblockstate2;
         tcpPort= tcpPort2;
+        ayarKaydetButtonSlot();
     }
 
 
