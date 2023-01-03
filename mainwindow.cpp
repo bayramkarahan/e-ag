@@ -40,6 +40,8 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
+
+
     /*****************************************************/
     QSize screenSize = qApp->screens()[0]->size();
     boy=screenSize.height()/153.6;
@@ -64,7 +66,7 @@ MainWindow::MainWindow(QWidget *parent) :
     acountLoad();///hesap ve ayarların yüklenmesi yapılıyor...
 //setMouseTracking(true);
 //installEventFilter(this);
-    setWindowTitle("e-ag 2.0");
+    setWindowTitle("e-ag");
 
     auto appIcon = QIcon(":/icons/e-ag.svg");
     this->setWindowIcon(appIcon);

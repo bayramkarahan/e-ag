@@ -61,6 +61,11 @@ void MainWindow::selectPc()
     wolAction->setStatusTip(tr("Uzaktan Pc Başlatma İşlemi Yapıldı"));
     connect(wolAction, SIGNAL(triggered()), this, SLOT(wolSlot()));
 
+    QAction *profilAction = new QAction(QIcon(":/icons/session.svg"), tr("&Ağ Profilleri"), this);
+    profilAction->setShortcut(tr("AP"));
+    profilAction->setStatusTip(tr("Ağ Profilleri"));
+    connect(profilAction, SIGNAL(triggered()), this, SLOT( acountButtonSlot()));
+
     QToolBar *toolBar=new QToolBar(this);
     toolBar->addAction(listeleAction);
     toolBar->addAction(selectAction);
@@ -69,6 +74,8 @@ void MainWindow::selectPc()
     toolBar->addAction(terminalAction);
     toolBar->addAction(ftpAction);
     toolBar->addAction(wolAction);
+    toolBar->addAction(profilAction);
+
     toolBar->setIconSize(QSize(boy*4, boy*4));
     selectWidget=new QWidget();
     selectWidget->setFixedSize(this->width(),b*5);

@@ -313,7 +313,7 @@ private:
     QString tcpPort1;
     QString broadCastAddress11;
     QString broadCastAddress12;
-    bool webblockstate1;
+    //bool webblockstate1;
     bool selectAgProfil2;
     QString agProfil2;
     QString remotePassword2;
@@ -323,7 +323,7 @@ private:
     QString tcpPort2;
     QString broadCastAddress21;
     QString broadCastAddress22;
-    bool webblockstate2;
+    //bool webblockstate2;
     /*****************************************************************/
     QLineEdit *status;
     QWidget *hostListe;

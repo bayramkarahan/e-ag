@@ -96,18 +96,16 @@ void MainWindow::acountLoad()
     if(tp1!="") {
         if(tp1.split("|")[1]!="")tcpPort1=(tp1.split("|")[1]);
      }
-    QString wbs1=listGetLine(ayarlst,"webblockstate1");
+    QString wbs1=listGetLine(ayarlst,"webblockstate");
     if(wbs1!="") {
-        if(wbs1.split("|")[1]!="")webblockstate1=(wbs1.split("|")[1]).toInt();
+        if(wbs1.split("|")[1]!="")webblockstate=(wbs1.split("|")[1]).toInt();
         }
+
     QString tp2=listGetLine(ayarlst,"tcpPort2");
     if(tp2!="") {
         if(tp2.split("|")[1]!="")tcpPort2=(tp2.split("|")[1]);
      }
-    QString wbs2=listGetLine(ayarlst,"webblockstate2");
-    if(wbs2!="") {
-        if(wbs2.split("|")[1]!="")webblockstate2=(wbs2.split("|")[1]).toInt();
-        }
+
     /************************************************************************/
    QString sa1=listGetLine(ayarlst,"selectAgProfil1");
    if(sa1!="") {
@@ -153,7 +151,7 @@ void MainWindow::acountLoad()
         }
     }
     /*****************************************************************************/
-if(!selectAgProfil1&&!selectAgProfil1) {selectAgProfil1=true;selectAgProfil2=false;}
+if(!selectAgProfil1&&!selectAgProfil2) {selectAgProfil1=true;selectAgProfil2=false;}
 
     if(selectAgProfil1)
     {
@@ -165,7 +163,7 @@ if(!selectAgProfil1&&!selectAgProfil1) {selectAgProfil1=true;selectAgProfil2=fal
         remotePassword=remotePassword1;
         broadCastAddress1=broadCastAddress11;
         broadCastAddress2=broadCastAddress12;
-        webblockstate=webblockstate1;
+       /// webblockstate=webblockstate1;
         tcpPort= tcpPort1;
         ayarKaydetButtonSlot();
     }
@@ -179,7 +177,7 @@ if(!selectAgProfil1&&!selectAgProfil1) {selectAgProfil1=true;selectAgProfil2=fal
         remotePassword=remotePassword2;
         broadCastAddress1=broadCastAddress21;
         broadCastAddress2=broadCastAddress22;
-        webblockstate=webblockstate2;
+        ///webblockstate=webblockstate2;
         tcpPort= tcpPort2;
         ayarKaydetButtonSlot();
     }

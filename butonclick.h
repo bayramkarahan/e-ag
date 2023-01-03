@@ -34,7 +34,6 @@ void MainWindow::ayarKaydetButtonSlot()
     QString rn11="broadCastAddress11|"+broadCastAddress11;
     QString rn12="broadCastAddress12|"+broadCastAddress12;
     QString tcp1="tcpPort1|"+tcpPort1;
-    QString webstate1="webblockstate1|"+QString::number(webblockstate1);
 
     QString ap2="agProfil2|"+agProfil2;
     QString selectAgProfilState2="selectAgProfil2|"+QString::number(selectAgProfil2);
@@ -43,10 +42,10 @@ void MainWindow::ayarKaydetButtonSlot()
     QString rn21="broadCastAddress21|"+broadCastAddress21;
     QString rn22="broadCastAddress22|"+broadCastAddress22;
     QString tcp2="tcpPort2|"+tcpPort2;
-    QString webstate2="webblockstate2|"+QString::number(webblockstate2);
     QString selectag="selectAgProfil|"+selectAgProfil;
+    QString webstate="webblockstate|"+QString::number(webblockstate);
 
-    ayar<<ap1<<ru1<<lu1<<rn11<<rn12<<tcp1<<webstate1<<selectAgProfilState1<<ap2<<ru2<<lu2<<rn21<<rn22<<tcp2<<webstate2<<selectAgProfilState2<<selectag;
+    ayar<<ap1<<ru1<<lu1<<rn11<<rn12<<tcp1<<selectAgProfilState1<<ap2<<ru2<<lu2<<rn21<<rn22<<tcp2<<selectAgProfilState2<<webstate<<selectag;
        listToFile(ayar,"e-ag.conf");
 
        if(selectAgProfil1)
@@ -59,7 +58,7 @@ void MainWindow::ayarKaydetButtonSlot()
            remotePassword=remotePassword1;
            broadCastAddress1=broadCastAddress11;
            broadCastAddress2=broadCastAddress12;
-           webblockstate=webblockstate1;
+
            tcpPort= tcpPort1;
        }
 
@@ -73,7 +72,7 @@ void MainWindow::ayarKaydetButtonSlot()
            remotePassword=remotePassword2;
            broadCastAddress1=broadCastAddress21;
            broadCastAddress2=broadCastAddress22;
-           webblockstate=webblockstate2;
+
            tcpPort= tcpPort2;
        }
 
@@ -270,15 +269,7 @@ void MainWindow::webBlockSlot()
 
     }
 
-    /**********************************************************/
-       /* if(webblockstate)
-        {
-           // QString strwebblockstate=listGetLine(list,"webblockstate").split("|")[1];
-            //qDebug()<<strwebblockstate;
-            webblockstate=strwebblockstate.toInt();
-        }*/
-        /*******************************************************/
-        /***************************************************************************/
+         /***************************************************************************/
         QCheckBox *webblockcb= new QCheckBox("Her Açılışta Web Sitelerini Engelle.");
         QFont f1( "Arial", 8, QFont::Normal);
         webblockcb->setFont(f1);
@@ -1790,12 +1781,12 @@ QWidget* MainWindow::ayarlarWidget()
                   QTextDocument *doc=new QTextDocument();
 
                doc->setHtml("<center><h2>Ayarlar</h2></center>"
-                            "<center><img src=\":/icons/ayar.png\" /></center> "
+                            "<center><img src=\":/icons/ayar.png\"></center> "
 
               "Uygulamanın sorunsuz çalışması için;"
 
-                         "<center><img src=\":/icons/userayar.png\" /></center>"
-                            "1-Kontrol edilecek istemcilerin kullanıcı adı ve parolası aynı olmalıdır."
+                         "<center><img src=\":/icons/userayar.png\"/></center>"
+                            "1-Kontrol edilecek istemcilerin(Uzak Bilgisayar) kullanıcı adı ve parolası aynı olmalıdır."
                             "<br/><br/>2-Uygulamanın kurulu olduğu makine yönetici hesabıyla açılmış olmalı.."
                             "<br/><br/>3-Uygulamadaki Yerel Ağ: bulunduğumuz ağ örn:192.168.1.255 şeklinde girilmeli."
                             "<br/><br/>4-Uygulamadaki Tcp Port: yazılımın kullandığı port boş bırakılırsa 7879 olarak ayarlar."
@@ -1825,7 +1816,7 @@ QWidget* MainWindow::ayarlarWidget()
                vbox->addLayout(hbox1);
                QDialog * d1 = new QDialog();
                d1->setWindowTitle("Ayarlar Yardım Penceresi");
-               d1->setFixedSize(QSize(boy*150,boy*127));
+               d1->setFixedSize(QSize(boy*190,boy*127));
                auto appIcon = QIcon(":/icons/e-ag.svg");
                d1->setWindowIcon(appIcon);
 
@@ -2497,7 +2488,7 @@ QWidget* MainWindow::agProfilWidget()
     sor->setStyleSheet("QWidget#ag{border: 1px solid #bcbcbc;border-radius: 5px; font-size:"+QString::number(font.toInt()-2)+"px;}");
 
     sor->setWindowFlags(Qt::WindowStaysOnTopHint|Qt::Tool);
-    sor->setFixedSize(yukseklik*0.9,boy*16);
+    sor->setFixedSize(yukseklik*1.2,boy*16);
 
     QRect screenGeometry = QApplication::desktop()->screenGeometry();
     int x = (screenGeometry.width() - sor->width())/2;
@@ -2761,8 +2752,12 @@ QWidget* MainWindow::acountButtonSlot1()
 {
     if(tcpPort1=="") tcpPort1="7879";
     if(agProfil1=="") agProfil1="Ag-1";
-
-
+    QString user = getenv("USER"); // Expanded
+    if(remoteUserName1=="")remoteUserName1=user;
+    if(remotePassword1=="")remotePassword1="1";
+    if(localUserName1=="")localUserName1=user;
+    if(localPassword1=="")localPassword1="1";
+ayarKaydetButtonSlot();
     QWidget * d = new QWidget();
     d->setWindowTitle("Yerel/Uzak Kullanıcı");
     d->setFixedSize(QSize(boy*70,boy*65));
@@ -2880,7 +2875,12 @@ QWidget* MainWindow::acountButtonSlot2()
     // if(localNetwork=="") localNetwork=(broadCastAddress);
     if(tcpPort2=="") tcpPort2="7879";
     if(agProfil2=="") agProfil2="Ag-2";
-
+    QString user = getenv("USER"); // Expanded
+    if(remoteUserName2=="")remoteUserName2=user;
+    if(remotePassword2=="")remotePassword2="1";
+    if(localUserName2=="")localUserName2=user;
+    if(localPassword2=="")localPassword2="1";
+ayarKaydetButtonSlot();
      QWidget * d = new QWidget();
      d->setWindowTitle("Yerel/Uzak Kullanıcı");
      d->setFixedSize(QSize(boy*70,boy*65));
@@ -3037,6 +3037,8 @@ void MainWindow::bilgiAlButtonSlot()
                  "<br/> İstediğiniz bilgisayarları seçip sadece seçili olanlara işlem yapabilirsiniz."
                  "<br/> Uzak bilgisayarın yönetici hesabına script kopyalayıp server üzerinden çalıştırabilirsiniz."
                  "<br/> Server bilgisayarın ekranını yansıtma"
+                 "<br/> İki farklı ağ profili ile iki farklı ağ üzerinde çalışılabilmektedir."
+
 
                  "<br/><br/>Bu uygulamayı kullanmaktan doğabilecek her türlü hukuki sorumluluğu kullanıcı kabul etmiş sayılır."
                   "<br/><br/> Copyright (C) 2023 by Bayram KARAHAN"
@@ -3073,7 +3075,7 @@ void MainWindow::bilgiAlButtonSlot()
      vbox->addLayout(hbox1);
      QDialog * d1 = new QDialog();
      d1->setWindowTitle("Program Hakkında");
-     d1->setFixedSize(QSize(boy*100,boy*80));
+     d1->setFixedSize(QSize(boy*120,boy*120));
      auto appIcon = QIcon(":/icons/e-ag.svg");
      d1->setWindowIcon(appIcon);
 
