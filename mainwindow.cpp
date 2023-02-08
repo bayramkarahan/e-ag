@@ -66,7 +66,7 @@ MainWindow::MainWindow(QWidget *parent) :
     acountLoad();///hesap ve ayarların yüklenmesi yapılıyor...
 //setMouseTracking(true);
 //installEventFilter(this);
-    setWindowTitle("e-ag");
+    setWindowTitle("e-ag 2.1");
 
     auto appIcon = QIcon(":/icons/e-ag.svg");
     this->setWindowIcon(appIcon);

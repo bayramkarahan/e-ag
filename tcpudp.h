@@ -153,17 +153,36 @@ void MainWindow::sendBroadcastDatagram()
         {
             QString msg="hostport|"+ipmaclist[i].ip+"|"+ipmaclist[i].mac+"|"+tcpPort;
             QByteArray datagram = msg.toUtf8();// +QHostAddress::LocalHost;
-            udpSocketSend->writeDatagram(datagram,QHostAddress(broadCastAddress1), uport.toInt());
-            qDebug()<<"Udp<<Post>>.."<<uport<<broadCastAddress1;
+
+            //qDebug()<<broadCastAddress1.section(".",0,2)+".";
+            for(int i=1;i<255;i++)
+            {
+                QString broadadres;
+                broadadres=broadCastAddress1.section(".",0,2)+"."+QString::number(i);
+               // qDebug()<<broadadres;
+                //udpSocketSend->writeDatagram(datagram,QHostAddress(broadCastAddress1), uport.toInt());
+                udpSocketSend->writeDatagram(datagram,QHostAddress(broadadres), uport.toInt());
+
+            }
+
+            qDebug()<<"Udp<<Post-1>>.."<<uport<<broadCastAddress1;
 
         }
         if(broadCastAddress2!=""&&
                 ipmaclist[i].ip.section(".",0,2)==broadCastAddress2.section(".",0,2))
         {
             QString msg="hostport|"+ipmaclist[i].ip+"|"+ipmaclist[i].mac+"|"+tcpPort;
-            QByteArray datagram = msg.toUtf8();// +QHostAddress::LocalHost;
-            udpSocketSend->writeDatagram(datagram,QHostAddress(broadCastAddress2), uport.toInt());
-            qDebug()<<"Udp<<Post>>.."<<uport<<broadCastAddress2;
+            QByteArray datagram = msg.toUtf8();// +QHostAddress::LocalHost; 
+            for(int i=1;i<255;i++)
+            {
+                QString broadadres;
+                broadadres=broadCastAddress1.section(".",0,2)+"."+QString::number(i);
+               // qDebug()<<broadadres;
+                //udpSocketSend->writeDatagram(datagram,QHostAddress(broadCastAddress2), uport.toInt());
+                udpSocketSend->writeDatagram(datagram,QHostAddress(broadadres), uport.toInt());
+
+            }
+            qDebug()<<"Udp<<Post-2>>.."<<uport<<broadCastAddress2;
 
         }
     }
