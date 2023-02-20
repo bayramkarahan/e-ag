@@ -497,7 +497,7 @@ void MainWindow::slotLogoutAll(){
 
 }
 void MainWindow::slotLogin(){
-    QString komut="parduslogin "+remoteUserName+" "+remotePassword;
+    QString komut="sshlogin "+remoteUserName+" "+remotePassword;
    for(int i=0;i<btnlist.count();i++)
     {
         if(btnlist[i]->cs=="online"&&(btnlist[i]->select||btnlist[i]->multiSelect))
@@ -510,7 +510,7 @@ void MainWindow::slotLogin(){
 }
 
 void MainWindow::slotLoginAll(){
-    QString komut="parduslogin "+remoteUserName+" "+remotePassword;
+    QString komut="sshlogin "+remoteUserName+" "+remotePassword;
     for(int i=0;i<btnlist.count();i++)
     {
         if(btnlist[i]->cs=="online")

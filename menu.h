@@ -100,6 +100,19 @@ QMenu *MainWindow::commandExampleMenu()
        commandFileL->setText("rmdir klasor");
        menu->close();
 });
+   /*************************************/
+       QPushButton *sessionLoginCommandButton= new QPushButton;
+       sessionLoginCommandButton->setFixedSize(200, 30);
+       sessionLoginCommandButton->setIconSize(QSize(200,30));
+       sessionLoginCommandButton->setText(" Oturum Aç");
+       sessionLoginCommandButton->setStyleSheet("Text-align:left; font-size:"+font+"px;");
+       sessionLoginCommandButton->setFlat(true);
+
+       connect(sessionLoginCommandButton, &QPushButton::clicked, [=]() {
+
+           commandFileL->setText("sshlogin <user> <password>");
+    menu->close();
+    });
 
    /*************************************/
        QPushButton *closePcCommandButton= new QPushButton;
@@ -141,8 +154,11 @@ QMenu *MainWindow::commandExampleMenu()
     layout->addWidget(removeCommandButton, 20,0,1,2);
     layout->addWidget(mkdirCommandButton, 25,0,1,2);
     layout->addWidget(rmdirCommandButton, 30,0,1,2);
+    layout->addWidget(sessionLoginCommandButton, 35,0,1,2);
+
     layout->addWidget(closePcCommandButton, 40,0,1,2);
      layout->addWidget(rebootPcCommandButton, 42,0,1,2);
+
      // add a widget action to the context menu
     auto wa = new QWidgetAction(this);
   //  wa->setIcon(QIcon(":/icon1"));
