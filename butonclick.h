@@ -423,8 +423,6 @@ void MainWindow::webTableCellDoubleClicked(int iRow, int iColumn)
 
 
 }
-
-
 QWidget* MainWindow::macListWidget()
 {
     int bw,bh;
@@ -803,26 +801,26 @@ int yukseklik=b*7.5;
     QWidget * d = new QWidget();
     d->setWindowTitle("ssh Dosya Kopyalama Penceresi");
    QLineEdit *le = new QLineEdit();
-    le->setFixedSize(e*75,boy*7);
+    le->setFixedSize(e*67,boy*7);
     le->setStyleSheet("font-size:"+QString::number(font.toInt()+2)+"px;");
 
    // le->setFont(ff);
     QLineEdit * ple = new QLineEdit();
-    ple->setFixedSize(e*75,boy*7);
+    ple->setFixedSize(e*67,boy*7);
    ple->setStyleSheet("font-size:"+QString::number(font.toInt()+2)+"px;");
 
     QLabel *commandFileLabel=new QLabel("Dosya");
-     commandFileLabel->setFixedSize(e*15,yukseklik);
+     commandFileLabel->setFixedSize(e*12,yukseklik);
      commandFileLabel->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
 
     QLabel *pathLabel=new QLabel("Hedef Konum\n/home/user/\n/tmp/");
-     pathLabel->setFixedSize(e*15,yukseklik);
+     pathLabel->setFixedSize(e*12,yukseklik);
      pathLabel->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
 
 
 
      fileSelectButton=new QToolButton();
-     fileSelectButton->setFixedSize(e*24,yukseklik);
+     fileSelectButton->setFixedSize(e*22,yukseklik);
      fileSelectButton->setAutoRaise(true);
      //fileSelectButton->setAutoFillBackground(true);
      fileSelectButton->setText("Dosya Seç");
@@ -843,7 +841,7 @@ int yukseklik=b*7.5;
 
 
      fileCopyButton=new QToolButton();
-     fileCopyButton->setFixedSize(e*24,yukseklik);
+     fileCopyButton->setFixedSize(e*22,yukseklik);
      fileCopyButton->setAutoRaise(true);
      fileCopyButton->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
      fileCopyButton->setText("Seçili Pc'lere Kopyala");
@@ -855,11 +853,56 @@ int yukseklik=b*7.5;
          QString name = QUrl::fromLocalFile(le->text()).path(QUrl::FullyEncoded);
         name.replace("%20","%5C%20");
          QUrl pth;
+
          sshSelectFileCopySlot(pth.fromPercentEncoding(name.toUtf8()),ple->text());
+
          mesajSlot("Dosya Seçili Pc'ye Kopyalandı.");
    });
+
+         fileCopyInstallButton=new QToolButton();
+         fileCopyInstallButton->setFixedSize(e*12,yukseklik*2);
+         fileCopyInstallButton->setAutoRaise(true);
+         fileCopyInstallButton->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
+         fileCopyInstallButton->setText("Seçili \nPc'lere\n Paket Kur");
+         fileCopyInstallButton->setIcon(QIcon(":/icons/install.svg"));
+         fileCopyInstallButton->setIconSize(QSize(b*8,yukseklik/2));
+         fileCopyInstallButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+
+         connect(fileCopyInstallButton, &QToolButton::clicked, [=]() {
+             QString name1 = QUrl::fromLocalFile(le->text()).path(QUrl::FullyEncoded);
+             name1.replace("%20","%5C%20");
+             QUrl pth;
+
+             QFileInfo fi(le->text());
+             QString name = fi.fileName();
+
+             QString uzanti = fi.completeSuffix();
+             QString ad = fi.baseName().replace(" ","");
+             //qDebug()<<"dosya adı:"<<name<<ad<<uzanti;
+             //QString path=QFileInfo(le->text()).canonicalPath();
+             // path=le->text().replace("+","\\ ");
+             //qDebug()<<"dosya adı:"<<name1;
+             sshSelectFileCopySlot(pth.fromPercentEncoding(name1.toUtf8()),ple->text());
+            QString dosya=QString("cat >/tmp/eaginstall << EOF"
+                          "\n#!/bin/bash"
+                          "\napt --fix-broken install -y"
+                          "\napt install -f -y"
+                          "\napt autoremove -y"
+                          "\napt update"
+                          "\ndpkg -i --force-all %1"
+                          "\napt install -f -y"
+                          "\nEOF").arg(name);
+
+             system(dosya.toStdString().c_str());
+             sshSelectFileCopySlot("/tmp/eaginstall","");
+             sshSelectPcCommandSlot("chmod 755 eaginstall");
+             sshSelectPcCommandSlot("bash eaginstall");
+             mesajSlot("Dosya Seçili Pc'ye Kopyalandı ve Kuruldu.");
+       });
+
+
      fileCopyAllButton=new QToolButton();
-     fileCopyAllButton->setFixedSize(e*24,yukseklik);
+     fileCopyAllButton->setFixedSize(e*22,yukseklik);
      fileCopyAllButton->setAutoRaise(true);
      fileCopyAllButton->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
      fileCopyAllButton->setText("Tüm Pc'lere Kopyala");
@@ -878,7 +921,7 @@ int yukseklik=b*7.5;
    });
 
          QToolButton *fileCopyDesktopNotGetSendButton=new QToolButton();
-         fileCopyDesktopNotGetSendButton->setFixedSize(e*24,yukseklik);
+         fileCopyDesktopNotGetSendButton->setFixedSize(e*22,yukseklik);
          fileCopyDesktopNotGetSendButton->setAutoRaise(true);
          fileCopyDesktopNotGetSendButton->setText("Masaüstlerine Dağıt");
          fileCopyDesktopNotGetSendButton->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
@@ -1036,6 +1079,7 @@ sshCommandSlot("chmod 777 /home/"+btnlist[i]->user+"/Masaüstü/e-ag-server."+uz
                                    "<br/><br/>10-Dosyalar Uzak Kullanıcı ev dizini dışında başka yere kopyalacaksa \"Hedef Konum\" bölünüde belirtilmelidir."
                                    "<br/>Örneğin: /tmp/"
                                    "<br/>11-Birden fazla istemciye kopyalama için istemci simgelerine çift tıklayıp seçilerek kopyalanabilir."
+                                   "<br/>12-Seçili Pc'lere Paket kur seçeneği ile deb uzantılı paketi istemciye kururulumu yapılır."
                                                );
                       QPrinter pdf;
                           pdf.setOutputFileName("/tmp/dosyakopyalama.pdf");
@@ -1067,6 +1111,7 @@ sshCommandSlot("chmod 777 /home/"+btnlist[i]->user+"/Masaüstü/e-ag-server."+uz
     QGridLayout * vbox = new QGridLayout();
     vbox->setContentsMargins(0, 0, 0,0);
     vbox->setVerticalSpacing(0);
+ vbox->addWidget(fileCopyInstallButton,1,6,2,1);
 
     vbox->addWidget(commandFileLabel,1,1,1,1);
     vbox->addWidget(le,1,2,1,1);
@@ -1080,7 +1125,7 @@ sshCommandSlot("chmod 777 /home/"+btnlist[i]->user+"/Masaüstü/e-ag-server."+uz
     vbox->addWidget(fileCopyDesktopSendButton,2,4,1,1);
     vbox->addWidget(fileCopyDesktopGetButton,2,5,1,1);
 
-    vbox->addWidget(helpButton,1,6,2,1);
+    vbox->addWidget(helpButton,1,7,2,1);
 
     d->setLayout(vbox);
              return d;
@@ -1846,7 +1891,6 @@ QWidget* MainWindow::ayarlarWidget()
     return d;
 
 }
-
 QWidget* MainWindow::rdpWidget()
 {
     int e=en;

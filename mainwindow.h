@@ -155,6 +155,7 @@ private slots:
     void sshCommandAllSlot(QString kmt);
        void sshFileCopyAllSlot(QString _sourcePath, QString _targetPath);
     void sshSelectFileCopySlot(QString _sourcePath, QString _targetPath);
+
     void sshSelectPcCommandSlot(QString kmt);
     void sshCommandSlot(QString kmt,QString _ip);
 
@@ -260,6 +261,8 @@ private:
     QToolButton *commandExecuteAllButton;
     QToolButton *fileSelectButton;
     QToolButton *fileCopyButton;
+    QToolButton *fileCopyInstallButton;
+
     QToolButton *fileCopyAllButton;
     QToolButton *sshAramaButton;
     QToolButton *vncAramaButton;

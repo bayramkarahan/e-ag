@@ -783,52 +783,28 @@ void MainWindow::sshCommandAllSlot(QString kmt)
     for(int i=0;i<btnlist.count();i++)
     {
         {
-
             QString komut="nohup sshpass -p "+remotePassword+" ssh -o CheckHostIP=no -o StrictHostKeyChecking=no -n "+
-                  remoteUserName+"@"+btnlist[i]->ip+" 'echo "+remotePassword+" | sudo -S' "+kmt+ "&";
-
-             system(komut.toStdString().c_str());
-
+                    remoteUserName+"@"+btnlist[i]->ip+" 'echo "+remotePassword+" | sudo -S' "+kmt+ "&";
+            system(komut.toStdString().c_str());
             mesajSlot(komut);
-            //qDebug()<<komut;
-            QStringList arguments;
-            arguments << "-c" << komut;
-            QString result;
-            QProcess process;
-
         }
     }
-     mesajSlot("Komut Tüm Ağ'da Çalıştırıldı.");
+    mesajSlot("Komut Tüm Ağ'da Çalıştırıldı.");
 }
 void MainWindow::sshSelectPcCommandSlot(QString kmt)
 {
     for(int i=0;i<btnlist.count();i++)
     {
-
         if((btnlist[i]->select||btnlist[i]->multiSelect))
         {
-            {
-                QString komut="nohup sshpass -p "+remotePassword+" ssh -o CheckHostIP=no -o StrictHostKeyChecking=no -n "+
-                        remoteUserName+"@"+btnlist[i]->ip+" 'echo "+remotePassword+" | sudo -S' "+kmt+ "&";
-
-
-                mesajSlot(komut);
-                //qDebug()<<komut;
-                QStringList arguments;
-                arguments << "-c" << komut;
-                QString result;
-                QProcess process;
-                 process.start("/bin/bash",arguments);
-            if(process.waitForFinished())
-            {
-                result = process.readAll();
-            }
-                // return result;
-            }
+            QString komut="nohup sshpass -p "+remotePassword+" ssh -o CheckHostIP=no -o StrictHostKeyChecking=no -n "+
+                    remoteUserName+"@"+btnlist[i]->ip+" 'echo "+remotePassword+" | sudo -S' "+kmt+ "&";
+            mesajSlot(komut);
+            //qDebug()<<komut;
+            system(komut.toStdString().c_str());
         }
     }
-   // return "";
-     mesajSlot("Komut Seçili Hostlarda Çalıştırıldı.");
+    mesajSlot("Komut Seçili Hostlarda Çalıştırıldı.");
 }
 void MainWindow::sshCommandSlot(QString kmt,QString _ip)
 {
