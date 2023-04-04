@@ -637,15 +637,15 @@ QWidget* MainWindow::sshCommandWidget()
 });
 
     commandExecuteButton=new QToolButton();
-    commandExecuteButton->setFixedSize(e*32,yukseklik);
+    commandExecuteButton->setFixedSize(e*16,yukseklik*2);
     commandExecuteButton->setAutoRaise(true);
    // commandExecuteButton->setAutoFillBackground(true);
     commandExecuteButton->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
      commandExecuteButton->setIcon(QIcon(":/icons/network.svg"));
-    commandExecuteButton->setIconSize(QSize(b*6,yukseklik/2));
+    commandExecuteButton->setIconSize(QSize(b*8,yukseklik));
     commandExecuteButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
-     commandExecuteButton->setText("Seçili Pc'lerde Çalıştır");
+     commandExecuteButton->setText("Seçili \nPc'lerde\n Çalıştır");
      connect(commandExecuteButton, &QToolButton::clicked, [=]() {
          if(pcMac->text()==""){mesajSlot("Pc Seçiniz");return;}
          sshSelectPcCommandSlot(commandFileL->text());
@@ -655,28 +655,28 @@ QWidget* MainWindow::sshCommandWidget()
 
 
      commandExecuteAllButton=new QToolButton();
-     commandExecuteAllButton->setFixedSize(e*32,yukseklik);
+     commandExecuteAllButton->setFixedSize(e*16,yukseklik*2);
      commandExecuteAllButton->setAutoRaise(true);
      //commandExecuteAllButton->setAutoFillBackground(true);
       commandExecuteAllButton->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
       commandExecuteAllButton->setIcon(QIcon(":/icons/networkall.svg"));
-     commandExecuteAllButton->setIconSize(QSize(b*6,yukseklik/2));
+     commandExecuteAllButton->setIconSize(QSize(b*8,yukseklik));
      commandExecuteAllButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
-     commandExecuteAllButton->setText("Tüm Pc'lerde Çalıştır");
+     commandExecuteAllButton->setText("Tüm \nPc'lerde\n Çalıştır");
       connect(commandExecuteAllButton, &QToolButton::clicked, [=]() {
          sshCommandAllSlot(commandFileL->text());
          mesajSlot("Komut Ağda Çalıştırıldı");
  });
 
       QToolButton *x11CommandButton=new QToolButton();
-       x11CommandButton->setFixedSize(e*32,yukseklik);
+       x11CommandButton->setFixedSize(e*16,yukseklik*2);
        x11CommandButton->setAutoRaise(true);
        //x11CommandButton->setAutoFillBackground(true);
-       x11CommandButton->setText("Seçili Açık Masaüstünde Çalıştır");
+       x11CommandButton->setText("Seçili Açık \nMasaüstlerinde\n Çalıştır");
        x11CommandButton->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
        x11CommandButton->setIcon(QIcon(":/icons/user.svg"));
-       x11CommandButton->setIconSize(QSize(b*6,yukseklik/2));
+       x11CommandButton->setIconSize(QSize(b*8,yukseklik));
        x11CommandButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
         connect(x11CommandButton, &QToolButton::clicked, [=]() {
@@ -688,13 +688,13 @@ QWidget* MainWindow::sshCommandWidget()
 
 
        QToolButton *x11CommandAllButton=new QToolButton();
-        x11CommandAllButton->setFixedSize(e*32,yukseklik);
+        x11CommandAllButton->setFixedSize(e*16,yukseklik*2);
         x11CommandAllButton->setAutoRaise(true);
         //x11CommandAllButton->setAutoFillBackground(true);
-        x11CommandAllButton->setText("Tüm Açık Masaüstünde Çalıştır");
+        x11CommandAllButton->setText("Tüm Açık \nMasaüstlerinde\n Çalıştır");
         x11CommandAllButton->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
         x11CommandAllButton->setIcon(QIcon(":/icons/userall.svg"));
-        x11CommandAllButton->setIconSize(QSize(b*4,yukseklik/2));
+        x11CommandAllButton->setIconSize(QSize(b*8,yukseklik));
         x11CommandAllButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
          connect(x11CommandAllButton, &QToolButton::clicked, [=]() {
@@ -711,13 +711,13 @@ QWidget* MainWindow::sshCommandWidget()
     });
 
          QToolButton *helpButton= new QToolButton;
-         helpButton->setFixedSize(e*10,yukseklik*2);
+         helpButton->setFixedSize(e*12,yukseklik*2);
          helpButton->setAutoRaise(true);
         // bilgiButton->setAutoFillBackground(true);
          helpButton->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
          helpButton->setText("Yardım");
          helpButton->setIcon(QIcon(":/icons/help.svg"));
-         helpButton->setIconSize(QSize(b*6,yukseklik/2));
+         helpButton->setIconSize(QSize(b*8,yukseklik));
          helpButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
          connect(helpButton, &QToolButton::clicked, [=]() {
@@ -737,7 +737,7 @@ QWidget* MainWindow::sshCommandWidget()
                           "<br/>Örneğin, \"rm cp mv mkdir rmdir vb.\" komutlar Uzak Kullanıcı ev dizini üzerinde yapılır."
                           "<br/><br/>9-Birden fazla istemcide komut çalıştırmak için istemci simgelerine çift tıklayıp seçilerek çalıştırılabilir."
                           "<br/><br/>10-İstemcilerde script dosyası çalıştırmak için;"
-                          "<br/>Örneğin: install.sh dosyasını bash istall.sh şeklinde yazıp istemcilerde çalıştırabiliriz."
+                          "<br/>Örneğin: install.sh dosyasını bash install.sh şeklinde yazıp istemcilerde çalıştırabiliriz."
                                      );
              QPrinter pdf;
                  pdf.setOutputFileName("/tmp/sshcommand.pdf");
@@ -777,13 +777,13 @@ QWidget* MainWindow::sshCommandWidget()
 
     vbox->addWidget(commandFileL,1,3,2,1);
 
-    vbox->addWidget(commandExecuteButton,1,4,1,1);
-    vbox->addWidget(commandExecuteAllButton,1,5,1,1);
+    vbox->addWidget(commandExecuteButton,1,4,2,1);
+    vbox->addWidget(commandExecuteAllButton,1,5,2,1);
 
-    vbox->addWidget(x11CommandButton,2,4,1,1);
-    vbox->addWidget(x11CommandAllButton,2,5,1,1);
+    vbox->addWidget(x11CommandButton,1,6,2,1);
+    vbox->addWidget(x11CommandAllButton,1,7,2,1);
 
-    vbox->addWidget(helpButton,1,6,2,1);
+    vbox->addWidget(helpButton,1,8,2,1);
 
 
     d->setLayout(vbox);
@@ -801,12 +801,12 @@ int yukseklik=b*7.5;
     QWidget * d = new QWidget();
     d->setWindowTitle("ssh Dosya Kopyalama Penceresi");
    QLineEdit *le = new QLineEdit();
-    le->setFixedSize(e*67,boy*7);
+    le->setFixedSize(e*61,boy*7);
     le->setStyleSheet("font-size:"+QString::number(font.toInt()+2)+"px;");
 
    // le->setFont(ff);
     QLineEdit * ple = new QLineEdit();
-    ple->setFixedSize(e*67,boy*7);
+    ple->setFixedSize(e*61,boy*7);
    ple->setStyleSheet("font-size:"+QString::number(font.toInt()+2)+"px;");
 
     QLabel *commandFileLabel=new QLabel("Dosya");
@@ -820,13 +820,13 @@ int yukseklik=b*7.5;
 
 
      fileSelectButton=new QToolButton();
-     fileSelectButton->setFixedSize(e*22,yukseklik);
+     fileSelectButton->setFixedSize(e*10,yukseklik*2);
      fileSelectButton->setAutoRaise(true);
      //fileSelectButton->setAutoFillBackground(true);
      fileSelectButton->setText("Dosya Seç");
      fileSelectButton->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
      fileSelectButton->setIcon(QIcon(":/icons/openfile.svg"));
-     fileSelectButton->setIconSize(QSize(b*8,yukseklik/2));
+     fileSelectButton->setIconSize(QSize(b*8,yukseklik));
      fileSelectButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
       connect(fileSelectButton, &QToolButton::clicked, [=]() {
@@ -841,12 +841,12 @@ int yukseklik=b*7.5;
 
 
      fileCopyButton=new QToolButton();
-     fileCopyButton->setFixedSize(e*22,yukseklik);
+     fileCopyButton->setFixedSize(e*11,yukseklik*2);
      fileCopyButton->setAutoRaise(true);
      fileCopyButton->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
-     fileCopyButton->setText("Seçili Pc'lere Kopyala");
+     fileCopyButton->setText("Seçili \nPc'lere \nKopyala");
      fileCopyButton->setIcon(QIcon(":/icons/selectcopyfile.svg"));
-     fileCopyButton->setIconSize(QSize(b*8,yukseklik/2));
+     fileCopyButton->setIconSize(QSize(b*8,yukseklik));
      fileCopyButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
          connect(fileCopyButton, &QToolButton::clicked, [=]() {
@@ -860,12 +860,12 @@ int yukseklik=b*7.5;
    });
 
          fileCopyInstallButton=new QToolButton();
-         fileCopyInstallButton->setFixedSize(e*12,yukseklik*2);
+         fileCopyInstallButton->setFixedSize(e*10,yukseklik*2);
          fileCopyInstallButton->setAutoRaise(true);
          fileCopyInstallButton->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
          fileCopyInstallButton->setText("Seçili \nPc'lere\n Paket Kur");
          fileCopyInstallButton->setIcon(QIcon(":/icons/install.svg"));
-         fileCopyInstallButton->setIconSize(QSize(b*8,yukseklik/2));
+         fileCopyInstallButton->setIconSize(QSize(b*8,yukseklik));
          fileCopyInstallButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
          connect(fileCopyInstallButton, &QToolButton::clicked, [=]() {
@@ -900,14 +900,56 @@ int yukseklik=b*7.5;
              mesajSlot("Dosya Seçili Pc'ye Kopyalandı ve Kuruldu.");
        });
 
+         fileCopyInstallScriptButton=new QToolButton();
+         fileCopyInstallScriptButton->setFixedSize(e*10,yukseklik*2);
+         fileCopyInstallScriptButton->setAutoRaise(true);
+         fileCopyInstallScriptButton->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
+         fileCopyInstallScriptButton->setText("Seçili \nPc'lerde \nScript Çalıştır");
+         fileCopyInstallScriptButton->setIcon(QIcon(":/icons/ssh.svg"));
+         fileCopyInstallScriptButton->setIconSize(QSize(b*8,yukseklik));
+         fileCopyInstallScriptButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+
+         connect(fileCopyInstallScriptButton, &QToolButton::clicked, [=]() {
+             QString name1 = QUrl::fromLocalFile(le->text()).path(QUrl::FullyEncoded);
+             name1.replace("%20","%5C%20");
+             QUrl pth;
+
+             QFileInfo fi(le->text());
+             QString name = fi.fileName();
+
+             QString uzanti = fi.completeSuffix();
+             QString ad = fi.baseName().replace(" ","");
+             //qDebug()<<"dosya adı:"<<name<<ad<<uzanti;
+             //QString path=QFileInfo(le->text()).canonicalPath();
+             // path=le->text().replace("+","\\ ");
+             //qDebug()<<"dosya adı:"<<name1;
+             sshSelectFileCopySlot(pth.fromPercentEncoding(name1.toUtf8()),ple->text());
+            QString dosya=QString("cat >/tmp/eaginstall << EOF"
+                          "\n#!/bin/bash"
+                          "\napt --fix-broken install -y"
+                          "\napt install -f -y"
+                          "\napt autoremove -y"
+                          "\napt update"
+                          "\nbash %1"
+                          "\napt install -f -y"
+                          "\nEOF").arg(name);
+
+             system(dosya.toStdString().c_str());
+             sshSelectFileCopySlot("/tmp/eaginstall","");
+             sshSelectPcCommandSlot("chmod 755 eaginstall");
+             sshSelectPcCommandSlot("bash eaginstall");
+             mesajSlot("Script Dosya Seçili Pc'ye Kopyalandı ve Kuruldu.");
+       });
+
+
 
      fileCopyAllButton=new QToolButton();
-     fileCopyAllButton->setFixedSize(e*22,yukseklik);
+     fileCopyAllButton->setFixedSize(e*11,yukseklik*2);
      fileCopyAllButton->setAutoRaise(true);
      fileCopyAllButton->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
-     fileCopyAllButton->setText("Tüm Pc'lere Kopyala");
+     fileCopyAllButton->setText("Tüm \nPc'lere \nKopyala");
      fileCopyAllButton->setIcon(QIcon(":/icons/allcopyfile.svg"));
-     fileCopyAllButton->setIconSize(QSize(b*8,yukseklik/2));
+     fileCopyAllButton->setIconSize(QSize(b*8,yukseklik));
      fileCopyAllButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
          connect(fileCopyAllButton, &QToolButton::clicked, [=]() {
@@ -921,12 +963,12 @@ int yukseklik=b*7.5;
    });
 
          QToolButton *fileCopyDesktopNotGetSendButton=new QToolButton();
-         fileCopyDesktopNotGetSendButton->setFixedSize(e*22,yukseklik);
+         fileCopyDesktopNotGetSendButton->setFixedSize(e*12,yukseklik*2);
          fileCopyDesktopNotGetSendButton->setAutoRaise(true);
-         fileCopyDesktopNotGetSendButton->setText("Masaüstlerine Dağıt");
+         fileCopyDesktopNotGetSendButton->setText("Masaüstlerine\nDosya\nGönder");
          fileCopyDesktopNotGetSendButton->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
          fileCopyDesktopNotGetSendButton->setIcon(QIcon(":/icons/senddesktopfile.svg"));
-         fileCopyDesktopNotGetSendButton->setIconSize(QSize(b*8,yukseklik/2));
+         fileCopyDesktopNotGetSendButton->setIconSize(QSize(b*8,yukseklik));
          fileCopyDesktopNotGetSendButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
              connect(fileCopyDesktopNotGetSendButton, &QToolButton::clicked, [=]() {
@@ -969,12 +1011,12 @@ sshCommandSlot("chmod 777 /home/"+btnlist[i]->user+"/Masaüstü/"+ad+"."+uzanti,
        });
 
          QToolButton *fileCopyDesktopSendButton=new QToolButton();
-         fileCopyDesktopSendButton->setFixedSize(e*24,yukseklik);
+         fileCopyDesktopSendButton->setFixedSize(e*11,yukseklik*2);
          fileCopyDesktopSendButton->setAutoRaise(true);
-         fileCopyDesktopSendButton->setText("Çalışmaları Dağıt");
+         fileCopyDesktopSendButton->setText("Çalışmaları\n Dağıt");
          fileCopyDesktopSendButton->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
          fileCopyDesktopSendButton->setIcon(QIcon(":/icons/senddesktopquiz.svg"));
-         fileCopyDesktopSendButton->setIconSize(QSize(b*8,yukseklik/2));
+         fileCopyDesktopSendButton->setIconSize(QSize(b*8,yukseklik));
          fileCopyDesktopSendButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
              connect(fileCopyDesktopSendButton, &QToolButton::clicked, [=]() {
@@ -1025,13 +1067,13 @@ sshCommandSlot("chmod 777 /home/"+btnlist[i]->user+"/Masaüstü/e-ag-server."+uz
        });
 
              QToolButton *fileCopyDesktopGetButton=new QToolButton();
-             fileCopyDesktopGetButton->setFixedSize(e*24,yukseklik);
+             fileCopyDesktopGetButton->setFixedSize(e*11,yukseklik*2);
              fileCopyDesktopGetButton->setAutoRaise(true);
              //fileCopyDesktopGetButton->setAutoFillBackground(true);
-             fileCopyDesktopGetButton->setText("Çalışmaları Topla");
+             fileCopyDesktopGetButton->setText("Çalışmaları\n Topla");
              fileCopyDesktopGetButton->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
              fileCopyDesktopGetButton->setIcon(QIcon(":/icons/getdesktopquiz.svg"));
-             fileCopyDesktopGetButton->setIconSize(QSize(b*8,yukseklik/2));
+             fileCopyDesktopGetButton->setIconSize(QSize(b*8,yukseklik));
              fileCopyDesktopGetButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
                  connect(fileCopyDesktopGetButton, &QToolButton::clicked, [=]() {
@@ -1050,13 +1092,13 @@ sshCommandSlot("chmod 777 /home/"+btnlist[i]->user+"/Masaüstü/e-ag-server."+uz
            });
 
                  QToolButton *helpButton= new QToolButton;
-                 helpButton->setFixedSize(e*10,yukseklik*2);
+                 helpButton->setFixedSize(e*12,yukseklik*2);
                  helpButton->setAutoRaise(true);
                 // bilgiButton->setAutoFillBackground(true);
                  helpButton->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
                  helpButton->setText("Yardım");
                  helpButton->setIcon(QIcon(":/icons/help.svg"));
-                 helpButton->setIconSize(QSize(b*6,yukseklik/2));
+                 helpButton->setIconSize(QSize(b*8,yukseklik));
                  helpButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
                  connect(helpButton, &QToolButton::clicked, [=]() {
@@ -1111,21 +1153,23 @@ sshCommandSlot("chmod 777 /home/"+btnlist[i]->user+"/Masaüstü/e-ag-server."+uz
     QGridLayout * vbox = new QGridLayout();
     vbox->setContentsMargins(0, 0, 0,0);
     vbox->setVerticalSpacing(0);
- vbox->addWidget(fileCopyInstallButton,1,6,2,1);
-
+    vbox->addWidget(pathLabel,2,1,1,1);
+    vbox->addWidget(ple,2,2,1,1);
     vbox->addWidget(commandFileLabel,1,1,1,1);
     vbox->addWidget(le,1,2,1,1);
-    vbox->addWidget(fileSelectButton,1,3,1,1);
-    vbox->addWidget(fileCopyButton,1,4,1,1);
-    vbox->addWidget(fileCopyAllButton,1,5,1,1);
-      vbox->addWidget(pathLabel,2,1,1,1);
-    vbox->addWidget(ple,2,2,1,1);
-    vbox->addWidget(fileCopyDesktopNotGetSendButton,2,3,1,1);
+    vbox->addWidget(fileSelectButton,1,3,2,1);
+    vbox->addWidget(fileCopyInstallButton,1,4,2,1);
+    vbox->addWidget(fileCopyInstallScriptButton,1,5,2,1);
+    vbox->addWidget(fileCopyButton,1,6,2,1);
+    vbox->addWidget(fileCopyAllButton,1,7,2,1);
 
-    vbox->addWidget(fileCopyDesktopSendButton,2,4,1,1);
-    vbox->addWidget(fileCopyDesktopGetButton,2,5,1,1);
+    vbox->addWidget(fileCopyDesktopNotGetSendButton,1,8,2,1);
 
-    vbox->addWidget(helpButton,1,7,2,1);
+    vbox->addWidget(fileCopyDesktopSendButton,1,9,2,1);
+    vbox->addWidget(fileCopyDesktopGetButton,1,10,2,1);
+
+
+    vbox->addWidget(helpButton,1,11,2,1);
 
     d->setLayout(vbox);
              return d;
@@ -1149,7 +1193,7 @@ QWidget* MainWindow::videoWidget()
     commandFileLE->setStyleSheet("font-size:"+QString::number(font.toInt()+2)+"px;");
 
     QLabel *commandFileLabel=new QLabel("Video Dosyası:");
-     commandFileLabel->setFixedSize(e*20,yukseklik);
+     commandFileLabel->setFixedSize(e*12,yukseklik);
      commandFileLabel->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
 
      QComboBox * kamera = new QComboBox();
@@ -1168,7 +1212,7 @@ QWidget* MainWindow::videoWidget()
      /****************************************************************************************/
 
       QComboBox * ses = new QComboBox();
-      ses->setFixedSize(e*33,yukseklik);
+      ses->setFixedSize(e*32,yukseklik);
      // ses->setFont(ff);
       ses->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
       /**********************************ses giriş listesi alma işlemi******************************************************/
@@ -1190,7 +1234,7 @@ QWidget* MainWindow::videoWidget()
       }
       /****************************************************************************************/
     QLabel *pathLabel=new QLabel("Kamera ve Ses:");
-    pathLabel->setFixedSize(e*20,yukseklik);
+    pathLabel->setFixedSize(e*12,yukseklik);
     pathLabel->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
 
     // messageBox.setIcon(QMessageBox::Question);
@@ -1198,15 +1242,15 @@ QWidget* MainWindow::videoWidget()
 
 
     QToolButton *videoYayinButton=new QToolButton();
-    videoYayinButton->setFixedSize(e*25,yukseklik);
+    videoYayinButton->setFixedSize(e*12,yukseklik*2);
     videoYayinButton->setAutoRaise(true);
    // videoYayinButton->setAutoFillBackground(true);
     videoYayinButton->setIcon(QIcon(":/icons/selectpcvideo.svg"));
     videoYayinButton->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
 
-    videoYayinButton->setIconSize(QSize(b*8,yukseklik/2));
+    videoYayinButton->setIconSize(QSize(b*8,yukseklik));
     videoYayinButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    videoYayinButton->setText("Seçili Pc'lerde Yayınla");
+    videoYayinButton->setText("Seçili \nPc'lerde\n Video Yayınla");
       connect(videoYayinButton, &QToolButton::clicked, [=]() {
        // if(pcMac->text()==""){mesajSlot("Pc Seçiniz");return;}
           QString name = QUrl::fromLocalFile(commandFileLE->text()).path(QUrl::FullyEncoded);
@@ -1260,15 +1304,15 @@ QWidget* MainWindow::videoWidget()
 
 
      QToolButton *videoYayinAllButton=new QToolButton();
-     videoYayinAllButton->setFixedSize(e*25,yukseklik);
+     videoYayinAllButton->setFixedSize(e*12,yukseklik*2);
      videoYayinAllButton->setAutoRaise(true);
     // videoYayinAllButton->setAutoFillBackground(true);
      videoYayinAllButton->setIcon(QIcon(":/icons/allpcvideo.svg"));
      videoYayinAllButton->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
 
-     videoYayinAllButton->setIconSize(QSize(b*8,yukseklik/2));
+     videoYayinAllButton->setIconSize(QSize(b*8,yukseklik));
      videoYayinAllButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-     videoYayinAllButton->setText("Tüm Pc'lerde Yayınla");
+     videoYayinAllButton->setText("Tüm \nPc'lerde\nVideo Yayınla");
      connect(videoYayinAllButton, &QToolButton::clicked, [=]() {
          QString name = QUrl::fromLocalFile(commandFileLE->text()).path(QUrl::FullyEncoded);
         name.replace("%20","%5C%20");
@@ -1307,12 +1351,12 @@ QWidget* MainWindow::videoWidget()
      });
 
      fileSelectButton=new QToolButton();
-     fileSelectButton->setFixedSize(e*5,yukseklik);
+     fileSelectButton->setFixedSize(e*10,yukseklik*2);
      fileSelectButton->setAutoRaise(true);
      fileSelectButton->setIcon(QIcon(":/icons/openfile.svg"));
      fileSelectButton->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
 
-     fileSelectButton->setIconSize(QSize(b*8,yukseklik/2));
+     fileSelectButton->setIconSize(QSize(b*8,yukseklik));
      fileSelectButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
       fileSelectButton->setText("...");
       connect(fileSelectButton, &QToolButton::clicked, [=]() {
@@ -1327,14 +1371,14 @@ QWidget* MainWindow::videoWidget()
 
 
      QToolButton *liveStreamButton=new QToolButton();
-     liveStreamButton->setFixedSize(e*31,yukseklik);
+     liveStreamButton->setFixedSize(e*12,yukseklik*2);
      liveStreamButton->setAutoRaise(true);
      liveStreamButton->setIcon(QIcon(":/icons/selectpccamera.svg"));
      liveStreamButton->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
 
-     liveStreamButton->setIconSize(QSize(b*8,yukseklik/2));
+     liveStreamButton->setIconSize(QSize(b*8,yukseklik));
      liveStreamButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-      liveStreamButton->setText("Seçili Pc'lere Yayın");
+      liveStreamButton->setText("Seçili\n Pc'lere\n Kam. Yayınla");
          connect(liveStreamButton, &QToolButton::clicked, [=]() {
              QString sslst;
              sslst=ses->currentText();
@@ -1374,14 +1418,14 @@ QWidget* MainWindow::videoWidget()
 
    });
     QToolButton *liveStreamAllButton=new QToolButton();
-     liveStreamAllButton->setFixedSize(e*25,yukseklik);
+     liveStreamAllButton->setFixedSize(e*12,yukseklik*2);
      liveStreamAllButton->setAutoRaise(true);
      liveStreamAllButton->setIcon(QIcon(":/icons/allpccamera.svg"));
      liveStreamAllButton->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
 
-     liveStreamAllButton->setIconSize(QSize(b*8,yukseklik/2));
+     liveStreamAllButton->setIconSize(QSize(b*8,yukseklik));
      liveStreamAllButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-      liveStreamAllButton->setText("Tüm Pc'lere Yayın");
+      liveStreamAllButton->setText("Tüm \nPc'lere \nKam. Yayınla");
          connect(liveStreamAllButton, &QToolButton::clicked, [=]() {
            if(ses->currentText()!=""&&kamera->currentText()!="")
            {
@@ -1419,14 +1463,14 @@ QWidget* MainWindow::videoWidget()
           mesajSlot("Ağ'a Komut Gönderildi.");
            }
    });
-            videoStopButton->setFixedSize(e*23,yukseklik);
+            videoStopButton->setFixedSize(e*12,yukseklik*2);
           videoStopButton->setAutoRaise(true);
           videoStopButton->setIcon(QIcon(":/icons/videostop.svg"));
           videoStopButton->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
 
-          videoStopButton->setIconSize(QSize(b*8,yukseklik/2));
+          videoStopButton->setIconSize(QSize(b*8,yukseklik));
           videoStopButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-            videoStopButton->setText("Video Durdur");
+            videoStopButton->setText("Video \nYayınını Durdur");
             connect(videoStopButton, &QToolButton::clicked, [=]() {
                 if(streamState)
                 {
@@ -1440,14 +1484,14 @@ QWidget* MainWindow::videoWidget()
             });
 
 
-          liveStreamStopButton->setFixedSize(e*23,yukseklik);
+          liveStreamStopButton->setFixedSize(e*12,yukseklik*2);
           liveStreamStopButton->setAutoRaise(true);
           liveStreamStopButton->setIcon(QIcon(":/icons/camerastop.svg"));
           liveStreamStopButton->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
 
-          liveStreamStopButton->setIconSize(QSize(b*8,yukseklik/2));
+          liveStreamStopButton->setIconSize(QSize(b*8,yukseklik));
           liveStreamStopButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-          liveStreamStopButton->setText("Kamera Durdur");
+          liveStreamStopButton->setText("Kamera \n Yayınını Durdur");
           connect(liveStreamStopButton, &QToolButton::clicked, [=]() {
               if(streamState)
               {
@@ -1467,7 +1511,7 @@ QWidget* MainWindow::videoWidget()
           helpButton->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
           helpButton->setText("Yardım");
           helpButton->setIcon(QIcon(":/icons/help.svg"));
-          helpButton->setIconSize(QSize(b*6,yukseklik/2));
+          helpButton->setIconSize(QSize(b*8,yukseklik));
           helpButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
           connect(helpButton, &QToolButton::clicked, [=]() {
@@ -1517,25 +1561,29 @@ QWidget* MainWindow::videoWidget()
 
           vbox->addWidget(commandFileLabel,1,1,1,1,Qt::AlignLeft);
           vbox->addWidget(commandFileLE,1,2,1,2,Qt::AlignLeft);
-          QHBoxLayout * hbox1= new QHBoxLayout();
+          vbox->addWidget(pathLabel,2,1,1,1,Qt::AlignLeft);
+          vbox->addWidget(kamera,2,2,1,1,Qt::AlignLeft);
+          vbox->addWidget(ses,2,3,1,1,Qt::AlignLeft);
+
+         /* QHBoxLayout * hbox1= new QHBoxLayout();
 
           hbox1->addWidget(fileSelectButton);
           QLabel *bl=new QLabel();bl->setFixedSize(e,b);
           hbox1->addWidget(bl);
           hbox1->addWidget(videoYayinButton);
           vbox->addLayout(hbox1,1,4,1,1,Qt::AlignLeft);
+*/
+          vbox->addWidget(fileSelectButton,1,5,2,1,Qt::AlignLeft);
+          vbox->addWidget(videoYayinButton,1,6,2,1,Qt::AlignLeft);
+          vbox->addWidget(videoYayinAllButton,1,7,2,1,Qt::AlignLeft);
+          vbox->addWidget(videoStopButton,1,8,2,1,Qt::AlignLeft);
 
-          vbox->addWidget(videoYayinAllButton,1,5,1,1,Qt::AlignLeft);
-          vbox->addWidget(videoStopButton,1,6,1,1,Qt::AlignLeft);
 
-          vbox->addWidget(pathLabel,2,1,1,1,Qt::AlignLeft);
-          vbox->addWidget(kamera,2,2,1,1,Qt::AlignLeft);
-          vbox->addWidget(ses,2,3,1,1,Qt::AlignLeft);
-          vbox->addWidget(liveStreamButton,2,4,1,1,Qt::AlignLeft);
-          vbox->addWidget(liveStreamAllButton,2,5,1,1,Qt::AlignLeft);
-          vbox->addWidget(liveStreamStopButton,2,6,1,1,Qt::AlignLeft);
+          vbox->addWidget(liveStreamButton,1,9,2,1,Qt::AlignLeft);
+          vbox->addWidget(liveStreamAllButton,1,10,2,1,Qt::AlignLeft);
+          vbox->addWidget(liveStreamStopButton,1,11,2,1,Qt::AlignLeft);
 
-          vbox->addWidget(helpButton,1,7,2,1,Qt::AlignLeft);
+          vbox->addWidget(helpButton,1,12,2,1,Qt::AlignLeft);
 
           d->setLayout(vbox);
 return d;
@@ -1603,13 +1651,13 @@ QWidget* MainWindow::duyuruWidget()
  });
 
       QToolButton *helpButton= new QToolButton;
-      helpButton->setFixedSize(e*10,yukseklik*2);
+      helpButton->setFixedSize(e*12,yukseklik*2);
       helpButton->setAutoRaise(true);
      // bilgiButton->setAutoFillBackground(true);
       helpButton->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
       helpButton->setText("Yardım");
       helpButton->setIcon(QIcon(":/icons/help.svg"));
-      helpButton->setIconSize(QSize(b*6,yukseklik));
+      helpButton->setIconSize(QSize(b*8,yukseklik));
       helpButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
       connect(helpButton, &QToolButton::clicked, [=]() {
@@ -1925,8 +1973,9 @@ QWidget* MainWindow::rdpWidget()
     vncPc->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
     vncPc->setIcon(QIcon(":/icons/vnc.svg"));
     vncPc->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    vncPc->setFixedSize(e*30,yukseklik);
+    vncPc->setFixedSize(e*15,yukseklik*2);
     vncPc->setAutoRaise(true);
+     vncPc->setIconSize(QSize(b*8,yukseklik));
    // vncPc->setAutoFillBackground(true);
     vncPc->setText("Vnc Ekran Erişimi");
     connect(vncPc, &QToolButton::clicked, [=]() {
@@ -1937,8 +1986,9 @@ QWidget* MainWindow::rdpWidget()
     rdpPc->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
     rdpPc->setIcon(QIcon(":/icons/rdp.svg"));
     rdpPc->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    rdpPc->setFixedSize(e*30,yukseklik);
+    rdpPc->setFixedSize(e*15,yukseklik*2);
     rdpPc->setAutoRaise(true);
+     rdpPc->setIconSize(QSize(b*8,yukseklik));
    // rdpPc->setAutoFillBackground(true);
     rdpPc->setText("Rdp Ekran Erişimi");
     connect(rdpPc, &QToolButton::clicked, [=]() {
@@ -1965,11 +2015,12 @@ QWidget* MainWindow::rdpWidget()
 
 
     QToolButton *serverEkranYansitSeciliPcButton= new QToolButton();
-    serverEkranYansitSeciliPcButton->setFixedSize(e*36,yukseklik);
+    serverEkranYansitSeciliPcButton->setFixedSize(e*18,yukseklik*2);
     //serverEkranYansitSeciliPcButton->setIconSize(QSize(150,30));
-    serverEkranYansitSeciliPcButton->setText("Ekranı Seçili Pc'lere Yansıt");
+    serverEkranYansitSeciliPcButton->setText("Ekranı \nSeçili Pc'lere\n Yansıt");
     serverEkranYansitSeciliPcButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     serverEkranYansitSeciliPcButton->setAutoRaise(true);
+    serverEkranYansitSeciliPcButton->setIconSize(QSize(b*8,yukseklik));
   //  serverEkranYansitSeciliPcButton->setAutoFillBackground(true);
 
     serverEkranYansitSeciliPcButton->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
@@ -1984,11 +2035,12 @@ QWidget* MainWindow::rdpWidget()
 
  });
     QToolButton *serverEkranYansitButton= new QToolButton();
-    serverEkranYansitButton->setFixedSize(e*36,yukseklik);
+    serverEkranYansitButton->setFixedSize(e*18,yukseklik*2);
    // serverEkranYansitButton->setIconSize(QSize(150,30));
-    serverEkranYansitButton->setText("Ekranı Tüm Pc'lere Yansıt");
+    serverEkranYansitButton->setText("Ekranı \nTüm Pc'lere\n Yansıt");
    serverEkranYansitButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
    serverEkranYansitButton->setAutoRaise(true);
+   serverEkranYansitButton->setIconSize(QSize(b*8,yukseklik));
   // serverEkranYansitButton->setAutoFillBackground(true);
 
     serverEkranYansitButton->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
@@ -2009,10 +2061,11 @@ QWidget* MainWindow::rdpWidget()
     ekranYansitDurdur->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
     ekranYansitDurdur->setIcon(QIcon(":/icons/networkvncstop.svg"));
     ekranYansitDurdur->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    ekranYansitDurdur->setFixedSize(e*36,yukseklik);
+    ekranYansitDurdur->setFixedSize(e*18,yukseklik*2);
     ekranYansitDurdur->setAutoRaise(true);
+    ekranYansitDurdur->setIconSize(QSize(b*8,yukseklik));
    // ekranYansitDurdur->setAutoFillBackground(true);
-    ekranYansitDurdur->setText("Seçilen Pc'lerde Yansıtmayı Durdur");
+    ekranYansitDurdur->setText("Seçilen \nPc'lerde \nYansıtmayı Durdur");
     connect(ekranYansitDurdur, &QToolButton::clicked, [=]() {
         //slotEkranIzleDurdur();
         slotVncFlipStop();
@@ -2021,22 +2074,23 @@ QWidget* MainWindow::rdpWidget()
     ekranYansitDurdurAll->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
     ekranYansitDurdurAll->setIcon(QIcon(":/icons/networkvncallstop.svg"));
     ekranYansitDurdurAll->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    ekranYansitDurdurAll->setFixedSize(e*36,yukseklik);
+    ekranYansitDurdurAll->setFixedSize(e*18,yukseklik*2);
     ekranYansitDurdurAll->setAutoRaise(true);
+    ekranYansitDurdurAll->setIconSize(QSize(b*8,yukseklik));
   //  ekranYansitDurdurAll->setAutoFillBackground(true);
-    ekranYansitDurdurAll->setText("Tümünde Yansıtmayı Durdur");
+    ekranYansitDurdurAll->setText("Tümünde \nYansıtmayı\n Durdur");
     connect(ekranYansitDurdurAll, &QToolButton::clicked, [=]() {
         //slotEkranIzleDurdur();
         slotVncFlipStop();
     });
     QToolButton *helpButton= new QToolButton;
-    helpButton->setFixedSize(e*10,yukseklik*2);
+    helpButton->setFixedSize(e*12,yukseklik*2);
     helpButton->setAutoRaise(true);
    // bilgiButton->setAutoFillBackground(true);
     helpButton->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
     helpButton->setText("Yardım");
     helpButton->setIcon(QIcon(":/icons/help.svg"));
-    helpButton->setIconSize(QSize(b*6,yukseklik/2));
+    helpButton->setIconSize(QSize(b*8,yukseklik));
     helpButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
     connect(helpButton, &QToolButton::clicked, [=]() {
@@ -2092,22 +2146,22 @@ QWidget* MainWindow::rdpWidget()
     layout->setHorizontalSpacing(0);
 
     //layout->addWidget(cb, 4,0,1,2);
-    layout->addWidget(vncPc, 4,0,1,1,Qt::AlignCenter);
-    layout->addWidget(rdpPc, 5,0,1,1,Qt::AlignCenter);
+    layout->addWidget(vncPc, 1,0,2,1,Qt::AlignCenter);
+    layout->addWidget(rdpPc, 1,1,2,1,Qt::AlignCenter);
 
 
-    layout->addWidget(boyutLabel, 4,2,1,1,Qt::AlignCenter);
-    layout->addWidget(ekranScale1, 5,2,1,1,Qt::AlignCenter);
+    layout->addWidget(boyutLabel, 1,2,1,1,Qt::AlignCenter);
+    layout->addWidget(ekranScale1,2,2,1,1,Qt::AlignCenter);
 
-    layout->addWidget(cb, 4,3,1,1,Qt::AlignCenter);
-    layout->addWidget(cbLabel, 5,3,1,1,Qt::AlignCenter);
+    layout->addWidget(cb, 1,3,1,1,Qt::AlignCenter);
+    layout->addWidget(cbLabel, 2,3,1,1,Qt::AlignCenter);
 
-    layout->addWidget(serverEkranYansitSeciliPcButton, 4,4,1,1,Qt::AlignCenter);
-    layout->addWidget(serverEkranYansitButton, 5,4,1,1,Qt::AlignCenter);
+    layout->addWidget(serverEkranYansitSeciliPcButton, 1,4,2,1,Qt::AlignCenter);
+    layout->addWidget(serverEkranYansitButton, 1,5,2,1,Qt::AlignCenter);
 
-    layout->addWidget(ekranYansitDurdur, 4,6,1,1,Qt::AlignCenter);
-    layout->addWidget(ekranYansitDurdurAll, 5,6,1,1,Qt::AlignCenter);
-    layout->addWidget(helpButton, 4,7,2,1,Qt::AlignCenter);
+    layout->addWidget(ekranYansitDurdur, 1,6,2,1,Qt::AlignCenter);
+    layout->addWidget(ekranYansitDurdurAll, 1,7,2,1,Qt::AlignCenter);
+    layout->addWidget(helpButton, 1,8,2,1,Qt::AlignCenter);
 
 return sor;
    // sor->show();

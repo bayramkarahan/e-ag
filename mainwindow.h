@@ -262,6 +262,7 @@ private:
     QToolButton *fileSelectButton;
     QToolButton *fileCopyButton;
     QToolButton *fileCopyInstallButton;
+    QToolButton *fileCopyInstallScriptButton;
 
     QToolButton *fileCopyAllButton;
     QToolButton *sshAramaButton;
