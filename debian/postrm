@@ -13,12 +13,12 @@
 #rm -rf  /usr/share/e-ag
 #chmod 777 /usr/share/e-ag
 
-systemctl disable e-ag-x11vncdesktop.service
-systemctl stop e-ag-x11vncdesktop.service
+systemctl disable e-ag-x11vncdesktop.service || true
+systemctl stop e-ag-x11vncdesktop.service || true
 
-systemctl disable e-ag-x11vnclogin.service
-systemctl stop e-ag-x11vnclogin.service
+systemctl disable e-ag-x11vnclogin.service || true
+systemctl stop e-ag-x11vnclogin.service || true
 
-systemctl daemon-reload
+systemctl daemon-reload || true
 
 exit 0

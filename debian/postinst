@@ -9,23 +9,41 @@ mkdir /usr/share/e-ag
 chmod 777 /usr/share/e-ag
 
 
-systemctl daemon-reload
+systemctl daemon-reload || true
 
-systemctl enable ssh.service
-systemctl start ssh.service
+systemctl enable ssh.service || true
+systemctl start ssh.service || true
 
-systemctl enable vsftpd.service
-systemctl start vsftpd.service
+systemctl enable vsftpd.service || true
+systemctl start vsftpd.service || true
 
 #systemctl enable x11vnc-e-ag.service
 #systemctl start x11vnc-e-ag.service
 
-systemctl restart nginx
+systemctl restart nginx || true
 
-systemctl enable e-ag-x11vnclogin.service
-systemctl start e-ag-x11vnclogin.service
+systemctl enable e-ag-x11vnclogin.service || true
+systemctl start e-ag-x11vnclogin.service || true
 
-systemctl enable e-ag-x11vncdesktop.service
-systemctl start e-ag-x11vncdesktop.service
+systemctl enable e-ag-x11vncdesktop.service || true
+systemctl start e-ag-x11vncdesktop.service || true
+
+
+nginx_conf_file="/etc/nginx/nginx.conf"
+
+if ! [[ -f $nginx_conf_file ]]; then
+	echo """rtmp {
+server {
+listen 1935;
+chunk_size 4096;
+
+application live {
+live on;
+record off;
+}
+}
+}
+	""" >> $nginx_conf_file
+fi
 
 exit 0
