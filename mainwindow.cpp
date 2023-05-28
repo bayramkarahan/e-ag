@@ -66,7 +66,7 @@ MainWindow::MainWindow(QWidget *parent) :
     acountLoad();///hesap ve ayarların yüklenmesi yapılıyor...
 //setMouseTracking(true);
 //installEventFilter(this);
-    setWindowTitle("e-ag 2.1");
+    setWindowTitle("e-ag 2.2");
 
     auto appIcon = QIcon(":/icons/e-ag.svg");
     this->setWindowIcon(appIcon);
@@ -121,9 +121,6 @@ MainWindow::MainWindow(QWidget *parent) :
     tabwid->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
     tabwid->setTabPosition(QTabWidget::North);
     /***********************************************************************/
-//qDebug()<<"aşama52";
-    /*****************************************************/
-      /******************************************/
     ekranScale = new QComboBox();
     ekranScale->setFixedSize(en*2,boy);
     ekranScale->setFrame(true);
@@ -182,7 +179,8 @@ btnlist[btnlist.count()-1]->slotMouseClick();
 pcClickSlot(btnlist[btnlist.count()-1]->mac);
 }
 /*************************************************************************/
-
+// sendBroadcastStatus=false;
+sendBroadcastDatagram();
  }
 
  void MainWindow::pcListeSlot()

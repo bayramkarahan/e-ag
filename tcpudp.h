@@ -151,7 +151,15 @@ void MainWindow::sendBroadcastDatagram()
         if(broadCastAddress1!=""&&
                 ipmaclist[i].ip.section(".",0,2)==broadCastAddress1.section(".",0,2))
         {
-            QString msg="hostport|"+ipmaclist[i].ip+"|"+ipmaclist[i].mac+"|"+tcpPort;
+            QString msg;
+            if(sendBroadcastStatus==false)
+            {
+                sendBroadcastStatus=true;
+                msg="hostport|"+ipmaclist[i].ip+"|"+ipmaclist[i].mac+"|"+tcpPort+"|0";
+            }else
+            {
+                msg="hostport|"+ipmaclist[i].ip+"|"+ipmaclist[i].mac+"|"+tcpPort+"|1";
+            }
             QByteArray datagram = msg.toUtf8();// +QHostAddress::LocalHost;
 
             //qDebug()<<broadCastAddress1.section(".",0,2)+".";
@@ -171,8 +179,19 @@ void MainWindow::sendBroadcastDatagram()
         if(broadCastAddress2!=""&&
                 ipmaclist[i].ip.section(".",0,2)==broadCastAddress2.section(".",0,2))
         {
-            QString msg="hostport|"+ipmaclist[i].ip+"|"+ipmaclist[i].mac+"|"+tcpPort;
-            QByteArray datagram = msg.toUtf8();// +QHostAddress::LocalHost; 
+            ///QString msg="hostport|"+ipmaclist[i].ip+"|"+ipmaclist[i].mac+"|"+tcpPort;
+
+            QString msg;
+            if(sendBroadcastStatus==false)
+            {
+                sendBroadcastStatus=true;
+                msg="hostport|"+ipmaclist[i].ip+"|"+ipmaclist[i].mac+"|"+tcpPort+"|0";
+            }else
+            {
+                msg="hostport|"+ipmaclist[i].ip+"|"+ipmaclist[i].mac+"|"+tcpPort+"|1";
+            }
+
+               QByteArray datagram = msg.toUtf8();// +QHostAddress::LocalHost;
             for(int i=1;i<255;i++)
             {
                 QString broadadres;

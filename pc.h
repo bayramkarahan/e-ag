@@ -31,7 +31,7 @@
 #include<QDesktopWidget>
 #include<QScreen>
 #include<pcdata.h>
-
+#include<QDesktopServices>
 class Pc : public QWidget
 {
     Q_OBJECT
@@ -106,7 +106,7 @@ void setCaption(QString cap);
 void setDisplay(QString _dis);
 void setUser(QString _os);
 void setOs(QString _os);
-
+void vncstatelabel_clicked(QString novncadres);
 void setKilitControlState(bool state);
 void setKilitTransparanControlState(bool state);
 void setIconControlState(bool state);

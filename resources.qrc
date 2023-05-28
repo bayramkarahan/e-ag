@@ -69,5 +69,6 @@
         <file>icons/userayar.png</file>
         <file>icons/e-ag.svg</file>
         <file>icons/install.svg</file>
+        <file>icons/novnc.svg</file>
     </qresource>
 </RCC>

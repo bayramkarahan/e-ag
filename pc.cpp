@@ -578,7 +578,7 @@ void Pc::slotPcAyar()
     lineEditA->setText(pcname);
     if(ps=="pcopen")pcstate->setText("Pc: Açık");else pcstate->setText("Pc: Kapalı");
     if(ss=="sshopen")sshstate->setText("Ssh: Açık");else sshstate->setText("Ssh: Kapalı");
-    if(vs=="vncopen")vncstate->setText("Vnc: Açık ("+vncport+")");else vncstate->setText("Vnc: Kapalı ("+vncport+")");
+    if(vs=="vncopen") vncstate->setText("Vnc: Açık ("+vncport+")");else vncstate->setText("Vnc: Kapalı ("+vncport+")");
     if(fs=="ftpopen")ftpstate->setText("Ftp: Açık");else ftpstate->setText("Ftp: Kapalı");
     if(cs=="online")connectstate->setText("Tcp: Açık");else connectstate->setText("Tcp: Kapalı");
     displaystate->setText("Ekran:"+display);
@@ -619,6 +619,10 @@ void Pc::slotPcAyar()
     }
 
     ///label.setText("");
+
+}
+void Pc::vncstatelabel_clicked(QString novncadres)
+{
 
 }
 void Pc::slotServisControl()

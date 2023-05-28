@@ -360,6 +360,7 @@ private:
     QLineEdit *commandFileL;
     QRadioButton *rb1;
     QRadioButton *rb2;
+    bool sendBroadcastStatus=false;
 
   };
 

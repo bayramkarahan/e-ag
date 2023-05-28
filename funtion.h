@@ -498,6 +498,7 @@ void MainWindow::slotLogoutAll(){
 }
 void MainWindow::slotLogin(){
     QString komut="sshlogin "+remoteUserName+" "+remotePassword;
+   // qDebug()<<"komut:"<<komut;
    for(int i=0;i<btnlist.count();i++)
     {
         if(btnlist[i]->cs=="online"&&(btnlist[i]->select||btnlist[i]->multiSelect))
@@ -505,7 +506,7 @@ void MainWindow::slotLogin(){
             udpSendData("pckapat",komut,btnlist[i]->ip);
         }
     }
-    mesajSlot("Seçili Hostlarda Oturum Kapatıldı.");
+    mesajSlot("Seçili Hostlarda Oturum Açıldı.");
 
 }
 

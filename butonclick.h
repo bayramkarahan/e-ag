@@ -2673,7 +2673,22 @@ QWidget* MainWindow::pcInfo()
         slotVnc(_display);
     });
 
-    QToolButton *xrdpConnectPcButton = new QToolButton();
+    QToolButton *novncConnectPcButton = new QToolButton();
+    novncConnectPcButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+    novncConnectPcButton->setIcon(QIcon(":icons/novnc.svg"));
+    novncConnectPcButton->setIconSize(QSize(yukseklik,boy*8));
+    novncConnectPcButton->setAutoRaise(true);
+   // vncConnectPcButton->setAutoFillBackground(true);
+    novncConnectPcButton->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
+    novncConnectPcButton->setFixedSize(yukseklik*0.95,yukseklik*1.5);
+    novncConnectPcButton->setText("noVNC");
+    connect(novncConnectPcButton, &QToolButton::clicked, [=]() {
+        QString kmt26="env MOZ_USE_XINPUT2=1 /usr/lib/firefox/firefox "+pcIp->text()+":6085/vnc.html";
+        system(kmt26.toStdString().c_str());
+
+       // QDesktopServices::openUrl(QUrl("192.168.1.101:6085"));
+    });
+   /* QToolButton *xrdpConnectPcButton = new QToolButton();
     xrdpConnectPcButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     xrdpConnectPcButton->setIcon(QIcon(":icons/rdp.svg"));
     xrdpConnectPcButton->setIconSize(QSize(yukseklik,boy*8));
@@ -2685,7 +2700,7 @@ QWidget* MainWindow::pcInfo()
     connect(xrdpConnectPcButton, &QToolButton::clicked, [=]() {
         slotRdp();
     });
-
+*/
     QToolButton *terminalPcButton = new QToolButton();
     terminalPcButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     terminalPcButton->setIcon(QIcon(":icons/ssh.svg"));
@@ -2816,15 +2831,17 @@ QWidget* MainWindow::pcInfo()
     layout->addWidget(selectPcButton, 0,1,3,1);
 
     layout->addWidget(vncConnectPcButton, 0,2,3,1);
-    layout->addWidget(xrdpConnectPcButton, 0,3,3,1);
+    layout->addWidget(novncConnectPcButton, 0,5,3,1);
 
-    layout->addWidget(terminalPcButton, 0,4,3,1);
-    layout->addWidget(ftpPc, 0,5,3,1);
-    layout->addWidget(wolButton, 0,6,3,1);
+  //  layout->addWidget(xrdpConnectPcButton, 0,6,3,1);
 
-    layout->addWidget(kilitWidget(), 0,7,3,1);
-    layout->addWidget(kilittransparanWidget(), 0,10,3,1);
-    layout->addWidget(ekranWidget(), 0,15,3,1);
+    layout->addWidget(terminalPcButton, 0,7,3,1);
+    layout->addWidget(ftpPc, 0,8,3,1);
+    layout->addWidget(wolButton, 0,9,3,1);
+
+    layout->addWidget(kilitWidget(), 0,10,3,1);
+    layout->addWidget(kilittransparanWidget(), 0,12,3,1);
+    layout->addWidget(ekranWidget(), 0,13,3,1);
     layout->addWidget(poweroffrebootWidget(), 0,20,3,1);
 
     layout->addWidget(logoutWidget(), 0,25,3,1);
