@@ -5,7 +5,7 @@ Maintainer: Bayram KARAHAN <bayramk@gmail.com>
 Build-Depends: debhelper (>= 9), 
     libc6,
     libgcc1,
-    libgcc-12-dev,
+    libgcc-8-dev,
     libgl1-mesa-glx | libgl1,
     libqt5core5a,
     libqt5gui5,
