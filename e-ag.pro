@@ -75,8 +75,8 @@ x11servicedesktop.path = /lib/systemd/system/
 x11servicelogin.files = e-ag-x11vnclogin.service
 x11servicelogin.path = /lib/systemd/system/
 
-#ngx.files = nginx.conf
-#ngx.path = /etc/nginx/
+ngx.files = nginx.conf
+ngx.path = /etc/nginx/
 
 #webdisable.files = webdisable.sh
 #webdisable.path = /usr/share/e-ag/
@@ -86,7 +86,7 @@ filezilla.path = /usr/share/e-ag/
 
 
 INSTALLS += target desktop_file icon x11passwd\
-x11servicedesktop x11servicelogin filezilla
+x11servicedesktop x11servicelogin filezilla ngx
 
 DISTFILES +=e-ag.svg\
     e-ag.desktop\
