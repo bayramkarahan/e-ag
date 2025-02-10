@@ -86,7 +86,7 @@ filezilla.path = /usr/share/e-ag/
 
 
 INSTALLS += target desktop_file icon x11passwd\
-x11servicedesktop x11servicelogin filezilla ngx
+x11servicedesktop x11servicelogin filezilla
 
 DISTFILES +=e-ag.svg\
     e-ag.desktop\

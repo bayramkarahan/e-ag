@@ -31,4 +31,4 @@ Depends: ${shlibs:Depends}, ${misc:Depends},
 	filezilla,
 	ethtool,
 	wakeonlan
-Description: E-Ag Server Uygulaması
+Description: e-ag Server Uygulaması
