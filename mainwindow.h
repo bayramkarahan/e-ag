@@ -58,7 +58,8 @@
 #include<pcdata.h>
 #include<QRadioButton>
 #include<QButtonGroup>
-
+//#include "rubberband.h"
+#include <QRubberBand>
 namespace Ui {
 class MainWindow;
 }
@@ -79,6 +80,10 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
       QString _display="2";
+          //RubberBand *rubberBand=nullptr;
+      QPoint origin;
+     // QRubberBand *rubberBand;
+      QRubberBand *rubberBand;
 
  signals:
 

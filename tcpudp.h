@@ -71,7 +71,7 @@ void MainWindow::udpSocketServerRead()
         QString _mac=mesaj[2];
         for(int i=0;i<btnlist.count();i++)
         {
-            btnlist[i]->tcpConnectCounter++;
+           /* btnlist[i]->tcpConnectCounter++;
                         if(btnlist[i]->tcpConnectCounter>btnlist.count()+3)
                         {
                             btnlist[i]->setTcpConnect(false);
@@ -81,7 +81,7 @@ void MainWindow::udpSocketServerRead()
                             btnlist[i]->setUser("noLogin");
                             btnlist[i]->tcpConnectCounter=0;
                         }
-
+*/
             if(_mac.toUpper()==btnlist[i]->mac.toUpper()&&mesaj[3]=="portStatus"){
                 btnlist[i]->tcpConnectCounter=0;
 
@@ -96,6 +96,7 @@ void MainWindow::udpSocketServerRead()
                     btnlist[i]->setUser(mesaj[5]);
                     btnlist[i]->setDisplay(mesaj[6]);
                     btnlist[i]->setOs(mesaj[14]);
+                    btnlist[i]->setCaption(mesaj[14]);
 
                     if(mesaj[7]=="1")
                         btnlist[i]->setKilitControlState(true);

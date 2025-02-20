@@ -66,7 +66,7 @@ MainWindow::MainWindow(QWidget *parent) :
     acountLoad();///hesap ve ayarların yüklenmesi yapılıyor...
 //setMouseTracking(true);
 //installEventFilter(this);
-    setWindowTitle("e-ag 2.2");
+    setWindowTitle("e-ag 2.3.5");
 
     auto appIcon = QIcon(":/icons/e-ag.svg");
     this->setWindowIcon(appIcon);
@@ -82,17 +82,20 @@ MainWindow::MainWindow(QWidget *parent) :
       /************************************************************/
     hostListe=new QWidget();
     hostListe->setFixedSize(e*178,b*56);
-    hostListe->setObjectName("pclistewidget");
-   /// hostListe->setStyleSheet("background-color: #aaaadd");
-   // qDebug()<<"aşama2";
+    hostListe->setObjectName("hostListe");
+    //rubberBand=new RubberBand(NULL,hostListe);
+    //hostListe->setStyleSheet("background-color: #ededed");
+    //hostListe->setStyleSheet("border-style: solid;border-color:black; border-width: 1px;");
+    //hostListe->setStyleSheet("QWidget#hostListe{border: 0.5px solid rgb(0, 0,0,255);}");
+    // qDebug()<<"aşama2";
     scrollArea=new QScrollArea();
     scrollArea->setWidget(hostListe);
     scrollArea->setFixedSize(e*180,b*56);
     scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-   /// scrollArea->setStyleSheet("background-color: #ff5533");
+    /// scrollArea->setStyleSheet("background-color: #ff5533");
 
-   /// hostListe->hide();
+    /// hostListe->hide();
     layout = new QGridLayout();
     layout->setContentsMargins(0, 0, 0,0);
     layout->setSpacing(3);
@@ -185,84 +188,61 @@ sendBroadcastDatagram();
 
  void MainWindow::pcListeSlot()
  {
-
     double nwidth=en*13*slider->value()/100;
     double nheight=en*15*slider->value()/100;
     int columnSayisi=hostListe->width()/(nwidth+en*4);
     pcListeGuncelleSlot(columnSayisi,nwidth,nheight);
-
     qDebug()<<"Liste Yenilendi.......";
-
-
    /// sshAramaButtonSlot();
     if(selectMac=="")selectMac=pcMac->text();
-
     pcClickSlot(selectMac);
-
-
 }
 
  void MainWindow::mouseMoveEvent(QMouseEvent *event)
  {
-      if(mouseClickState)
-     {
-         if (Pc *w =(Pc*) qApp->widgetAt(QCursor::pos())) {
-              if(w->objectName()=="btnpc"||w->objectName()=="iconLabel"||w->objectName()=="selectLabel")
-             {
-               // qDebug()<<"pc seçildi"<<w->parentWidget();
-                Pc* pc= dynamic_cast<Pc*>(w->parentWidget());
-               pc->slotSelectPc();
-            }
-         }
-
-
-     }
+    int hostListePos=tabwid->height()+selectWidget->height();
+    rubberBand->setGeometry(QRect(QPoint(origin.x(),origin.y()-hostListePos),QPoint(event->pos().x(),event->pos().y()-hostListePos)).normalized());
  }
  void MainWindow::mouseReleaseEvent(QMouseEvent *event)
  {
-   // slotMouseDoubleClick();
-      qDebug()<<"release";
+     //qDebug()<<"release";
+     if(mouseClickState)
+     {
+     rubberBand->hide();
+     QRect selectionRect = rubberBand->geometry();
+     for (Pc *pc : findChildren<Pc *>()) {
+         if (selectionRect.intersects(pc->geometry())) {
+                     pc->slotSelectPc();
+          } else {
+            pc->slotUnselectPc();
+
+         }
+     }
+     }
      mouseClickState=false;
+
  }
  void MainWindow::mousePressEvent(QMouseEvent *event)
  {
-   // slotMouseDoubleClick();
-      qDebug()<<"press";
-      mouseClickState=true;
-      if (auto *w =qApp->widgetAt(QCursor::pos())) {
-        //  if(w->objectName()=="btnpc"||w->objectName()=="iconLabel"||w->objectName()=="selectLabel")
-        // {
-          if(w->objectName()=="qt_scrollarea_viewport"||
-                  w->objectName()=="pclistewidget"||
-                  w->objectName()=="btnpc"||
-                  w->objectName()=="iconLabel"||
-                  w->objectName()=="selectLabel")
-          {
-            /// qDebug()<<"pc seçildi"<<w->objectName();
-              for(int i=0;i<btnlist.count();i++)
-                   {
-                      // btnlist[i]->select=!(btnlist[i]->select);
-                     //  btnlist[i]->slotUnselectPc();
-
-                    }
-         }
-      }
-
+    //qDebug()<<"press";
+    origin =( event->pos());
+    int hostListePos=tabwid->height()+selectWidget->height();
+    rubberBand = new QRubberBand(QRubberBand::Rectangle, hostListe);
+    rubberBand->setGeometry(QRect(QPoint(origin.x(),origin.y()-hostListePos),QSize(0,0)));
+    rubberBand->show();
+    mouseClickState=true;
  }
  void MainWindow::resizeEvent(QResizeEvent *event)
  {
-    // this->resize(sizeHint());
- qDebug()<<"main boyut değişti";
+ //qDebug()<<"main boyut değişti";
  selectWidget->setFixedSize(this->width(),selectWidget->height());
 // ustMenuWidget->setFixedSize(this->width(),ustMenuWidget->height());
  textBrowser_receivedMessages->setFixedSize(this->width(),boy*19-2);
  tabwid->setFixedSize(this->width(),boy*22);
- hostListe->setFixedSize(this->width()-en*3.5,this->height()-tabwid->height()-selectWidget->height()-boy);
- scrollArea->setFixedSize(this->width(),this->height()-tabwid->height()-selectWidget->height());
+ hostListe->setFixedSize(this->width()-en*3.5,this->height()-tabwid->height()-selectWidget->height()-boy*6);
+ scrollArea->setFixedSize(this->width(),this->height()-tabwid->height()-selectWidget->height()-boy*5);
  ///QWidget::resizeEvent(event);
  }
-
-
  void MainWindow::pcListeGuncelleSlot(int _ColumnSayisi,int pcw,int pch)
 {
     qDebug()<<"Hosts Listesi Güncellendi..";
@@ -304,7 +284,11 @@ sendBroadcastDatagram();
    // qDebug()<<"pc sayısı:"<<hsize<<slider->value();
     //if(hsize<=40)
     double nlstheight=(en*(gercekliste/_ColumnSayisi+1)*13.8)*slider->value()/100;
-    hostListe->setFixedSize(hostListe->width(),nlstheight);
+    double tempnlstheight=(this->height()-tabwid->height()-selectWidget->height()-boy);
+    if(nlstheight<tempnlstheight)
+        hostListe->setFixedSize(hostListe->width(),tempnlstheight);
+    else
+        hostListe->setFixedSize(hostListe->width(),nlstheight);
  /****************************************************/
       list=listSort(list,7);//pcname göre sıralama
 

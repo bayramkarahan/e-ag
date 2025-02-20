@@ -55,15 +55,19 @@ OBJECTS_DIR   = ./
 SOURCES       = main.cpp \
 		mainwindow.cpp \
 		pc.cpp \
-		pcdata.cpp qrc_resources.cpp \
+		pcdata.cpp \
+		rubberband.cpp qrc_resources.cpp \
 		moc_mainwindow.cpp \
+		moc_rubberband.cpp \
 		moc_pc.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
 		pc.o \
 		pcdata.o \
+		rubberband.o \
 		qrc_resources.o \
 		moc_mainwindow.o \
+		moc_rubberband.o \
 		moc_pc.o
 DIST          = e-ag.svg \
 		e-ag.desktop \
@@ -157,6 +161,7 @@ DIST          = e-ag.svg \
 		menu.h \
 		butonclick.h \
 		pcdata.h \
+		rubberband.h \
 		tcpudp.h \
 		init.h \
 		pc.h \
@@ -164,7 +169,8 @@ DIST          = e-ag.svg \
 		funtion.h main.cpp \
 		mainwindow.cpp \
 		pc.cpp \
-		pcdata.cpp
+		pcdata.cpp \
+		rubberband.cpp
 QMAKE_TARGET  = e-ag
 DESTDIR       = 
 TARGET        = e-ag
@@ -359,8 +365,8 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents resources.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents mainwindow.h filecrud.h menu.h butonclick.h pcdata.h tcpudp.h init.h pc.h selectpc.h funtion.h $(DISTDIR)/
-	$(COPY_FILE) --parents main.cpp mainwindow.cpp pc.cpp pcdata.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents mainwindow.h filecrud.h menu.h butonclick.h pcdata.h rubberband.h tcpudp.h init.h pc.h selectpc.h funtion.h $(DISTDIR)/
+	$(COPY_FILE) --parents main.cpp mainwindow.cpp pc.cpp pcdata.cpp rubberband.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -467,15 +473,20 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 	g++ -pipe -O2 -std=gnu++11 -Wall -Wextra -dM -E -o moc_predefs.h /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_mainwindow.cpp moc_pc.cpp
+compiler_moc_header_make_all: moc_mainwindow.cpp moc_rubberband.cpp moc_pc.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_mainwindow.cpp moc_pc.cpp
+	-$(DEL_FILE) moc_mainwindow.cpp moc_rubberband.cpp moc_pc.cpp
 moc_mainwindow.cpp: mainwindow.h \
 		pc.h \
 		pcdata.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
 	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/etapadmin/Masaüstü/ag/e-ag/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/etapadmin/Masaüstü/ag/e-ag -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtPrintSupport -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/12 -I/usr/include/x86_64-linux-gnu/c++/12 -I/usr/include/c++/12/backward -I/usr/lib/gcc/x86_64-linux-gnu/12/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include mainwindow.h -o moc_mainwindow.cpp
+
+moc_rubberband.cpp: rubberband.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/etapadmin/Masaüstü/ag/e-ag/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/etapadmin/Masaüstü/ag/e-ag -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtPrintSupport -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/12 -I/usr/include/x86_64-linux-gnu/c++/12 -I/usr/include/c++/12/backward -I/usr/lib/gcc/x86_64-linux-gnu/12/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include rubberband.h -o moc_rubberband.cpp
 
 moc_pc.cpp: pc.h \
 		pcdata.h \
@@ -524,11 +535,17 @@ pc.o: pc.cpp pc.h \
 pcdata.o: pcdata.cpp pcdata.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pcdata.o pcdata.cpp
 
+rubberband.o: rubberband.cpp rubberband.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o rubberband.o rubberband.cpp
+
 qrc_resources.o: qrc_resources.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_resources.o qrc_resources.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp
+
+moc_rubberband.o: moc_rubberband.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_rubberband.o moc_rubberband.cpp
 
 moc_pc.o: moc_pc.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_pc.o moc_pc.cpp

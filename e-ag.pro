@@ -28,7 +28,8 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     pc.cpp \
-    pcdata.cpp
+    pcdata.cpp \
+    rubberband.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -36,6 +37,7 @@ HEADERS += \
     menu.h \
     butonclick.h \
     pcdata.h \
+    rubberband.h \
     tcpudp.h \
     init.h \
     pc.h \

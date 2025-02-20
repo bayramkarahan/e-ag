@@ -1,0 +1,10 @@
+Package: e-ag
+Version: 2.3.5
+Architecture: amd64
+Maintainer: Bayram KARAHAN <bayramk@gmail.com>
+Installed-Size: 955
+Depends: libc6 (>= 2.34), libgcc-s1 (>= 3.0), libqt5core5a (>= 5.15.1), libqt5gui5 (>= 5.2.0) | libqt5gui5-gles (>= 5.2.0), libqt5network5 (>= 5.0.2), libqt5printsupport5 (>= 5.0.2), libqt5widgets5 (>= 5.0.2), libstdc++6 (>= 5.2), libqt5gui5, openssh-server, sshpass, x11vnc, vsftpd, rdesktop, xtightvncviewer, ssvnc, net-tools, netcat-openbsd, xrdp, nginx, libnginx-mod-rtmp, ffmpeg, filezilla, ethtool, wakeonlan
+Section: utils
+Priority: optional
+Homepage: http://pardus.org.tr
+Description: e-ag Server Uygulaması

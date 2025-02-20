@@ -47,7 +47,7 @@ Pc::Pc(QWidget *parent) : QWidget(parent)
 
     timerPortControlOnline= new QTimer(this);
     connect(timerPortControlOnline, SIGNAL(timeout()), this, SLOT(timerPortControlOnlineSlot()));
-    // timerPortControlOnline->start(30000);
+     timerPortControlOnline->start(3000);
 
     //pcTimerClickSlot();
     localDir="/usr/share/e-ag/";
@@ -406,7 +406,10 @@ void Pc::setOs(QString _os)
 }
 void Pc::setCaption(QString cap)
 {
+    if(nameLabel->text()=="???")
     nameLabel->setText(cap);
+
+
 }
 void Pc::setSize(int _w, int _h, QString _font)
 {
@@ -745,7 +748,12 @@ void Pc::mouseReleaseEvent(QMouseEvent *event)
 void Pc::slotMouseDoubleClick(){
     if(ps=="pcopen")
     {
-        if(!multiSelect){
+        //qDebug()<<"--------"<<multiSelect;
+        if(multiSelect)
+            slotUnselectPc();
+        else
+            slotSelectPc();
+      /*  if(!multiSelect){
          //   qDebug()<<"double click";
             multiSelect=(!multiSelect);
             selectLabel->setStyleSheet("QLabel{border: 2px solid blue;border-radius: 5px;}");
@@ -755,7 +763,7 @@ void Pc::slotMouseDoubleClick(){
             //qDebug()<<"double click";
             multiSelect=(!multiSelect);
             selectLabel->setStyleSheet("QLabel{border: 1px solid gray;border-radius: 5px;}");
-        }
+        }*/
     }
 }
 void Pc::slotSelectPc(){
@@ -866,6 +874,19 @@ void Pc::timerPortControlSlot()
    }
 void Pc::timerPortControlOnlineSlot()
 {
+    tcpConnectCounter++;
+
+   // iconLabel->setText(QString::number(tcpConnectCounter));
+    if(tcpConnectCounter>5)
+    {
+    setTcpConnect(false);
+    setSshConnect(false);
+    setVncConnect(false);
+    setFtpConnect(false);
+    setUser("noLogin");
+    tcpConnectCounter=0;
+    }
+
    // if(cs=="online"&&ps=="pcopen")    emit pcTcpPortControlSignal(this->mac,this->ip);
    /// if(ss=="sshopen"&&ps=="pcopen")    emit pcSshPortControlSignal(this->mac,this->ip);
    /// if(vs=="vncopen"&&ps=="pcopen")    emit pcVncPortControlSignal(this->mac,this->ip);
