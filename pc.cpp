@@ -95,13 +95,14 @@ Pc::Pc(QWidget *parent) : QWidget(parent)
 
     /*********************************************************/
     pcMenu();
-     btnayar->setMenu(pContextMenu);
-     btnayar->setPopupMode(QToolButton::InstantPopup);
+    // btnayar->setMenu(pContextMenu);
+    // btnayar->setPopupMode(QToolButton::InstantPopup);
 
    // btnayar->setStyleSheet("background-color: #dcdcdc");
     ///connect(btnayar, SIGNAL(clicked()),this, SLOT(slotPcAyar()));
     connect(btnayar, &QToolButton::clicked, [=]() {
            //   qDebug()<<"menu açılacak";
+        slotPcAyar();
     });
     btnayar->setIcon(QIcon(":icons/settings.svg"));
     //btnayar->setAutoFillBackground(true);
@@ -434,7 +435,7 @@ void Pc::setSize(int _w, int _h, QString _font)
     iconLabel->setFixedSize(w*5.2, w*2.7);
 
     btnayar->setFixedSize(w*1, w*1);
-    btnayar->setIconSize(QSize(w*0.9,w*0.9));
+    btnayar->setIconSize(QSize(w*1.4,w*1.4));
     userstateLabel->setStyleSheet("border: 1px solid gray; "
                                   "border-radius: 6px;"
                                   "font-size:8px;"
@@ -472,7 +473,7 @@ void Pc::setMac(QString _mac, int _w, int _h, QString _font)
         iconLabel->setFixedSize(w*5.2, w*2.7);
 
         btnayar->setFixedSize(w*1, w*1);
-        btnayar->setIconSize(QSize(w*0.9,w*0.9));
+        btnayar->setIconSize(QSize(w*1.5,w*1.5));
         userstateLabel->setStyleSheet("border: 1px solid gray; "
                                        "border-radius: 6px;"
                                         "font-size:8px;"
@@ -728,6 +729,11 @@ void Pc::slotCommand(){
 void Pc::mousePressEvent(QMouseEvent *event)
 {
 slotMouseClick();
+    if (event->button()==Qt::RightButton)
+    {
+        pcMenu();
+          pContextMenu->exec(mapToGlobal(event->pos()),nullptr);
+    }
 }
 void Pc::mouseDoubleClickEvent(QMouseEvent *event)
 {
@@ -1152,8 +1158,8 @@ pContextMenu->addAction(psettingAction );
 
 //btnpc->setMenu(pContextMenu);
 //btnpc->setPopupMode(QToolButton::MenuButtonPopup);
- btnayar->setMenu(pContextMenu);
- btnayar->setPopupMode(QToolButton::InstantPopup);
+// btnayar->setMenu(pContextMenu);
+ //btnayar->setPopupMode(QToolButton::InstantPopup);
 
  /***************************************************************/
 //pContextMenu->exec();

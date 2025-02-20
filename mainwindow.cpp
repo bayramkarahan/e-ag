@@ -83,11 +83,8 @@ MainWindow::MainWindow(QWidget *parent) :
     hostListe=new QWidget();
     hostListe->setFixedSize(e*178,b*56);
     hostListe->setObjectName("hostListe");
-    //rubberBand=new RubberBand(NULL,hostListe);
-    //hostListe->setStyleSheet("background-color: #ededed");
-    //hostListe->setStyleSheet("border-style: solid;border-color:black; border-width: 1px;");
+    rubberBand = new QRubberBand(QRubberBand::Rectangle, hostListe);
     //hostListe->setStyleSheet("QWidget#hostListe{border: 0.5px solid rgb(0, 0,0,255);}");
-    // qDebug()<<"aşama2";
     scrollArea=new QScrollArea();
     scrollArea->setWidget(hostListe);
     scrollArea->setFixedSize(e*180,b*56);
@@ -200,12 +197,19 @@ sendBroadcastDatagram();
 
  void MainWindow::mouseMoveEvent(QMouseEvent *event)
  {
+     //qDebug()<<"main move";
     int hostListePos=tabwid->height()+selectWidget->height();
-    rubberBand->setGeometry(QRect(QPoint(origin.x(),origin.y()-hostListePos),QPoint(event->pos().x(),event->pos().y()-hostListePos)).normalized());
+   /* if (Pc *w =(Pc*) qApp->widgetAt(QCursor::pos())) {
+         if(w->objectName()=="hostListe")
+         {
+       */      //qDebug()<<"main move22";
+            rubberBand->setGeometry(QRect(QPoint(origin.x(),origin.y()-hostListePos),QPoint(event->pos().x(),event->pos().y()-hostListePos)).normalized());
+   // }
+    //}
  }
- void MainWindow::mouseReleaseEvent(QMouseEvent *event)
+void MainWindow::mouseReleaseEvent(QMouseEvent *event)
  {
-     //qDebug()<<"release";
+    // qDebug()<<"main release";
      if(mouseClickState)
      {
      rubberBand->hide();
@@ -215,35 +219,34 @@ sendBroadcastDatagram();
                      pc->slotSelectPc();
           } else {
             pc->slotUnselectPc();
-
          }
      }
      }
      mouseClickState=false;
 
  }
- void MainWindow::mousePressEvent(QMouseEvent *event)
+void MainWindow::mousePressEvent(QMouseEvent *event)
  {
-    //qDebug()<<"press";
+    //qDebug()<<"main press";
     origin =( event->pos());
     int hostListePos=tabwid->height()+selectWidget->height();
-    rubberBand = new QRubberBand(QRubberBand::Rectangle, hostListe);
+
     rubberBand->setGeometry(QRect(QPoint(origin.x(),origin.y()-hostListePos),QSize(0,0)));
     rubberBand->show();
     mouseClickState=true;
  }
- void MainWindow::resizeEvent(QResizeEvent *event)
+void MainWindow::resizeEvent(QResizeEvent *event)
  {
  //qDebug()<<"main boyut değişti";
  selectWidget->setFixedSize(this->width(),selectWidget->height());
 // ustMenuWidget->setFixedSize(this->width(),ustMenuWidget->height());
  textBrowser_receivedMessages->setFixedSize(this->width(),boy*19-2);
  tabwid->setFixedSize(this->width(),boy*22);
- hostListe->setFixedSize(this->width()-en*3.5,this->height()-tabwid->height()-selectWidget->height()-boy*6);
- scrollArea->setFixedSize(this->width(),this->height()-tabwid->height()-selectWidget->height()-boy*5);
+ hostListe->setFixedSize(this->width()-en*3.5,this->height()-tabwid->height()-selectWidget->height()-boy*7);
+ scrollArea->setFixedSize(this->width(),this->height()-tabwid->height()-selectWidget->height()-boy*6);
  ///QWidget::resizeEvent(event);
  }
- void MainWindow::pcListeGuncelleSlot(int _ColumnSayisi,int pcw,int pch)
+void MainWindow::pcListeGuncelleSlot(int _ColumnSayisi,int pcw,int pch)
 {
     qDebug()<<"Hosts Listesi Güncellendi..";
     hostListReset();

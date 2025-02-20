@@ -37,7 +37,7 @@ MOVE          = mv -f
 TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = e-ag1.0.0
-DISTDIR = /home/etapadmin/Masaüstü/ag/e-ag/.tmp/e-ag1.0.0
+DISTDIR = /home/etapadmin/Masaüstü/aa/e-ag/.tmp/e-ag1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-O1
 LIBS          = $(SUBLIBS) /usr/lib/x86_64-linux-gnu/libQt5PrintSupport.so /usr/lib/x86_64-linux-gnu/libQt5Widgets.so /usr/lib/x86_64-linux-gnu/libQt5Gui.so /usr/lib/x86_64-linux-gnu/libQt5Network.so /usr/lib/x86_64-linux-gnu/libQt5Core.so -lGL -lpthread   
@@ -481,18 +481,18 @@ moc_mainwindow.cpp: mainwindow.h \
 		pcdata.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/etapadmin/Masaüstü/ag/e-ag/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/etapadmin/Masaüstü/ag/e-ag -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtPrintSupport -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/12 -I/usr/include/x86_64-linux-gnu/c++/12 -I/usr/include/c++/12/backward -I/usr/lib/gcc/x86_64-linux-gnu/12/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include mainwindow.h -o moc_mainwindow.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/etapadmin/Masaüstü/aa/e-ag/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/etapadmin/Masaüstü/aa/e-ag -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtPrintSupport -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/12 -I/usr/include/x86_64-linux-gnu/c++/12 -I/usr/include/c++/12/backward -I/usr/lib/gcc/x86_64-linux-gnu/12/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include mainwindow.h -o moc_mainwindow.cpp
 
 moc_rubberband.cpp: rubberband.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/etapadmin/Masaüstü/ag/e-ag/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/etapadmin/Masaüstü/ag/e-ag -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtPrintSupport -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/12 -I/usr/include/x86_64-linux-gnu/c++/12 -I/usr/include/c++/12/backward -I/usr/lib/gcc/x86_64-linux-gnu/12/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include rubberband.h -o moc_rubberband.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/etapadmin/Masaüstü/aa/e-ag/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/etapadmin/Masaüstü/aa/e-ag -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtPrintSupport -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/12 -I/usr/include/x86_64-linux-gnu/c++/12 -I/usr/include/c++/12/backward -I/usr/lib/gcc/x86_64-linux-gnu/12/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include rubberband.h -o moc_rubberband.cpp
 
 moc_pc.cpp: pc.h \
 		pcdata.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/etapadmin/Masaüstü/ag/e-ag/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/etapadmin/Masaüstü/ag/e-ag -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtPrintSupport -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/12 -I/usr/include/x86_64-linux-gnu/c++/12 -I/usr/include/c++/12/backward -I/usr/lib/gcc/x86_64-linux-gnu/12/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include pc.h -o moc_pc.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/etapadmin/Masaüstü/aa/e-ag/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/etapadmin/Masaüstü/aa/e-ag -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtPrintSupport -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/12 -I/usr/include/x86_64-linux-gnu/c++/12 -I/usr/include/c++/12/backward -I/usr/lib/gcc/x86_64-linux-gnu/12/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include pc.h -o moc_pc.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -575,7 +575,7 @@ uninstall_target: FORCE
 
 install_desktop_file: first FORCE
 	@test -d $(INSTALL_ROOT)/usr/share/applications/ || mkdir -p $(INSTALL_ROOT)/usr/share/applications/
-	$(QINSTALL) /home/etapadmin/Masaüstü/ag/e-ag/e-ag.desktop $(INSTALL_ROOT)/usr/share/applications/e-ag.desktop
+	$(QINSTALL) /home/etapadmin/Masaüstü/aa/e-ag/e-ag.desktop $(INSTALL_ROOT)/usr/share/applications/e-ag.desktop
 
 uninstall_desktop_file: FORCE
 	-$(DEL_FILE) -r $(INSTALL_ROOT)/usr/share/applications/e-ag.desktop
@@ -584,7 +584,7 @@ uninstall_desktop_file: FORCE
 
 install_icon: first FORCE
 	@test -d $(INSTALL_ROOT)/usr/share/e-ag || mkdir -p $(INSTALL_ROOT)/usr/share/e-ag
-	$(QINSTALL) /home/etapadmin/Masaüstü/ag/e-ag/icons/e-ag.svg $(INSTALL_ROOT)/usr/share/e-ag/e-ag.svg
+	$(QINSTALL) /home/etapadmin/Masaüstü/aa/e-ag/icons/e-ag.svg $(INSTALL_ROOT)/usr/share/e-ag/e-ag.svg
 
 uninstall_icon: FORCE
 	-$(DEL_FILE) -r $(INSTALL_ROOT)/usr/share/e-ag/e-ag.svg
@@ -593,7 +593,7 @@ uninstall_icon: FORCE
 
 install_x11passwd: first FORCE
 	@test -d $(INSTALL_ROOT)/usr/bin/ || mkdir -p $(INSTALL_ROOT)/usr/bin/
-	$(QINSTALL_PROGRAM) /home/etapadmin/Masaüstü/ag/e-ag/x11vncpasswd $(INSTALL_ROOT)/usr/bin/x11vncpasswd
+	$(QINSTALL_PROGRAM) /home/etapadmin/Masaüstü/aa/e-ag/x11vncpasswd $(INSTALL_ROOT)/usr/bin/x11vncpasswd
 	-: $(INSTALL_ROOT)/usr/bin/x11vncpasswd
 
 uninstall_x11passwd: FORCE
@@ -603,7 +603,7 @@ uninstall_x11passwd: FORCE
 
 install_x11servicedesktop: first FORCE
 	@test -d $(INSTALL_ROOT)/lib/systemd/system/ || mkdir -p $(INSTALL_ROOT)/lib/systemd/system/
-	$(QINSTALL) /home/etapadmin/Masaüstü/ag/e-ag/e-ag-x11vncdesktop.service $(INSTALL_ROOT)/lib/systemd/system/e-ag-x11vncdesktop.service
+	$(QINSTALL) /home/etapadmin/Masaüstü/aa/e-ag/e-ag-x11vncdesktop.service $(INSTALL_ROOT)/lib/systemd/system/e-ag-x11vncdesktop.service
 
 uninstall_x11servicedesktop: FORCE
 	-$(DEL_FILE) -r $(INSTALL_ROOT)/lib/systemd/system/e-ag-x11vncdesktop.service
@@ -612,7 +612,7 @@ uninstall_x11servicedesktop: FORCE
 
 install_x11servicelogin: first FORCE
 	@test -d $(INSTALL_ROOT)/lib/systemd/system/ || mkdir -p $(INSTALL_ROOT)/lib/systemd/system/
-	$(QINSTALL) /home/etapadmin/Masaüstü/ag/e-ag/e-ag-x11vnclogin.service $(INSTALL_ROOT)/lib/systemd/system/e-ag-x11vnclogin.service
+	$(QINSTALL) /home/etapadmin/Masaüstü/aa/e-ag/e-ag-x11vnclogin.service $(INSTALL_ROOT)/lib/systemd/system/e-ag-x11vnclogin.service
 
 uninstall_x11servicelogin: FORCE
 	-$(DEL_FILE) -r $(INSTALL_ROOT)/lib/systemd/system/e-ag-x11vnclogin.service
@@ -621,7 +621,7 @@ uninstall_x11servicelogin: FORCE
 
 install_filezilla: first FORCE
 	@test -d $(INSTALL_ROOT)/usr/share/e-ag/ || mkdir -p $(INSTALL_ROOT)/usr/share/e-ag/
-	$(QINSTALL) /home/etapadmin/Masaüstü/ag/e-ag/filezilla.xml $(INSTALL_ROOT)/usr/share/e-ag/filezilla.xml
+	$(QINSTALL) /home/etapadmin/Masaüstü/aa/e-ag/filezilla.xml $(INSTALL_ROOT)/usr/share/e-ag/filezilla.xml
 
 uninstall_filezilla: FORCE
 	-$(DEL_FILE) -r $(INSTALL_ROOT)/usr/share/e-ag/filezilla.xml

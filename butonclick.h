@@ -550,7 +550,7 @@ QWidget*  MainWindow::sliderWidget()
     slider->setMinimum(100);
     slider->setMaximum(300);
     slider->setValue(100);
-    slider->setSingleStep(10);
+    slider->setSingleStep(50);
     //slider->setSingleStep(10);
     slider->setFixedSize(100,25);
 
@@ -591,13 +591,8 @@ QWidget*  MainWindow::sliderWidget()
          layouts->addWidget(label3, 1, 2, 1, 1,Qt::AlignRight);
          connect(slider, SIGNAL(valueChanged(int)), SLOT(updateSlider(int)),Qt::QueuedConnection);
          sWidget->setFixedSize(en*23,boy*5);
-       //  sWidget->setStyleSheet("background-color: #5533ff");
-
          sWidget->setLayout(layouts);
-
          return sWidget;
-
-   // return 0;
 }
 QWidget* MainWindow::sshCommandWidget()
 {

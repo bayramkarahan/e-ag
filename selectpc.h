@@ -80,8 +80,8 @@ void MainWindow::selectPc()
     selectWidget=new QWidget();
     selectWidget->setFixedSize(this->width(),b*5);
     selectWidget->setObjectName("selectWidgett");
-    ///selectWidget->setStyleSheet("background-color: #dfdfdf;font-size:"+QString::number(font.toInt()-2)+"px;");
-    selectWidget->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
+    selectWidget->setStyleSheet("background-color: #dfdfdf;font-size:"+QString::number(font.toInt()-2)+"px;");
+    ///selectWidget->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
 
     hostsCountLabel=new QLabel(selectWidget);
     hostsCountLabel->setText("0");
