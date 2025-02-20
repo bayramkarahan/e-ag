@@ -1,9 +1,0 @@
-4d335495b2c270e5df654af6c46a08a7  lib/systemd/system/e-ag-x11vncdesktop.service
-3d68f15b88738d7edb0e0225c9c07306  lib/systemd/system/e-ag-x11vnclogin.service
-ee1cc95bbb622a5b765b4bfc37232fed  usr/bin/e-ag
-d2d7ec3164d50f18eea4b7c8c3257225  usr/bin/x11vncpasswd
-e10e08e629f406d9be28f8fd44587f38  usr/share/applications/e-ag.desktop
-fc25deaef1eab6c9d003aa7845976ac3  usr/share/doc/e-ag/changelog.gz
-469c742edcf84f0e25e0f16038afdf2e  usr/share/doc/e-ag/copyright
-c641b45324a55458eeaebd1341396b33  usr/share/e-ag/e-ag.svg
-3480af99e1f197852ac57cd10b180da7  usr/share/e-ag/filezilla.xml
