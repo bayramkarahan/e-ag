@@ -462,7 +462,7 @@ QMenu *MainWindow::sessionMenu()
      logoutAllButton->setText("Oturumları Kapat");
     logoutAllButton->setFlat(true);
    connect(logoutAllButton, &QPushButton::clicked, [=]() {
-       slotLogoutAll();
+       //slotLogoutAll();
          menu->close();
  });
    QPushButton *loginAllButton= new QPushButton;
@@ -473,7 +473,7 @@ QMenu *MainWindow::sessionMenu()
     loginAllButton->setText("Oturumları Aç");
    loginAllButton->setFlat(true);
   connect(loginAllButton, &QPushButton::clicked, [=]() {
-      slotLoginAll();
+      //slotLoginAll();
         menu->close();
 });
 
@@ -498,7 +498,6 @@ QMenu *MainWindow::sessionMenu()
 
 
 }
-
 
 QMenu *MainWindow::rdpMenu()
 {   QMenu *menu = new QMenu(this);
