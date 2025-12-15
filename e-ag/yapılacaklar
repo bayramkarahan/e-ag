@@ -1,0 +1,23 @@
+
+1-	Yukarıdaki dosyaları projenin içine ekle:
+
+	/usr/share/doc/<uygulama-adı>/
+	├── LICENSE
+	├── LICENSES/
+	│   ├── LICENSE.LGPLv3
+	│   ├── LICENSE.LGPLv2.1
+	│   ├── LICENSE.FFmpeg
+	│   └── NOTICE
+	└── README.LICENSE
+
+
+2-	Debian debian/copyright dosyasında şu satırları ekle:
+	
+	License: LGPL-3.0 and LGPL-2.1
+	Comment: This package uses Qt (LGPLv3) and FFmpeg (LGPLv2.1).
+
+3-	“About” pencerene kısa bilgi ekle:
+
+	Built with Qt (LGPLv3) and FFmpeg (LGPLv2.1)
+	© The Qt Company Ltd, © FFmpeg project
+

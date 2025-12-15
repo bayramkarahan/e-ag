@@ -2,33 +2,49 @@ Source: e-ag
 Section: utils
 Priority: optional
 Maintainer: Bayram KARAHAN <bayramk@gmail.com>
-Build-Depends: debhelper (>= 9), 
-    qtdeclarative5-dev
-Standards-Version: 3.9.8
-Homepage: http://pardus.org.tr
+Build-Depends: debhelper (>= 13),
+               qtbase5-dev,
+               qtdeclarative5-dev,
+               qtmultimedia5-dev,
+               pkg-config
+Standards-Version: 4.6.2
+Homepage: https://github.com/bayramkarahan/e-ag
+Rules-Requires-Root: no
 
 Package: e-ag
 Architecture: amd64
-Depends: ${shlibs:Depends}, ${misc:Depends},
-	libqt5core5a,
-    	libqt5gui5,
-    	libqt5network5,
-    	libqt5widgets5,
-    	libqt5printsupport5,
-	openssh-server,
-	sshpass,
-	x11vnc,
-	vsftpd,
-	rdesktop,
-	xtightvncviewer,
-	ssvnc,
-	net-tools,
-	netcat-openbsd,
-	xrdp,
-	nginx,
-	libnginx-mod-rtmp,
-	ffmpeg,
-	filezilla,
-	ethtool,
-	wakeonlan
-Description: e-ag Server Uygulaması
+Depends: ${shlibs:Depends},
+         ${misc:Depends},
+         libavcodec59 (>= 7:5.0) | libavcodec61 (>= 7:5.0) | libavcodec62 (>= 7:5.0),
+         libavformat59 (>= 7:5.0) | libavformat61 (>= 7:5.0) | libavformat62 (>= 7:5.0),
+         libavutil57 (>= 7:5.0) | libavutil59 (>= 7:5.0) | libavutil60 (>= 7:5.0),
+         libswscale6 (>= 7:5.0) | libswscale8 (>= 7:5.0) | libswscale9 (>= 7:5.0),
+         libqt5core5a,
+         libqt5gui5,
+         libqt5network5,
+         libqt5widgets5,
+         libqt5printsupport5,
+         libqt5multimedia5,
+         libqt5multimediawidgets5,
+         libqt5multimedia5-plugins,
+         libqt5svg5,
+         ffmpeg,
+         openssh-server,
+         x11vnc,
+         vsftpd,
+         rdesktop,
+         xtightvncviewer,
+         ssvnc,
+         net-tools,
+         netcat-openbsd,
+         xrdp,
+         filezilla,
+         ethtool,
+         wakeonlan
+Description: e-ag Uzaktan Yönetim ve Görüntüleme Sunucusu
+ e-ag, yerel ağ üzerindeki bilgisayarları uzaktan izleme, 
+ ekran paylaşımı, dosya aktarımı ve yönetim işlemleri için 
+ geliştirilmiş bir Qt tabanlı sunucu uygulamasıdır. 
+ FFmpeg ve Qt Multimedia bileşenlerini kullanarak 
+ ekran görüntülerini gerçek zamanlı olarak yayınlar.
+

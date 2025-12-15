@@ -1,0 +1,4 @@
+#ifndef HOSTLISTWIDGET_H
+#define HOSTLISTWIDGET_H
+
+#endif // HOSTLISTWIDGET_H

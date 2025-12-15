@@ -1,0 +1,8 @@
+#!/bin/sh
+mkdir -p /usr/share/e-ag
+#chmod 777 /usr/share/e-ag
+#cp /var/local/e-ag/persist.json /usr/share/e-ag/
+
+[ -f /usr/share/e-ag/persist.json ] && cp -f /var/local/e-ag/persist.json /usr/share/e-ag/
+
+exit 0

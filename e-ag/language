@@ -1,0 +1,4 @@
+ lupdate e-ag.pro -ts translations/en_EN.ts translations/tr_TR.ts 
+
+lrelease translations/en_EN.ts translations/en_EN.qm
+	

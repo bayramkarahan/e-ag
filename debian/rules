@@ -1,7 +1,17 @@
 #!/usr/bin/make -f
-export QT_SELECT := qt5
+# -*- makefile -*-
+
+export QT_SELECT=qt5
 
 %:
 	dh $@
-override_dh_shlibdeps:
-	dh_shlibdeps --dpkg-shlibdeps-params=--ignore-missing-info
+
+override_dh_auto_configure:
+	dh_auto_configure --buildsystem=qmake
+
+override_dh_auto_build:
+	dh_auto_build --buildsystem=qmake
+
+override_dh_auto_install:
+	dh_auto_install
+

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+
+<svg
+   height="800px"
+   width="800px"
+   version="1.1"
+   id="Layer_1"
+   viewBox="0 0 399.6 399.6"
+   xml:space="preserve"
+   sodipodi:docname="volumeon.svg"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+   id="defs54" /><sodipodi:namedview
+   id="namedview52"
+   pagecolor="#ffffff"
+   bordercolor="#000000"
+   borderopacity="0.25"
+   inkscape:showpageshadow="2"
+   inkscape:pageopacity="0.0"
+   inkscape:pagecheckerboard="0"
+   inkscape:deskcolor="#d1d1d1"
+   showgrid="false"
+   inkscape:zoom="0.63125"
+   inkscape:cx="399.20792"
+   inkscape:cy="400.79208"
+   inkscape:window-width="1366"
+   inkscape:window-height="667"
+   inkscape:window-x="0"
+   inkscape:window-y="0"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="g49" />
+<g
+   transform="translate(26 22)"
+   id="g49">
+	
+	<path
+   style="fill:#FFE53C;"
+   d="M74.8,252.242l134.4,102c5.2,4,12.8,0.4,12.8-6.4v-340c0-6.8-7.6-10.4-12.8-6.4L78,100.642"
+   id="path35" />
+	<path
+   style="fill:#F8D133;"
+   d="M78,252.242l131.2,102c5.2,4,12.8,0.4,12.8-6.4v-40c0-22-17.2-45.6-38-52.4l-106-34.8V252.242z"
+   id="path37" />
+	<path
+   style="fill:#C39215;"
+   d="M214,363.842c-3.6,0-6.8-1.2-9.6-3.2l-134.4-102c-3.6-2.8-4.4-7.6-1.6-11.2s7.6-4.4,11.2-1.6   l134.4,102v-340l-131.2,99.2c-3.6,2.8-8.4,2-11.2-1.6c-2.8-3.6-2-8.4,1.6-11.2l131.2-99.2c4.8-3.6,11.2-4.4,16.8-1.6   c5.2,2.8,8.8,8.4,8.8,14.4v340c0,6-3.6,11.6-8.8,14.4C218.8,363.442,216.4,363.842,214,363.842z"
+   id="path39" />
+	<g
+   id="g45">
+		<path
+   style="fill:#FFC33B;"
+   d="M78,251.842c0,8.8-7.2,16-16,16H14c-17.6,0-32-14.4-32-32v-112c0-17.6,14.4-32,32-32h48    c8.8,0,16,7.2,16,16v64"
+   id="path41" />
+		<path
+   style="fill:#C39215;"
+   d="M62,275.842H14c-22,0-40-18-40-40v-112c0-22,18-40,40-40h48c13.2,0,24,10.8,24,24v64    c0,4.4-3.6,8-8,8s-8-3.6-8-8v-64c0-4.4-3.6-8-8-8H14c-13.2,0-24,10.8-24,24v112c0,13.2,10.8,24,24,24h48c4.4,0,8-3.6,8-8    c0-4.4,3.6-8,8-8s8,3.6,8,8C86,265.042,75.2,275.842,62,275.842z"
+   id="path43" />
+	</g>
+	<path
+   style="fill:#C39215;"
+   d="M78,223.842c-4.4,0-8-3.6-8-8v-12c0-4.4,3.6-8,8-8s8,3.6,8,8v12C86,220.242,82.4,223.842,78,223.842   z"
+   id="path47" />
+<g
+   id="g33"
+   transform="matrix(1.1462789,0,0,1,-66.691916,-4.6188863)"
+   style="fill:#000080">
+		<path
+   style="fill:#000080"
+   d="m 318,295.842 c -2,0 -4.4,-0.8 -6,-2.4 -3.2,-3.2 -2.8,-8.4 0.4,-11.2 29.6,-27.6 45.6,-64.4 45.6,-104.4 0,-39.6 -16.4,-77.6 -45.6,-104 -3.2,-2.8 -3.6,-8 -0.4,-11.2 2.8,-3.2 8,-3.6 11.2,-0.4 32,29.6 50.4,71.6 50.4,116 0,44.4 -18,85.6 -50.4,116 -1.2,0.8 -3.2,1.6 -5.2,1.6 z"
+   id="path27" />
+		<path
+   style="fill:#000080"
+   d="m 294,251.442 c -2,0 -3.6,-0.8 -5.2,-2 -3.2,-2.8 -4,-8 -0.8,-11.2 14,-16.8 22,-38.4 22,-60.4 0,-22 -8,-43.6 -22,-60.4 -2.8,-3.2 -2.4,-8.4 0.8,-11.2 3.2,-2.8 8.4,-2.4 11.2,0.8 16.8,20 26,44.8 26,70.8 0,26 -9.2,50.8 -26,70.8 -1.6,2 -3.6,2.8 -6,2.8 z"
+   id="path29" />
+		<path
+   style="fill:#000080"
+   d="m 262,215.442 c -1.2,0 -2.8,-0.4 -4,-1.2 -4,-2.4 -5.2,-7.2 -2.8,-10.8 4.4,-7.6 6.8,-16.4 6.8,-25.6 0,-9.2 -2.4,-17.6 -6.8,-25.6 -2.4,-4 -0.8,-8.8 2.8,-10.8 4,-2.4 8.8,-0.8 10.8,2.8 6,10.4 9.2,21.6 9.2,33.6 0,12 -3.2,23.6 -9.2,33.6 -1.6,2.4 -4,4 -6.8,4 z"
+   id="path31" />
+	</g></g>
+</svg>

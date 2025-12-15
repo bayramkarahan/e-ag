@@ -1,0 +1,14 @@
+[Desktop Entry]
+Version=1.0
+Name=E-Ag
+Name[tr]=E-Ag
+Type=Application
+Comment=Network Manager Application
+Comment[tr]=Ag Yönetimi Uygulaması
+Terminal=false
+Exec=sh -c "pkexec /usr/bin/e-ag"
+Icon=/usr/share/icons/e-ag.svg
+Categories=Qt;Utility;
+Keywords=ag;eag;e-ag;
+GenericName=e-ag
+GenericName[tr]=e-ag
