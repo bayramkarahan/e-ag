@@ -268,7 +268,25 @@ void MainWindow::pcListeGuncelleSlot(QString mission)
                      return false;
                  });
      hostsCountLabel->setText(tr("Açık Hosts : ")+QString::number(onlinePcList1.size()));
-
+/***********seçili olmayanları unselect yapmak için işlemler**************************/
+     std::vector<MyPc*> farkListesi;
+     for (MyPc* pc : onlinePcList) {
+         if (std::find(onlinePcList1.begin(),
+                       onlinePcList1.end(),
+                       pc) == onlinePcList1.end()) {
+             farkListesi.push_back(pc);
+         }
+     }
+     for (MyPc *pc : farkListesi) {
+         for (MyPc *pc1 : onlinePcList) {
+         if (pc->mac.toUpper() == pc1->mac.toUpper()) {
+                 pc1->multiSelect=false;
+                 pc1->select=false;
+                 pc1->slotUnselectPc();
+                 qDebug()<<pc1->mac;
+             }
+         }
+     }
     /*******************************************************************/
      float olcek = slider->value() / 100.0f;
      //qDebug() << "olcek:" << slider->value() << olcek;
