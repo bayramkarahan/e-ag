@@ -110,6 +110,9 @@ void MainWindow::slotLogin(){
     {
         QString komut="sshlogin "+seatUser+" "+_remotepasswd;
          udpSendData("seatlogin","seatlogin",komut,"",false);
+
+        QString komut1="pardus-login "+seatUser+" "+_remotepasswd;
+        udpSendData("seatlogin","seatlogin",komut1,"",false);
         // qDebug()<<"komut:"<<komut;
     }
     mesajSlot("Seçili Hostlarda Oturum Açıldı.");
