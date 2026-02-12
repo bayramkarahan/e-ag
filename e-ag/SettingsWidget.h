@@ -723,7 +723,7 @@ void MainWindow::networkProfilLoad()
         }
         networkProfilLoad();
         //qDebug()<<"eagconf bilgileri farklı güncelleniyor.";
-        system("systemctl restart e-ag-networkprofil.service");
+       // system("systemctl restart e-ag-networkprofil.service");
     }
 }
 

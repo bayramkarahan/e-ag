@@ -10,6 +10,7 @@
 #include<QObject>
 #include<QSysInfo>
 #include<QDir>
+#include<QFileSystemWatcher>
 class IpMac
 {
 public:
@@ -17,8 +18,9 @@ public:
     QString mac;
     QString broadcast;
     QString subnet;
-
+    QNetworkInterface iface;   // BUNU EKLE
 };
+
 class NetProfil
 {
 public:
@@ -59,6 +61,9 @@ private slots:
     QString localDir1;
     QUdpSocket *udpBroadCastSend = nullptr;
     bool networkProfilLoadStatus=false;
+    QHostAddress multicastGroup;
+    quint16 multicastPort;
+    QFileSystemWatcher networkProfilWather;
 };
 
 #endif // NETWORKPROFIL_H

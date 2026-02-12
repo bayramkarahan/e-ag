@@ -77,6 +77,7 @@ MainWindow::MainWindow(QWidget *parent) :
     localDir="/usr/share/e-ag/";
 #endif
 
+
     hostAddressMacButtonSlot();
     rb1=new QRadioButton();
     rb2=new QRadioButton();

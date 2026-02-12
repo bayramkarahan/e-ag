@@ -10,7 +10,7 @@ Third-party components:
 - The Qt Framework, licensed under the LGPLv3.
 - The FFmpeg libraries (libavcodec, libavformat, libavutil, libswscale),
   licensed under the LGPLv2.1.
-- System utilities such as OpenSSH, x11vnc, vsftpd, xrdp, rdesktop, etc.,
+- System utilities such as OpenSSH, x11vnc, xrdp, rdesktop, etc.,
   are not distributed with this software but may be required to run it.
   These retain their own licenses, available from their respective projects.
 

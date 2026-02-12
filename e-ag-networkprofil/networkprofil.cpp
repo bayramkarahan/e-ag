@@ -9,28 +9,40 @@
 NewtworkProfil::NewtworkProfil()
 {
     localDir="/usr/share/e-ag/";
-    localDir1="/tmp/";
-    udpBroadCastSend = new QUdpSocket();
-    networkProfilLoad();
-     /**************************************************************************/
-    QTimer *udpSocketSendConsoleTimer = new QTimer();
-    QObject::connect(udpSocketSendConsoleTimer, &QTimer::timeout, [&](){
-        sendBroadcastDatagram();
-    });
+    networkProfilWather.addPath(localDir+"e-ag.json");
+    connect(&networkProfilWather, &QFileSystemWatcher::fileChanged, this,
+            [this](){
+                qDebug()<<"Ayarlar güncellendi...";
+                networkProfilLoad();  // burada tekrar addPath() çağırılacak
+            });
+
+    udpBroadCastSend = new QUdpSocket(this);
+    udpBroadCastSend->bind(QHostAddress::AnyIPv4,0,
+        QUdpSocket::ShareAddress | QUdpSocket::ReuseAddressHint);
+    udpBroadCastSend->setSocketOption(QAbstractSocket::MulticastTtlOption, 2);
+    multicastGroup = QHostAddress("239.255.0.11");
+    multicastPort = 45454;
+    udpBroadCastSend->setSocketOption(QAbstractSocket::MulticastTtlOption, 32);
+     networkProfilLoad();
+    /**************************************************************************/
+    QTimer *udpSocketSendConsoleTimer = new QTimer(this);
+    connect(udpSocketSendConsoleTimer, &QTimer::timeout,
+            this, &NewtworkProfil::sendBroadcastDatagram);
     udpSocketSendConsoleTimer->start(5000);
+
 
 }
 
 void NewtworkProfil::sendBroadcastDatagram()
 {
-    hostAddressMacButtonSlot();
+    ///hostAddressMacButtonSlot();
     if(interfaceList.count()==0||!networkProfilLoadStatus) {
         networkProfilLoadStatus=false;
         networkProfilLoad();
     }
 
       for (const NetProfil &item : NetProfilList) {
-        if (item.serverAddress=="") continue;
+        if (item.serverAddress.isEmpty()) continue;
         if (item.selectedNetworkProfil==false) continue;
         for(int k=0;k<interfaceList.count();k++)
         {
@@ -53,14 +65,22 @@ void NewtworkProfil::sendBroadcastDatagram()
                       lockScreenStatestr+"|"+
                       webblockStatestr;
                 QByteArray datagram = msg.toUtf8();// +QHostAddress::LocalHost;
-                QString broadCastAdres;
-                ///qDebug()<<datagram;
-                for(int i=1;i<255;i++)
+                udpBroadCastSend->setMulticastInterface(interfaceList[k].iface);
+
+                udpBroadCastSend->writeDatagram(
+                    datagram,
+                    multicastGroup,
+                    multicastPort
+                    );
+                //udpBroadCastSend->setMulticastInterface(interfaceList[k]interface);
+                //udpBroadCastSend->writeDatagram(datagram, multicastGroup, multicastPort);
+                //QString broadCastAdres;
+               /*for(int i=1;i<255;i++)
                 {
                     broadCastAdres=item.networkBroadCastAddress.section(".",0,2)+"."+QString::number(i);
                     //udpSocketSend->writeDatagram(datagram,QHostAddress("255.255.255.255"), uport.toInt());
                     udpBroadCastSend->writeDatagram(datagram,QHostAddress(broadCastAdres), uport.toInt()+uport.toInt());
-                }
+                }*/
                 qDebug()<<"ServerBroadCast"<<item.networkIndex<<item.networkBroadCastAddress<<msg<<uport.toInt()+uport.toInt();
              }
         }
@@ -141,67 +161,36 @@ void NewtworkProfil::networkProfilLoad()
 
 void NewtworkProfil::hostAddressMacButtonSlot()
 {
-    QHostAddress localhost = QHostAddress(QHostAddress::LocalHost);
-interfaceList.clear();
-    foreach (const QNetworkInterface& networkInterface, QNetworkInterface::allInterfaces()) {
-           foreach (const QNetworkAddressEntry& entry, networkInterface.addressEntries()) {
-               QHostAddress *hostadres=new QHostAddress(entry.ip().toString());
-               if(hostadres->protocol() == QAbstractSocket::IPv4Protocol &&
-                       !hostadres->isLoopback() )
-               {
-                  IpMac im;
-                  im.ip=entry.ip().toString();
-                  im.mac=networkInterface.hardwareAddress();
-                  im.broadcast=entry.broadcast().toString();
-                  im.subnet=entry.netmask().toString();
-                  interfaceList.append(im);
-                 // qDebug()<<"mac:"<<networkInterface.hardwareAddress();
-                  //qDebug()<<"ip  address:"<<entry.ip().toString();
-                  // qDebug()<<"broadcast  address:"<<entry.broadcast().toString();
-                  // qDebug()<<"broadcast  address:"<<entry.broadcast().toString();
-               ///  qDebug()<<"type:"<<networkInterface.name()<<networkInterface.type();
-                QString program="ethtool -s "+networkInterface.name()+" wol g &";
+    interfaceList.clear();
+
+    const QList<QNetworkInterface> interfaces = QNetworkInterface::allInterfaces();
+
+    for (const QNetworkInterface &networkInterface : interfaces)
+    {
+        if (!(networkInterface.flags() & QNetworkInterface::IsUp) ||
+            !(networkInterface.flags() & QNetworkInterface::IsRunning))
+            continue;
+
+        for (const QNetworkAddressEntry &entry : networkInterface.addressEntries())
+        {
+            if (entry.ip().protocol() == QAbstractSocket::IPv4Protocol &&
+                !entry.ip().isLoopback())
+            {
+                IpMac im;
+                im.ip        = entry.ip().toString();
+                im.mac       = networkInterface.hardwareAddress();
+                im.broadcast = entry.broadcast().toString();
+                im.subnet    = entry.netmask().toString();
+                im.iface     = networkInterface;   // 🔥 kritik satır
+
+                interfaceList.append(im);
+
+                QString program = "ethtool -s " + networkInterface.name() + " wol g &";
                 system(program.toStdString().c_str());
-                  /*
-                 if(networkInterface.type()==QNetworkInterface::Ethernet)
-                 {
-
-                     //QString program = "notepad.exe"; // Çalıştırılacak uygulamanın yolu (Windows için)
-                     QStringList arguments;
-                     arguments << "&"; // Uygulamaya geçirilecek argümanlar (isteğe bağlı)
-
-                     QProcess *process = new QProcess();
-
-                     // Uygulamanın başlamasıyla ilgili bir sinyali bağlayabiliriz (isteğe bağlı)
-                     QObject::connect(process, &QProcess::started, [=](){
-                         qDebug() << "Uygulama başlatıldı:" << program;
-                     });
-
-                     // Uygulamanın bitmesiyle ilgili bir sinyali bağlayabiliriz (isteğe bağlı)
-                     QObject::connect(process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
-                                      [=](int exitCode, QProcess::ExitStatus exitStatus){
-                                          qDebug() << "Uygulama bitti. Çıkış kodu:" << exitCode
-                                                   << ", Durum:" << (exitStatus == QProcess::NormalExit ? "Normal" : "Çökme");
-                                          process->deleteLater(); // İşlem nesnesini sil
-                                      });
-
-                     // Uygulamayı asenkron olarak başlat
-                     process->start(program, arguments);
-
-                     if (!process->waitForStarted(1000)) { // Uygulamanın başlayıp başlamadığını kısa bir süre kontrol et (isteğe bağlı)
-                         qDebug() << "Uygulama başlatılamadı:" << process->errorString();
-                         process->deleteLater();
-                     } else {
-                         qDebug() << "Uygulama başlatılıyor ve ana akış devam ediyor...";
-                         // Burada ana uygulamanızın diğer işlemleri devam edebilir.
-                     }
-
-                  //system(kmt27.toStdString().c_str());
-
-                 }*/
-               }
-           }
-       }
-
-
+            }
+        }
+    }
 }
+
+
+
