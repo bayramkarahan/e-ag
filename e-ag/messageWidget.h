@@ -10,14 +10,14 @@ QWidget* MainWindow::messageWidget()
     QWidget * d = new QWidget();
     // d->setFixedSize(this->width(),boy*16);
     d->setWindowTitle(tr("Duyuru Mesaj Penceresi"));
-    QLineEdit *commandFileLE = new QLineEdit();
-    commandFileLE->setFixedSize(e*80,boy*15);
-    // commandFileLE->setFont(ff);
-    commandFileLE->setStyleSheet("font-size:"+QString::number(font.toInt()+2)+"px;");
+    QTextEdit *mesajLE = new QTextEdit();
+    mesajLE->setFixedSize(e*80,boy*15);
+    // mesajLE->setFont(ff);
+    mesajLE->setStyleSheet("font-size:"+QString::number(font.toInt()+2)+"px;");
 
-    QLabel *commandFileLabel=new QLabel(tr("Mesaj / Duyuru"));
-    commandFileLabel->setFixedSize(e*15,yukseklik);
-    commandFileLabel->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
+    QLabel *mesajLabel=new QLabel(tr("Mesaj / Duyuru"));
+    mesajLabel->setFixedSize(e*15,yukseklik);
+    mesajLabel->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
 
 
 
@@ -33,7 +33,7 @@ QWidget* MainWindow::messageWidget()
 
     connect(duyuruButton, &QToolButton::clicked, [=]() {
         if(pcMac->text()==""){mesajSlot(tr("Pc Seçiniz"));return;}
-        udpSendData("x11command","ekranmesaj",commandFileLE->text(),"",false);
+        udpSendData("x11command","ekranmesaj",mesajLE->toPlainText(),"",false);
         mesajSlot("Seçili Pc'ye Mesaj Gönderildi.");
     });
 
@@ -50,7 +50,7 @@ QWidget* MainWindow::messageWidget()
     duyuruAllButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
     connect(duyuruAllButton, &QToolButton::clicked, [=]() {
-         udpSendData("x11command","ekranmesaj",commandFileLE->text(),"",false);
+         udpSendData("x11command","ekranmesaj",mesajLE->toPlainText(),"",false);
         mesajSlot(tr("Ağ'a Mesaj Gönderildi."));
     });
 
@@ -110,8 +110,8 @@ QWidget* MainWindow::messageWidget()
     layout->setVerticalSpacing(0);
     layout->setHorizontalSpacing(0);
 
-    layout->addWidget(commandFileLabel, 0,0,1,1,Qt::AlignCenter);
-    layout->addWidget(commandFileLE, 0,1,1,1,Qt::AlignCenter);
+    layout->addWidget(mesajLabel, 0,0,1,1,Qt::AlignCenter);
+    layout->addWidget(mesajLE, 0,1,1,1,Qt::AlignCenter);
     layout->addWidget(duyuruButton, 0,2,1,1,Qt::AlignCenter);
     layout->addWidget(duyuruAllButton, 0,3,1,1,Qt::AlignCenter);
     layout->addWidget(helpButton, 0,4,1,1,Qt::AlignCenter);

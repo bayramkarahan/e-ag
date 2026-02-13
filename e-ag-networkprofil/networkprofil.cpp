@@ -48,40 +48,24 @@ void NewtworkProfil::sendBroadcastDatagram()
         {
             if(item.networkBroadCastAddress==interfaceList[k].broadcast)
             {
-                QString lockScreenStatestr= "false";
-                QString webblockStatestr="false";
-                if(item.lockScreenState)lockScreenStatestr="true";
-                if(item.webblockState)webblockStatestr="true";
                 ///qDebug()<<"Broadcast Yapılan Ağ:" <<networkBroadCastAddress<<networkTcpPort;
                 QString uport=item.networkTcpPort;
                 std::reverse(uport.begin(), uport.end());
-                QString msg;
-                msg="eagconf|"+item.serverAddress+"|"+
-                      item.networkBroadCastAddress+"|"+
-                      item.networkTcpPort+"|"+
-                      item.ftpPort+"|"+
-                      item.rootPath+"|"+
-                      item.language+"|"+
-                      lockScreenStatestr+"|"+
-                      webblockStatestr;
-                QByteArray datagram = msg.toUtf8();// +QHostAddress::LocalHost;
-                udpBroadCastSend->setMulticastInterface(interfaceList[k].iface);
+                QJsonObject sendJson;
+                sendJson["mainmessagetype"] = "eagconf";
+                sendJson["server_address"] =item.serverAddress;
+                sendJson["networkBroadCastAddress"] =item.networkBroadCastAddress;
+                sendJson["networkTcpPort"] =item.networkTcpPort;
+                sendJson["ftpPort"] =item.ftpPort;
+                sendJson["rootPath"] =item.rootPath;
+                sendJson["language"] =item.language;
+                sendJson["webblockState"] =item.webblockState;
+                sendJson["lockScreenState"] =item.lockScreenState;
 
-                udpBroadCastSend->writeDatagram(
-                    datagram,
-                    multicastGroup,
-                    multicastPort
-                    );
-                //udpBroadCastSend->setMulticastInterface(interfaceList[k]interface);
-                //udpBroadCastSend->writeDatagram(datagram, multicastGroup, multicastPort);
-                //QString broadCastAdres;
-               /*for(int i=1;i<255;i++)
-                {
-                    broadCastAdres=item.networkBroadCastAddress.section(".",0,2)+"."+QString::number(i);
-                    //udpSocketSend->writeDatagram(datagram,QHostAddress("255.255.255.255"), uport.toInt());
-                    udpBroadCastSend->writeDatagram(datagram,QHostAddress(broadCastAdres), uport.toInt()+uport.toInt());
-                }*/
-                qDebug()<<"ServerBroadCast"<<item.networkIndex<<item.networkBroadCastAddress<<msg<<uport.toInt()+uport.toInt();
+                udpBroadCastSend->setMulticastInterface(interfaceList[k].iface);
+                QByteArray datagram = QJsonDocument(sendJson).toJson(QJsonDocument::Compact);
+                udpBroadCastSend->writeDatagram(datagram,multicastGroup,multicastPort);
+                qDebug()<<"ServerBroadCast"<<item.networkIndex<<item.networkBroadCastAddress<<sendJson<<uport.toInt()+uport.toInt();
              }
         }
     }
