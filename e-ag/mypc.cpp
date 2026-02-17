@@ -173,13 +173,14 @@ MyPc::MyPc(const QString _mac, QString _ip, QWidget *parent) : QWidget(parent)
         this->caption=veri.value("caption").toString();
         this->hostname=veri.value("hostname").toString();
         this->groupname=veri.value("groupname").toString();
+        this->hostnameVisible =veri.value("hostnameVisible").toBool();
+
         //PcData::groupListe.append({true,veri.value("groupname").toString()});
-        if(this->caption!="")
-            hostnameLabel->setText(this->caption);
+        if(this->hostnameVisible)
+            hostnameLabel->setText(this->hostname);
         else
         {
-            hostnameLabel->setText(this->hostname);
-            this->caption=this->hostname;
+            hostnameLabel->setText(this->caption);
         }
         this->visibleState=veri.value("visibleState").toBool();
     }else
@@ -188,11 +189,13 @@ MyPc::MyPc(const QString _mac, QString _ip, QWidget *parent) : QWidget(parent)
         QJsonObject veri;
         veri["mac"] = this->mac;
         veri["ip"] = this->ip;
-        veri["caption"] = "";
+        veri["caption"] = "?";
         veri["hostname"] = "";
         veri["groupname"] ="grup1";
         this->groupname="grup1";
         veri["visibleState"] = true;
+        veri["hostnameVisible"] = true;
+
         this->visibleState=true;
         db->Ekle(veri);
     }
@@ -605,9 +608,11 @@ void MyPc::setUser(QString _usr)
 void MyPc::setHostname(QString _hostname)
 {
     //qDebug()<<"ilk hali"<<hostname<<_hostname;
+
     if(hostname!=_hostname)
     {
-        qDebug()<<"hostname güncelleniyor.";
+        hostname=_hostname;
+        qDebug()<<"hostname güncelleniyor."<<hostname<<_hostname;
         QJsonObject veri;
         veri["mac"] = this->mac;
         veri["ip"] = this->ip;
@@ -615,19 +620,18 @@ void MyPc::setHostname(QString _hostname)
         veri["hostname"] = _hostname;
         veri["visibleState"] =this->visibleState;
         veri["groupname"]=this->groupname;
-
+        veri["hostnameVisible"]=this->hostnameVisible;
         DatabaseHelper *db=new DatabaseHelper(localDir+"persist.json");
         db->Sil("mac",this->mac);
         db->Ekle(veri);
         //qDebug()<<"hostname güncelleniyor."<<veri;
-        hostname=_hostname;
+
     }
-    if(this->caption!="")
-        hostnameLabel->setText(this->caption);
+    if(this->hostnameVisible)
+        hostnameLabel->setText(this->hostname);
     else
     {
-        hostnameLabel->setText(this->hostname);
-        this->caption=this->hostname;
+        hostnameLabel->setText(this->caption);
     }
     //qDebug()<<"son hali"<<hostname<<_hostname;
     if(select){
@@ -757,6 +761,7 @@ void MyPc::slotPcAyar()
     //QLineEdit * lineEditB = new QLineEdit();
     //QLineEdit * lineEditC = new QLineEdit();
     QCheckBox *cha=new QCheckBox("Listede Gözükmemesi için Gizle");
+    QCheckBox *hostnamechb=new QCheckBox("İsim Olarak Hostname Gözüksün");
     //QCheckBox *chb=new QCheckBox("Girdi Değeri");
    // QCheckBox *chc=new QCheckBox("Girdi Değeri");
 
@@ -776,6 +781,8 @@ void MyPc::slotPcAyar()
     hbox1->addWidget(pcnameLabel);
     hbox1->addWidget(lineEditA);
 
+
+
     QHBoxLayout * hbox2 = new QHBoxLayout();
     pcgroupLabel->setText("Bulunduğu Grup:");
     pcgroupLabel->setFixedWidth(en*20);
@@ -786,8 +793,10 @@ void MyPc::slotPcAyar()
     hbox3->addWidget(lineEditC);
     hbox3->addWidget(chc);*/
     vbox->addLayout(hbox1);
+    vbox->addWidget(hostnamechb);
     vbox->addLayout(hbox2);
     vbox->addWidget(cha);
+
     vbox->addWidget(pcstate);
     vbox->addWidget(sshstate);
     vbox->addWidget(vncstate);
@@ -849,6 +858,8 @@ void MyPc::slotPcAyar()
    // lineEditC->setText("");
 
      if(visibleState)cha->setChecked(false);else cha->setChecked(true);
+     if(hostnameVisible)hostnamechb->setChecked(true);else hostnamechb->setChecked(false);
+
    // chb->setChecked(true);
    // chc->setChecked(true);
 
@@ -860,6 +871,7 @@ void MyPc::slotPcAyar()
         //if(groupNameEdit->text()!="") groupname=groupNameEdit->text(); else groupname="";
         groupname=groupNameEdit->text();
         if(cha->checkState()==Qt::Checked)visibleState=false; else visibleState=true;
+        if(hostnamechb->checkState()==Qt::Checked) hostnameVisible=true; else hostnameVisible=false;
 
             //qDebug()<<"Yeni Host Ekleniyor.";
             QJsonObject veri;
@@ -869,10 +881,12 @@ void MyPc::slotPcAyar()
             veri["hostname"] = this->hostname;
             veri["groupname"] = this->groupname;
             veri["visibleState"] =this->visibleState;
-            if(this->caption!="?")
-                hostnameLabel->setText(this->caption);
-            else
+            veri["hostnameVisible"] =this->hostnameVisible;
+            if(this->hostnameVisible)
                 hostnameLabel->setText(this->hostname);
+            else
+                hostnameLabel->setText(this->caption);
+
             DatabaseHelper *db=new DatabaseHelper(localDir+"persist.json");
             db->Sil("mac",this->mac);
             db->Ekle(veri);
@@ -972,6 +986,8 @@ void MyPc::slothidePc()
         hostnameLabel->setText(this->caption);
     else
         hostnameLabel->setText(this->hostname);
+
+    veri["hostnameVisible"] =this->hostnameVisible;
     DatabaseHelper *db=new DatabaseHelper(localDir+"persist.json");
     db->Sil("mac",this->mac);
     db->Ekle(veri);

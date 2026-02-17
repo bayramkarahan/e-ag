@@ -100,6 +100,7 @@ public:
         QString groupname;
         QString caption;
         bool visibleState=true;
+        bool hostnameVisible = true;
         QString command="";
         QString commandDetail="";
         QString commandState="";
