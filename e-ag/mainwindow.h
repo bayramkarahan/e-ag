@@ -305,6 +305,7 @@ private:
     QLabel *pcMaclbl;
     QLabel *pcUserlbl;
     QLabel *pcScreenlbl;
+    QLabel *pcVersionlbl;
     QLabel *pcSystemlbl;
 
 

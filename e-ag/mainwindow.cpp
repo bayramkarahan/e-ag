@@ -511,7 +511,8 @@ void MainWindow::pcClickSlot(QString _mac)
             pcUserlbl->setText(tr("Kullanıcı: ")+onlinePcList[i]->user);
            /// pcScreenlbl->setText("Ekran: "+onlinePcList[i]->display);
             pcSystemlbl->setText(tr("Sistem: ")+onlinePcList[i]->hostname.trimmed());
-        }
+            pcVersionlbl->setText(tr("Version: ")+onlinePcList[i]->version);
+         }
       }
     selectMac=pcMac->text();
 

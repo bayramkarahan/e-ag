@@ -210,8 +210,9 @@ void MainWindow::clientConfUpdate(const QJsonObject &json)
             pc->tcpConnectCounter=0;
             pc->setConnectState(true);
             pc->ip=ip;
-            //qDebug()<<"ekleniyor"<<ip<<mac;
+            qDebug()<<"ekleniyor"<<ip<<mac<<json;
             //pc->volumeState=json["tray_volume"].toBool();
+            pc->setVersionState(json["tray_Version"].toString());
             pc->setVolumeState(json["tray_volume"].toBool());
             pc->setKeyboardState(json["console_keyboardState"].toBool());
             pc->setMouseState(json["console_mouseState"].toBool());

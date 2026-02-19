@@ -98,6 +98,8 @@ public:
         QString user;
         QString hostname;
         QString groupname;
+        QString version;
+
         QString caption;
         bool visibleState=true;
         bool hostnameVisible = true;
@@ -149,6 +151,7 @@ void setCommandButonState(bool state);
 void setSshState(QString state);
 void setVncState(QString state);
 void setXrdpState(QString state);
+void setVersionState(QString state);
 void setVolumeState(bool state);
 void setKeyboardState(bool state);
 void setMouseState(bool state);

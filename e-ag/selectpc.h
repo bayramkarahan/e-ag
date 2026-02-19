@@ -99,6 +99,9 @@ void MainWindow::selectPc()
     pcUserlbl->resize(e*8,b*5);
     pcScreenlbl=new QLabel(selectWidget);
     pcScreenlbl->resize(e*8,b*5);
+    pcVersionlbl=new QLabel(selectWidget);
+    pcVersionlbl->resize(e*8,b*5);
+
     pcSystemlbl=new QLabel(selectWidget);
     pcSystemlbl->resize(e*8,b*5);
 /******************************************************************/
@@ -113,6 +116,7 @@ void MainWindow::selectPc()
          layoutsp->addWidget(pcMaclbl, 0,4,1,1);
          layoutsp->addWidget(pcUserlbl, 0,6,1,1);
          layoutsp->addWidget(pcScreenlbl, 0,8,1,1);
+         layoutsp->addWidget(pcVersionlbl, 0,9,1,1);
          layoutsp->addWidget(pcSystemlbl, 0,10,1,1);
          layoutsp->addWidget(hostsCountLabel, 0,12,1,1);
 

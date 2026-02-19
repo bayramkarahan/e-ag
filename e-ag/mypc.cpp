@@ -484,7 +484,10 @@ void MyPc::setIconControlState(bool state)
         iconControlState = false;
     }
 }
-
+void MyPc::setVersionState(QString state)
+{
+    version=state;
+}
 void MyPc::setVolumeState(bool state)
 {
     volumeState=state;
