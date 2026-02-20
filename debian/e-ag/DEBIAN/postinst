@@ -1,0 +1,56 @@
+#!/bin/sh
+if [[ -f /etc/gdm3/daemon.conf ]]; then
+sed -i 's/#WaylandEnable=false/WaylandEnable=false/' /etc/gdm3/daemon.conf
+sed -i 's/WaylandEnable=false/WaylandEnable=false/' /etc/gdm3/daemon.conf
+sed -i 's/#WaylandEnable=true/WaylandEnable=false/' /etc/gdm3/daemon.conf
+sed -i 's/WaylandEnable=true/WaylandEnable=false/' /etc/gdm3/daemon.conf
+fi
+if [[ -f /etc/gdm3/custom.conf ]]; then
+sed -i 's/#WaylandEnable=false/WaylandEnable=false/' /etc/gdm3/custom.conf
+sed -i 's/WaylandEnable=false/WaylandEnable=false/' /etc/gdm3/custom.conf
+sed -i 's/#WaylandEnable=true/WaylandEnable=false/' /etc/gdm3/custom.conf
+sed -i 's/WaylandEnable=true/WaylandEnable=false/' /etc/gdm3/custom.conf
+else
+echo 'WaylandEnable=false'>/etc/gdm3/custom.conf
+fi
+
+
+systemctl daemon-reload || true
+
+systemctl enable e-ag-networkprofil.service || true
+systemctl start e-ag-networkprofil.service || true
+
+systemctl enable ssh.service || true
+systemctl start ssh.service || true
+
+#systemctl enable vsftpd.service || true
+#systemctl start vsftpd.service || true
+
+systemctl enable e-ag-x11vnclogin.service || true
+systemctl start e-ag-x11vnclogin.service || true
+
+systemctl enable e-ag-x11vncdesktop.service || true
+systemctl start e-ag-x11vncdesktop.service || true
+
+#xrdp
+systemctl stop xrdp || true
+rm -rf /var/log/xrdp || true
+
+mkdir -p /var/log/xrdp || true
+
+touch /var/log/xrdp/xrdp.log || true
+touch /var/log/xrdp/sesman.log || true
+touch /var/log/xrdp.log || true
+touch /var/log/xrdp-sesman.log || true
+
+chown -R xrdp:xrdp /var/log/xrdp || true
+chown xrdp:xrdp /var/log/xrdp.log /var/log/xrdp-sesman.log || true
+
+chmod 755 /var/log/xrdp || true
+chmod 644 /var/log/xrdp/*.log || true
+chmod 644 /var/log/xrdp.log /var/log/xrdp-sesman.log || true
+
+systemctl restart xrdp || true
+
+
+exit 0

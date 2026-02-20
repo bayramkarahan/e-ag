@@ -231,10 +231,19 @@ statusbar->addPermanentWidget(sliderWidget(),0);
 
 /*************************************************************************/
  }
-
+/*
 bool MainWindow::karsilastirMyPc(const MyPc *mypc1, const MyPc *mypc2) {
     //qDebug()<<"adlar: "<<mypc1->caption;
+    mypc1->hostnameVisible
+        mypc1->hostname
     return mypc1->caption < mypc2->caption; // caption göre sırala
+ }*/
+ bool MainWindow::karsilastirMyPc(const MyPc *mypc1, const MyPc *mypc2)
+ {
+     QString name1 = mypc1->hostnameVisible ? mypc1->hostname : mypc1->caption;
+     QString name2 = mypc2->hostnameVisible ? mypc2->hostname : mypc2->caption;
+
+     return name1 < name2;
  }
 
 void MainWindow::pcListeGuncelleSlot(QString mission)

@@ -1,0 +1,20 @@
+README - License Information
+============================
+
+This application depends on several open-source libraries licensed under LGPL:
+
+1. Qt Framework (LGPLv3)
+   - Used for GUI, Core, Network, and Multimedia functionality.
+   - Website: https://www.qt.io/
+   - License file: LICENSES/LICENSE.LGPLv3
+
+2. FFmpeg Libraries (LGPLv2.1)
+   - Used for media encoding, decoding, and streaming.
+   - Website: https://ffmpeg.org/
+   - License file: LICENSES/LICENSE.LGPLv2.1
+
+These libraries are linked dynamically. 
+You may replace them with modified versions to exercise your LGPL rights.
+
+The author of this software is not affiliated with The Qt Company or the FFmpeg Project.
+
