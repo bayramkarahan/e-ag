@@ -55,6 +55,7 @@ void NewtworkProfil::sendBroadcastDatagram()
                 sendJson["mainmessagetype"] = "eagconf";
                 sendJson["server_address"] =item.serverAddress;
                 sendJson["networkBroadCastAddress"] =item.networkBroadCastAddress;
+                sendJson["subnet"] =item.subnet;
                 sendJson["networkTcpPort"] =item.networkTcpPort;
                 sendJson["ftpPort"] =item.ftpPort;
                 sendJson["rootPath"] =item.rootPath;
@@ -102,6 +103,7 @@ void NewtworkProfil::networkProfilLoad()
             np.networkName=veri["networkName"].toString();
             np.networkTcpPort=veri["networkTcpPort"].toString();
             np.networkBroadCastAddress=veri["networkBroadCastAddress"].toString();
+            np.subnet=veri["subnet"].toString();
             np.serverAddress=veri["serverAddress"].toString();
             np.ftpPort=veri["ftpPort"].toString();
             np.rootPath=veri["rootPath"].toString();
@@ -127,6 +129,7 @@ void NewtworkProfil::networkProfilLoad()
             veri["networkTcpPort"] = "7879";
             veri["serverAddress"]=interfaceList[i].ip;
             veri["networkBroadCastAddress"]=interfaceList[i].broadcast;
+            veri["subnet"]=interfaceList[i].subnet;
             veri["ftpPort"]="12345";
             veri["rootPath"]="/tmp/";
             veri["language"]="tr_TR";

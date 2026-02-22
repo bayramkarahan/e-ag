@@ -466,7 +466,7 @@ void MainWindow::webBlockWidget()
             {
                 if(onlinePcList[i]->connectState&&
                     (onlinePcList[i]->select||onlinePcList[i]->multiSelect)&&
-                    interfaceList[k].ip.section(".",0,2)==onlinePcList[i]->ip.section(".",0,2))
+                    interfaceList[k].ip.section(".",0,1)==onlinePcList[i]->ip.section(".",0,1))
                 {
                     udpSendData("webblock",QString::number(webblockstate),onlinePcList[i]->ip,"Web Filtresi Güncellendi",true);
 

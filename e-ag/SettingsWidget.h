@@ -553,6 +553,7 @@ void MainWindow::networkProfil()
                         veri["networkName"] = networkName1->text();
                         veri["networkTcpPort"] = networkTcpPort1->text();
                         veri["networkBroadCastAddress"]=networkBroadCastAddress1->text();//dikkat
+                        veri["subnet"]=networkBroadCastAddress1->toolTip();//dikkat
                         veri["serverAddress"]=serverAddress1->text();
                         veri["ftpPort"]=ftpPort1->text();
                         veri["rootPath"]=rootPath1->text();
@@ -590,6 +591,8 @@ void MainWindow::networkProfil()
         networkIndex->setReadOnly(true);
         networkName->setText(veri.value("networkName").toString());
         networkBroadCastAddress->setText(veri.value("networkBroadCastAddress").toString());
+        networkBroadCastAddress->setToolTip(veri.value("subnet").toString());
+
         serverAddress->setText(veri.value("serverAddress").toString());
         networkTcpPort->setText(veri.value("networkTcpPort").toString());
         ftpPort->setText(veri.value("ftpPort").toString());
@@ -631,30 +634,40 @@ void MainWindow::networkProfil()
     newNetworkButton->setAutoRaise(true);
     newNetworkButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     // newNetworkButton->setFont(f2);
-    newNetworkButton->setText("Yeni Profil Ekle");
+    newNetworkButton->setText("Yeni Profiller Ekle");
 
     connect(newNetworkButton, &QPushButton::clicked, [=]() {
         DatabaseHelper *db=new DatabaseHelper(localDir+"e-ag.json");
         //qDebug()<<"broadcast address:"<<i<<ipmaclist[i].broadcast;
-        QJsonObject veri;
-        veri["networkIndex"] =QString::number(db->getIndex("networkIndex"));
-        if(db->Oku().size()==0) veri["selectedNetworkProfil"] =true;
-        else veri["selectedNetworkProfil"] =false;
-        veri["networkName"] = "network";
-        veri["networkTcpPort"] = "7879";
+        //QJsonArray dizi=db->Oku();
+        //QJsonArray dizi=db->Ara("selectedNetworkProfil",true);
+
         hostAddressMacButtonSlot();
-        veri["serverAddress"]=interfaceList[0].ip;
-        veri["networkBroadCastAddress"]=interfaceList[0].broadcast;
-        veri["ftpPort"]="12345";
-        veri["rootPath"]="/tmp/";
-        veri["language"]="tr_TR";
-        veri["lockScreenState"]=false;
-        veri["webblockState"]=false;
-        db->Ekle(veri);
-        d->close();
+        for(int k=0;k<interfaceList.count();k++)
+        {
+            QJsonArray dizi = db->Ara("serverAddress", interfaceList[k].ip);
+
+            if (dizi.isEmpty()) {
+                QJsonObject veri;
+                veri["networkIndex"] =QString::number(db->getIndex("networkIndex"));
+                if(db->Oku().size()==0) veri["selectedNetworkProfil"] =true;
+                else veri["selectedNetworkProfil"] =false;
+                veri["networkName"] = "network";
+                veri["networkTcpPort"] = "7879";
+                veri["serverAddress"]=interfaceList[k].ip;
+                veri["networkBroadCastAddress"]=interfaceList[k].broadcast;
+                veri["subnet"]=interfaceList[k].subnet;
+                veri["ftpPort"]="12345";
+                veri["rootPath"]="/tmp/";
+                veri["language"]="tr_TR";
+                veri["lockScreenState"]=false;
+                veri["webblockState"]=false;
+                db->Ekle(veri);
+            }
+        }
         networkProfil();
         networkProfilLoad();
-
+        d->close();
     });
 
     /*********************************************************************/
@@ -691,6 +704,7 @@ void MainWindow::networkProfilLoad()
             np.networkName=veri["networkName"].toString();
             np.networkTcpPort=veri["networkTcpPort"].toString();
             np.networkBroadCastAddress=veri["networkBroadCastAddress"].toString();
+            np.subnet=veri["subnet"].toString();
             np.serverAddress=veri["serverAddress"].toString();
             np.ftpPort=veri["ftpPort"].toString();
             np.rootPath=veri["rootPath"].toString();
@@ -713,6 +727,7 @@ void MainWindow::networkProfilLoad()
             veri["networkTcpPort"] = "7879";
             veri["serverAddress"]=interfaceList[i].ip;
             veri["networkBroadCastAddress"]=interfaceList[i].broadcast;
+            veri["subnet"]=interfaceList[i].subnet;
             veri["ftpPort"]="12345";
             veri["rootPath"]="/tmp/";
             veri["language"]="tr_TR";

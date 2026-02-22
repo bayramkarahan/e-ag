@@ -76,6 +76,7 @@ public:
     QString ip;
     QString mac;
     QString broadcast;
+    QString subnet;
 };
 struct fileCopyTask {
     QString mesajtype;
@@ -352,7 +353,7 @@ private:
     bool udpSendDataStatus=false;
     bool firstRun=false;
     QSlider *ekranSlider;
-        QString trayCommandResult;  // burada sakla
+    QString trayCommandResult;  // burada sakla
     QComboBox * ses;
   };
 

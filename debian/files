@@ -1,3 +1,3 @@
-e-ag-dbgsym_2.9.0_amd64.deb debug optional automatic=yes
-e-ag_2.9.0_amd64.buildinfo utils optional
-e-ag_2.9.0_amd64.deb utils optional
+e-ag-dbgsym_2.9.1_amd64.deb debug optional automatic=yes
+e-ag_2.9.1_amd64.buildinfo utils optional
+e-ag_2.9.1_amd64.deb utils optional

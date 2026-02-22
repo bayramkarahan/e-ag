@@ -29,8 +29,8 @@ void  MainWindow::udpSendData(QString _mesajTur,QString _gorev,QString _ekmesaj,
         if (item.serverAddress=="") continue;
         if (item.selectedNetworkProfil==false) continue;
        /* if(item.networkBroadCastAddress!=""&&
-            item.serverAddress.section(".",0,2)==item.networkBroadCastAddress.section(".",0,2)&&
-            item.serverAddress.section(".",0,2)==item.ipAddress.section(".",0,2))
+            item.serverAddress.section(".",0,1)==item.networkBroadCastAddress.section(".",0,1)&&
+            item.serverAddress.section(".",0,1)==item.ipAddress.section(".",0,1))
         {*/
 
     for(int i=0;i<onlinePcList.count();i++)
@@ -210,9 +210,9 @@ void MainWindow::clientConfUpdate(const QJsonObject &json)
             pc->tcpConnectCounter=0;
             pc->setConnectState(true);
             pc->ip=ip;
-            qDebug()<<"ekleniyor"<<ip<<mac<<json;
+           // qDebug()<<"güncelleniyor.."<<ip<<mac<<json;
             //pc->volumeState=json["tray_volume"].toBool();
-            pc->setVersionState(json["tray_Version"].toString());
+            pc->setVersionState(json["consoleVersion"].toString());
             pc->setVolumeState(json["tray_volume"].toBool());
             pc->setKeyboardState(json["console_keyboardState"].toBool());
             pc->setMouseState(json["console_mouseState"].toBool());
@@ -328,6 +328,7 @@ interfaceList.clear();
                   im.ip=entry.ip().toString();
                   im.mac=networkInterface.hardwareAddress();
                   im.broadcast=entry.broadcast().toString();
+                  im.subnet    = entry.netmask().toString();
                   interfaceList.append(im);
 
                  // qDebug()<<"mac:"<<networkInterface.hardwareAddress();
@@ -425,7 +426,7 @@ void MainWindow::slotPcEkle(QString _mac,QString _ip)
     for (const NetProfil &item : NetProfilList) {
         //qDebug()<<item.networkBroadCastAddress;
 
-        if(_ip.section(".",0,2)==item.networkBroadCastAddress.section(".",0,2))
+        if(_ip.section(".",0,1)==item.networkBroadCastAddress.section(".",0,1))
         {
             mypc->netProfil=item;
         }

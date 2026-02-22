@@ -50,6 +50,7 @@ public:
     QString networkName;
     QString serverAddress;
     QString networkBroadCastAddress;
+    QString subnet;
     QString networkTcpPort;
     QString ftpPort;
     QString rootPath;
