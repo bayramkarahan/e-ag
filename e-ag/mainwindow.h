@@ -108,6 +108,22 @@ protected:
      void mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
      void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
      void paintEvent(QPaintEvent* event);
+     QString turkceKarakterTemizle(QString text)
+     {
+         text.replace("ç", "c");
+         text.replace("Ç", "C");
+         text.replace("ş", "s");
+         text.replace("Ş", "S");
+         text.replace("ı", "i");
+         text.replace("İ", "I");
+         text.replace("ğ", "g");
+         text.replace("Ğ", "G");
+         text.replace("ö", "o");
+         text.replace("Ö", "O");
+         text.replace("ü", "u");
+         text.replace("Ü", "U");
+         return text;
+     }
  public slots:
      void eagtraySendDataDetached(const QString &cmd);
      void eagtraySendData(const QString &cmd,TrayResponseCallback callback);

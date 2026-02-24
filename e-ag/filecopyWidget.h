@@ -79,6 +79,7 @@ QWidget*  MainWindow::fileWidget()
 
         QString uzanti = fi.completeSuffix();
         QString ad = fi.baseName().replace(" ","");
+        ad = turkceKarakterTemizle(ad);
         if(uzanti=="")
             selectFileCopySlot("homesendfile",pth.fromPercentEncoding(name1.toUtf8()),ad);
          else
@@ -107,6 +108,7 @@ QWidget*  MainWindow::fileWidget()
 
         QString uzanti = fi.completeSuffix();
         QString ad = fi.baseName().replace(" ","");
+        ad = turkceKarakterTemizle(ad);
         QString dosya=QString("cat >/tmp/debeagscript << EOF"
                                 "\n#!/bin/bash"
                                 "\nexport DEBIAN_FRONTEND=noninteractive"
@@ -153,6 +155,7 @@ QWidget*  MainWindow::fileWidget()
 
         QString uzanti = fi.completeSuffix();
         QString ad = fi.baseName().replace(" ","");
+        ad = turkceKarakterTemizle(ad);
         QString dosya=QString("cat >/tmp/eagscript << EOF"
                                 "\n#!/bin/bash"
                                 "\nexport DEBIAN_FRONTEND=noninteractive"
@@ -200,6 +203,7 @@ QWidget*  MainWindow::fileWidget()
 
         QString uzanti = fi.completeSuffix();
         QString ad = fi.baseName().replace(" ","");
+        ad = turkceKarakterTemizle(ad);
         if(uzanti=="")
             selectFileCopySlot("desktopsendfile", pth.fromPercentEncoding(name1.toUtf8()),ad);
         else

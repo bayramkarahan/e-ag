@@ -33,6 +33,7 @@ public:
     QString networkTcpPort;
     QString ftpPort;
     QString rootPath;
+    QString multicastAddress;
     QString language;
     bool lockScreenState;
     bool webblockState;
@@ -63,6 +64,7 @@ private slots:
     QUdpSocket *udpBroadCastSend = nullptr;
     bool networkProfilLoadStatus=false;
     QHostAddress multicastGroup;
+    QString multicastAddress;
     quint16 multicastPort;
     QFileSystemWatcher networkProfilWather;
 };
