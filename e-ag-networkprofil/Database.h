@@ -107,6 +107,12 @@ public:
     // Örnek kullanım:
     //veriSil("ad", "Ayşe");
 
+    void TekKayitYaz(const QJsonObject &veri)
+    {
+        QJsonArray arr;
+        arr.append(veri);   // sadece 1 kayıt
+        Kaydet(arr);        // eski her şey silinir
+    }
 
     void network1Save()
     {

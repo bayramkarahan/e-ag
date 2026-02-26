@@ -33,7 +33,6 @@ public:
     QString networkTcpPort;
     QString ftpPort;
     QString rootPath;
-    QString multicastAddress;
     QString language;
     bool lockScreenState;
     bool webblockState;

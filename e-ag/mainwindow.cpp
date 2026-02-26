@@ -53,6 +53,7 @@
 #include<webInternetWidget.h>
 #include<keyboardmouseWidget.h>
 #include<deviceWidget.h>
+#include<multicastaddressdialog.h>
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
 {

@@ -69,6 +69,7 @@
 #include <QThread>
 #include <QLocalSocket>
 #include<userprivilegehelper.h>
+#include<multicastaddressdialog.h>
 class QStyle;
 class IpMac
 {

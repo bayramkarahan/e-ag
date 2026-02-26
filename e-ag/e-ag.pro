@@ -28,6 +28,7 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     multicast_receiver.cpp \
+    multicastaddressdialog.cpp \
     mypc.cpp \
     pcdata.cpp \
     rubberband.cpp \
@@ -56,6 +57,7 @@ HEADERS += \
     menu.h \
     messageWidget.h \
     multicast_receiver.h \
+    multicastaddressdialog.h \
     mypc.h \
     pcdata.h \
     powerrebootWidget.h \

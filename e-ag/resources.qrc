@@ -100,5 +100,6 @@
         <file>icons/allowweb.svg</file>
         <file>icons/denyweb.svg</file>
         <file>icons/cleandesktop.svg</file>
+        <file>icons/multicast.svg</file>
     </qresource>
 </RCC>

@@ -16,14 +16,27 @@ NewtworkProfil::NewtworkProfil()
                 networkProfilLoad();  // burada tekrar addPath() çağırılacak
             });
     networkProfilLoad();
-    if(multicastAddress=="")multicastAddress="239.255.0.11";
+    /**********************************************************************************/
+    DatabaseHelper *db=new DatabaseHelper(localDir+"e-ag-multicastaddress.json");
+    QJsonArray dizi=db->Oku();
+    if(dizi.count()>0)
+    {
+        QJsonValue item=dizi.first();
+        QJsonObject veri=item.toObject();
+        multicastAddress=veri["multicastAddress"].toString();
+    }else
+    {
+        multicastAddress="239.255.0.11";
+    }
     qDebug()<<"multicastAddress: "<<multicastAddress;//networkProfilLoad(); çalışmalı öncesinde
+    /*****************************************************************************/
 
     udpBroadCastSend = new QUdpSocket(this);
     udpBroadCastSend->bind(QHostAddress::AnyIPv4,0,
         QUdpSocket::ShareAddress | QUdpSocket::ReuseAddressHint);
     udpBroadCastSend->setSocketOption(QAbstractSocket::MulticastTtlOption, 2);
-    multicastGroup = QHostAddress("239.255.0.11");
+    //multicastGroup = QHostAddress("239.255.0.11");
+    multicastGroup = QHostAddress(multicastAddress);
     multicastPort = 45454;
     udpBroadCastSend->setSocketOption(QAbstractSocket::MulticastTtlOption, 32);
 
@@ -63,7 +76,6 @@ void NewtworkProfil::sendBroadcastDatagram()
                 sendJson["ftpPort"] =item.ftpPort;
                 sendJson["rootPath"] =item.rootPath;
                 sendJson["language"] =item.language;
-                sendJson["multicastAddress"] =item.multicastAddress;
 
                 sendJson["webblockState"] =item.webblockState;
                 sendJson["lockScreenState"] =item.lockScreenState;
@@ -113,8 +125,6 @@ void NewtworkProfil::networkProfilLoad()
             np.ftpPort=veri["ftpPort"].toString();
             np.rootPath=veri["rootPath"].toString();
             np.language=veri["language"].toString();
-            np.multicastAddress=veri["multicastAddress"].toString();
-            multicastAddress=veri["multicastAddress"].toString();
             np.lockScreenState=veri["lockScreenState"].toBool();
             np.webblockState=veri["webblockState"].toBool();
             NetProfilList.append(np);
@@ -140,8 +150,6 @@ void NewtworkProfil::networkProfilLoad()
             veri["ftpPort"]="12345";
             veri["rootPath"]="/tmp/";
             veri["language"]="tr_TR";
-            veri["multicastAddress"]="239.255.0.11";
-            multicastAddress="239.255.0.11";
             veri["lockScreenState"]=false;
             veri["webblockState"]=false;
             if(interfaceList[i].ip.contains("172.17"))veri["selectedNetworkProfil"] =false;
