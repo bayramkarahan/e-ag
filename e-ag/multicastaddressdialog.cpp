@@ -70,52 +70,14 @@ void MulticastAddressDialog::saveMulticastAddress()
     //updateHostsFile(newHostname);
 
     QMessageBox::information(this, "Başarılı",
-                             "Yayın adresi başarıyla değiştirildi.");
+                             "Sunucu yayın adresi başarıyla değiştirildi.");
+
+    //system("systemctl restart e-ag-networkprofil.service");
+    int ret = QProcess::execute("bash", QStringList() << "-c" << "systemctl restart e-ag-networkprofil.service");
+    if (ret != 0) {
+        QMessageBox::critical(this, "Hata", "e-ag-networkprofil yeniden başlatılamadı.");
+        return;
+    }
 
     accept();
-}
-
-void MulticastAddressDialog::updateHostsFile(const QString &newHostname)
-{
-    QString path = "/etc/hosts";
-    QFile f(path);
-
-    if (!f.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qWarning() << "/etc/hosts okunamadı!";
-        return;
-    }
-
-    QStringList lines;
-    QTextStream in(&f);
-    while (!in.atEnd()) {
-        QString line = in.readLine();
-
-        // 127.0.1.1 ile başlayan TÜM satırları SİL (daha sonra yenisini yazacağız)
-        if (line.startsWith("127.0.1.1")) {
-            continue;
-        }
-
-        // 127.1.1.0 gibi hatalı bir şey varsa onu da tamamen yok say
-        if (line.startsWith("127.1.1.0")) {
-            continue;
-        }
-
-        lines << line;
-    }
-    f.close();
-
-    // En alta doğru satırı ekle
-    lines << QString("127.0.1.1\t%1").arg(newHostname);
-
-    // Dosyaya geri yaz
-    if (!f.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
-        qWarning() << "/etc/hosts yazılamadı!";
-        return;
-    }
-
-    QTextStream out(&f);
-    for (const QString &l : lines)
-        out << l << "\n";
-
-    f.close();
 }

@@ -17,7 +17,6 @@ public:
 
 private slots:
     void saveMulticastAddress();
-    void updateHostsFile(const QString &newHostname);
 private:
     QLineEdit *hostnameEdit;
     QPushButton *saveButton;
