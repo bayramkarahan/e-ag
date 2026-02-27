@@ -12,8 +12,8 @@ MulticastAddressDialog::MulticastAddressDialog(int w, int h, QWidget *parent)
     : QDialog(parent)
 {
     localDir="/usr/share/e-ag/";
-    setFixedSize(w,h);
-    setWindowTitle("Multicast Address ");
+    setFixedSize(w*2.7,h*2.2);
+    setWindowTitle("Ağ Yayın Adresi(Multicast Address) ");
 
     QLabel *label = new QLabel("Yayın Adresi:");
     hostnameEdit = new QLineEdit;
@@ -39,7 +39,15 @@ MulticastAddressDialog::MulticastAddressDialog(int w, int h, QWidget *parent)
 
     connect(saveButton, &QPushButton::clicked, this, &MulticastAddressDialog::saveMulticastAddress);
     connect(cancelButton, &QPushButton::clicked, this, &MulticastAddressDialog::reject);
-
+    QLabel *aciklama = new QLabel(this);
+    aciklama->setWordWrap(true);
+    aciklama->setText("Yayın adresi(Multicast) Sunucu-İstemci arasında iletişim adresini ifade ediyor.\n"
+                      "Yayın adresi, 239.255.0.11 varsayılan değerdir ve bu adres üzerinden haberleşir.\n"
+                      "239.255.0.11 yayın adresi Sunucu-İstemci de aynı olmalıdır.\n"
+                      "Aynı ağda birden fazla server farklı yayın adresleri kullanarak gruplamalar yapılabilir.\n"
+                      "Örneğin;\n"
+                      "\tAynı ağda iki farklı LAB varsa yayın adresleri, LAB1=239.255.0.11 ve LAB2=239.255.0.12 gibi ayarlanmalı.\n"
+                      "Dikkat edilmesi gereken nokta Sunucu-İstemci de aynı yayın adresi olması.");
     QHBoxLayout *btnLayout = new QHBoxLayout;
     btnLayout->addStretch();
     btnLayout->addWidget(saveButton);
@@ -48,6 +56,8 @@ MulticastAddressDialog::MulticastAddressDialog(int w, int h, QWidget *parent)
     QVBoxLayout *mainLayout = new QVBoxLayout;
     mainLayout->addWidget(label);
     mainLayout->addWidget(hostnameEdit);
+    mainLayout->addWidget(aciklama);
+
     mainLayout->addLayout(btnLayout);
 
     setLayout(mainLayout);

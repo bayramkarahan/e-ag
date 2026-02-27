@@ -31,7 +31,7 @@ QWidget* MainWindow::settingsWidget()
     multicastAddressChangeButton->setIconSize(QSize(b*8,b*8));
     multicastAddressChangeButton->setStyleSheet("Text-align:center");
     multicastAddressChangeButton->setIcon(QIcon(":/icons/multicast.svg"));
-    //multicastAddressChangeButton->setAutoRaise(true);
+    multicastAddressChangeButton->setAutoRaise(true);
     multicastAddressChangeButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
     multicastAddressChangeButton->setText("Yayın Adresi");
@@ -111,7 +111,8 @@ QWidget* MainWindow::settingsWidget()
                      "<br/><br/>2-Uygulamadaki Tcp Port: yazılımın kullandığı port boş bırakılırsa 7879 olarak ayarlar."
                      "<br/><br/>3-İstemcilerin listesini İstemci Listele seçeneği ile yapabilir ve listeyi yazdırabiliriz."
                      "<br/><br/>4-Gizlenmiş istemcileri tekrar listede görünmesi için Gizli Bilgisayarlar Göster seçeneğini kullanabilirsiniz."
-                          ));
+                     "<br/><br/><center><img src=\":/icons/multicast.png\"/></center>"
+                           ));
         QPrinter pdf;
         pdf.setOutputFileName("/tmp/ayar.pdf");
         pdf.setOutputFormat(QPrinter::PdfFormat);

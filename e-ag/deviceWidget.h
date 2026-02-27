@@ -174,6 +174,55 @@ QWidget* MainWindow::deviceWidget()
         udpSendData("consolecommand","consolecommand","bash /usr/bin/input-power-on","powerbutton-on",true);
     });
 
+    QToolButton *helpButton= new QToolButton;
+    helpButton->setFixedSize(e*12,yukseklik*2);
+    helpButton->setAutoRaise(true);
+    // bilgiButton->setAutoFillBackground(true);
+    helpButton->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
+    helpButton->setText(tr("Yardım"));
+    helpButton->setIcon(QIcon(":/icons/help.svg"));
+    helpButton->setIconSize(QSize(b*10,yukseklik*1.3));
+    helpButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+
+    connect(helpButton, &QToolButton::clicked, [=]() {
+        QTextDocument *doc=new QTextDocument();
+
+        doc->setHtml(tr("<center><h2>Donanım İşlemleri</h2></center>"
+                        "<center><img src=\":/icons/device.png\" /></center> "
+                        "<center><img src=\":/icons/istemci.png\" /></center>"
+                        "<br/>1-İstemcilerde <b>Klavyey</b> aktif-pasif yapabilirsiniz."
+                        "<br/>2-İstemcilerde <b>Fare</b> aktif-pasif yapabilirsiniz."
+                        "<br/>3-İstemcilerde <b>Ses</b> aktif-pasif yapabilirsiniz."
+                         "<br/>4-İstemcilerde interneti aktif-pasif yapabilirsiniz."
+                        ));
+        QPrinter pdf;
+        pdf.setOutputFileName("/tmp/device.pdf");
+        pdf.setOutputFormat(QPrinter::PdfFormat);
+        doc->print(&pdf);
+
+        QTextEdit *document = new QTextEdit();
+        document->setReadOnly(true);
+        //  document->show();
+        document->setDocument(doc);
+        QVBoxLayout * vbox = new QVBoxLayout();
+        QHBoxLayout * hbox1= new QHBoxLayout();
+
+        // hbox1->addWidget(commandFileLabel);
+        hbox1->addWidget(document);
+
+        vbox->addLayout(hbox1);
+        QDialog * d1 = new QDialog();
+        d1->setWindowTitle(tr("Donanım Yardım Penceresi"));
+        d1->setFixedSize(QSize(boy*215,boy*90));
+        auto appIcon = QIcon(":/icons/e-ag.svg");
+        d1->setWindowIcon(appIcon);
+
+        d1->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
+
+        d1->setLayout(vbox);
+        d1->exec();
+    });
+
     /**************************************************/
     // 🔧 Layout burada doğrudan 'sor' üzerine uygulanıyor
     auto layout = new QGridLayout(sor);
@@ -192,8 +241,8 @@ QWidget* MainWindow::deviceWidget()
     layout->addWidget(stopInternetButton,0, 8, Qt::AlignCenter);
     layout->addWidget(openInternetButton,0, 9, Qt::AlignCenter);
 
-    ///layout->addWidget(stopPowerButton,0, 10, Qt::AlignCenter);
-    ///layout->addWidget(openPowerButton,0, 11, Qt::AlignCenter);
+    layout->addWidget(helpButton,0, 10, Qt::AlignCenter);
+
 
     // 🔹 Boyutları eşitlemek istersen:
   /*  layout->setRowStretch(0, 1);

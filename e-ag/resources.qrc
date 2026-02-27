@@ -101,5 +101,7 @@
         <file>icons/denyweb.svg</file>
         <file>icons/cleandesktop.svg</file>
         <file>icons/multicast.svg</file>
+        <file>icons/multicast.png</file>
+        <file>icons/device.png</file>
     </qresource>
 </RCC>

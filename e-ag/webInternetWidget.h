@@ -237,7 +237,8 @@ QWidget* MainWindow::webInternetWidget()
                      "<center><img src=\":/icons/istemci.png\" /></center>"
                      "<br/>1-Açmak instenilen Web sayfasının adresini yazıp client de açabilirsiniz."
                      "<br/>2-Youtube girişini aktif-pasif yapabilirsiniz."
-                     "<br/>3-Tüm interneti client de aktif-pasif yapabilirsiniz."
+                        "<br/>3-İstenilen bir adresi İstemcide engelleyebilir veya engel kaldırabiliriz."
+                        "<br/>4-Tüm interneti client de aktif-pasif yapabilirsiniz."
                                            ));
         QPrinter pdf;
         pdf.setOutputFileName("/tmp/web-internet.pdf");

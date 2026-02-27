@@ -285,18 +285,17 @@ QWidget*  MainWindow::fileWidget()
         QTextDocument *doc=new QTextDocument();
 
         doc->setHtml(tr("<center><h2>Dosya Kopyalama</h2></center>"
-                     "<center><img src=\":/icons/dosyakopyalama.png\" /></center> "
-                     "<center><img src=\":/icons/istemci.png\" /></center>"
-                     "<br/><br/>1-Klasör içeriğinin tamamını kopyalamak için dosya ismi yerine * konulması gerekir;"
-                     "<br/> Örneğin: /home/user/* şeklinde klasör içeriğini kopyalar."
-                     "<br/><br/>2-İstemcide açık kullanıcı masaüstüne dosya kopyalama için Masaüstlerine Dağıt seçeneğini kullanabilirsiniz."
-                     "<br/><br/>3-İstemcide açık kullanıcı masaüstüne çalışma dosyası göndermek için Çalışmaları Dağıt seçeneğini kullanabilirsiniz."
-                     "<br/><br/>4-İstemcide açık kullanıcı masaüstündeki çalışma dosyasını Sunucuya toplamak için Çalışmaları Topla seçeneğini kullanabilirsiniz."
-                     "<br/><br/>5-<b>Pc'lere Kopyala</b> seçeneği Client'de açık kullanıcının ev dizinine kopyalanacaktır."
-                     "<br/><br/>6-Birden fazla istemciye kopyalama için istemcileri seçerek kopyalanabilir."
-                     "<br/><br/>7-<b>Paketi Kur</b> seçeneği ile deb uzantılı paketi istemciye kururulumu yapılır."
-                     "<br/><br/>8-<b>Scripti Çalıştır</b> seçeneği ile scripti istemci üzerinde çalıştırır."
-                        ));
+                    "<center><img src=\":/icons/dosyakopyalama.png\" /></center> "
+                    "<center><img src=\":/icons/istemci.png\" /></center>"
+                    "<br/><br/>1-<b>Dosya Seç</b> seçeneği ile dosya seçimi yapılır."
+                    "<br/><br/>2-<b>Paketi Kur</b> seçeneği ile deb uzantılı paketi istemciye kururulumu yapılır."
+                    "<br/><br/>3-<b>Scripti Çalıştır</b> seçeneği ile scripti istemci üzerinde çalıştırır."
+                    "<br/><br/>4-İstemcide açık kullanıcı masaüstüne dosya kopyalama için <b>Masaüstlerine Dağıt</b> seçeneğini kullanabilirsiniz."
+                    "<br/><br/>5-<b>Ev Dizinine Göder</b> seçeneği İstemcide açık kullanıcının ev dizinine kopyalanacaktır."
+                    "<br/><br/>6-İstemcide açık kullanıcı masaüstüne <b>çalışma dosyası</b> göndermek için <b>Çalışmaları Dağıt</b>  seçeneğini kullanabilirsiniz."
+                    "<br/><br/>7-İstemcide açık kullanıcı masaüstündeki <b>çalışma dosyasını</b> Sunucuya toplamak için <b>Çalışmaları Topla</b> seçeneğini kullanabilirsiniz."
+                    "<br/><br/>8-Birden fazla istemciye kopyalama için istemcileri seçerek kopyalanabilir."
+                    ));
         QPrinter pdf;
         pdf.setOutputFileName("/tmp/dosyakopyalama.pdf");
         pdf.setOutputFormat(QPrinter::PdfFormat);
