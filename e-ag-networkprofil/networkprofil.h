@@ -12,6 +12,7 @@
 #include<QDir>
 #include<QFileSystemWatcher>
 #include <QNetworkConfigurationManager>
+#include <QThread>
 class IpMac
 {
 public:
@@ -55,6 +56,7 @@ signals:
 private slots:
     void hostAddressMacButtonSlot();
     void sendBroadcastDatagram();
+    void multicastJoin();
  private:
     QProcess process;
     QList<IpMac> interfaceList;

@@ -13,7 +13,9 @@ NewtworkProfil::NewtworkProfil()
     connect(&networkProfilWather, &QFileSystemWatcher::fileChanged, this,
             [this](){
                 qDebug()<<"Ayarlar güncellendi...";
-                networkProfilLoad();  // burada tekrar addPath() çağırılacak
+                QThread::sleep(5);
+                multicastJoin();
+                networkProfilLoad();
             });
     networkProfilLoad();
     networkConfigManager = new QNetworkConfigurationManager(this);
@@ -22,9 +24,24 @@ NewtworkProfil::NewtworkProfil()
             this, [this](const QNetworkConfiguration &config){
                 Q_UNUSED(config);
                 qDebug() << "Network configuration changed!";
+                QThread::sleep(5);
+                qDebug() << "Network configuration changed! Ayarlar yükleniyor...";
+                multicastJoin();
                 networkProfilLoad();
             });
 
+
+    /**************************************************************************/
+    QTimer *udpSocketSendConsoleTimer = new QTimer(this);
+    connect(udpSocketSendConsoleTimer, &QTimer::timeout,
+            this, &NewtworkProfil::sendBroadcastDatagram);
+    udpSocketSendConsoleTimer->start(5000);
+
+
+}
+void NewtworkProfil::multicastJoin()
+{
+    qDebug() << "multicastJoin!";
     /**********************************************************************************/
     DatabaseHelper *db=new DatabaseHelper(localDir+"e-ag-multicastaddress.json");
     QJsonArray dizi=db->Oku();
@@ -48,13 +65,6 @@ NewtworkProfil::NewtworkProfil()
     multicastGroup = QHostAddress(multicastAddress);
     multicastPort = 45454;
     udpBroadCastSend->setSocketOption(QAbstractSocket::MulticastTtlOption, 32);
-
-    /**************************************************************************/
-    QTimer *udpSocketSendConsoleTimer = new QTimer(this);
-    connect(udpSocketSendConsoleTimer, &QTimer::timeout,
-            this, &NewtworkProfil::sendBroadcastDatagram);
-    udpSocketSendConsoleTimer->start(5000);
-
 
 }
 
@@ -107,6 +117,7 @@ NewtworkProfil::~NewtworkProfil()
 
 void NewtworkProfil::networkProfilLoad()
 {
+    qDebug() << "multicastJoin!";
    /* qDebug()<<"networkProfilLoad: "<<NetProfilList.count()
              <<"interfaceList: "<<interfaceList.count()
              <<"networkProfilLoadStatus"<<networkProfilLoadStatus;*/
