@@ -125,6 +125,19 @@ protected:
          text.replace("Ü", "U");
          return text;
      }
+     bool ayniSubnet(const QString &ip1,
+                     const QString &ip2,
+                     const QString &mask)
+     {
+         QHostAddress addr1(ip1);
+         QHostAddress addr2(ip2);
+         QHostAddress netmask(mask);
+
+         quint32 net1 = addr1.toIPv4Address() & netmask.toIPv4Address();
+         quint32 net2 = addr2.toIPv4Address() & netmask.toIPv4Address();
+
+         return net1 == net2;
+     }
  public slots:
      void eagtraySendDataDetached(const QString &cmd);
      void eagtraySendData(const QString &cmd,TrayResponseCallback callback);

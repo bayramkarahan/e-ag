@@ -121,7 +121,7 @@ void MainWindow::slotEkranIzle()
 
 void MainWindow::slotEkranIzleDurdur()
 {
-    qDebug() << "durdur-0";
+
 
     for (int i = 0; i < onlinePcList.count(); i++) {
         if (onlinePcList[i]->connectState && (onlinePcList[i]->select || onlinePcList[i]->multiSelect)) {
@@ -137,7 +137,7 @@ void MainWindow::slotEkranIzleDurdur()
     udpSendData("x11command", "x11command", "pkill ffmpeg", "", false);
 
     mesajSlot(tr("Seçili Ekran İzlemeler Durduruldu."));
-    qDebug() << "durdur3";
+
 }
 
 

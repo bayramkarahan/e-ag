@@ -11,6 +11,7 @@
 #include<QSysInfo>
 #include<QDir>
 #include<QFileSystemWatcher>
+#include <QNetworkConfigurationManager>
 class IpMac
 {
 public:
@@ -66,6 +67,8 @@ private slots:
     QString multicastAddress;
     quint16 multicastPort;
     QFileSystemWatcher networkProfilWather;
+
+    QNetworkConfigurationManager *networkConfigManager;
 };
 
 #endif // NETWORKPROFIL_H

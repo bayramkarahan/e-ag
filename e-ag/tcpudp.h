@@ -25,19 +25,24 @@ void  MainWindow::udpSendData(QString _mesajTur,QString _gorev,QString _ekmesaj,
     QString uport="7879";
     udpSendDataStatus=true;
     ///qDebug()<<"Mesaj Gönderilecek:"<<_mesajTur;
-    for (const NetProfil &item : NetProfilList) {
-        if (item.serverAddress=="") continue;
-        if (item.selectedNetworkProfil==false) continue;
-       /* if(item.networkBroadCastAddress!=""&&
-            item.serverAddress.section(".",0,1)==item.networkBroadCastAddress.section(".",0,1)&&
-            item.serverAddress.section(".",0,1)==item.ipAddress.section(".",0,1))
-        {*/
+   // for (const NetProfil &item : NetProfilList) {
+   //     if (item.serverAddress=="") continue;
+   //     if (item.selectedNetworkProfil==false) continue;
 
     for(int i=0;i<onlinePcList.count();i++)
     {
 
+
         if(onlinePcList[i]->connectState&&(onlinePcList[i]->select||onlinePcList[i]->multiSelect))
         {
+           /* bool result=ayniSubnet(onlinePcList[i]->ip,
+                                     onlinePcList[i]->netProfil.serverAddress,
+                                     onlinePcList[i]->netProfil.subnet);*/
+            // aynı ağdaysa mesaj gönder
+           // if(result){
+
+           // qDebug()<<"Test.:"<<onlinePcList[i]->ip<<onlinePcList[i]->netProfil.subnet
+            //        <<item.serverAddress<<item.subnet<<result;
             uport=onlinePcList[i]->netProfil.networkTcpPort;
             std::reverse(uport.begin(), uport.end());
             QString smesajVisible="0";
@@ -57,9 +62,10 @@ void  MainWindow::udpSendData(QString _mesajTur,QString _gorev,QString _ekmesaj,
             QByteArray datagram = QJsonDocument(sendJson).toJson(QJsonDocument::Compact);
             udpSocketSend->writeDatagram(datagram,QHostAddress(onlinePcList[i]->ip), uport.toInt());
             ///qDebug()<<"Mesaj Gönderildi:"<<msg;
+           // }
         }
     }
-    }
+    //}
     udpSendDataStatus=false;
 }
 
@@ -423,12 +429,17 @@ void MainWindow::slotPcEkle(QString _mac,QString _ip)
             this, SLOT(pcRightClickSignalSlot()));
 
     mypc->netProfil=NetProfilList.first();
+
     for (const NetProfil &item : NetProfilList) {
         //qDebug()<<item.networkBroadCastAddress;
 
-        if(_ip.section(".",0,1)==item.networkBroadCastAddress.section(".",0,1))
-        {
+        bool result=ayniSubnet(_ip,
+                                 item.serverAddress,
+                                 item.subnet);
+        // aynı ağ profilini ekle
+        if(result){
             mypc->netProfil=item;
+            break;
         }
     }
 

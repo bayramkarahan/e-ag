@@ -434,7 +434,8 @@ void MyPc::setIconControlState(bool state)
             qWarning() << "❌ Geçersiz IP adresi:" << ip;
             return;
         }
-
+        //qDebug() << "🟢"<<ip<<netProfil.serverAddress;
+        //return;
         QString newIp = QString("udp://@239.0.%1.%2:1234?localaddr=%3")
                             .arg(ipparts[2])
                             .arg(ipparts[3])

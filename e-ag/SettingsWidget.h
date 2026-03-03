@@ -709,6 +709,7 @@ void MainWindow::networkProfil()
 
 void MainWindow::networkProfilLoad()
 {
+
     DatabaseHelper *db=new DatabaseHelper(localDir+"e-ag.json");
     //QJsonArray dizi=db->Oku();
     QJsonArray dizi=db->Ara("selectedNetworkProfil",true);
@@ -735,12 +736,19 @@ void MainWindow::networkProfilLoad()
             np.webblockState=veri["webblockState"].toBool();
             NetProfilList.append(np);
         }
-    }else{
-        qDebug()<<"Yeni Network Ekleniyor.";
+    }
 
-        hostAddressMacButtonSlot();
-        for(int i=0;i<interfaceList.count();i++)
+
+/*
+hostAddressMacButtonSlot();
+    bool appendStatus=false;
+    for(int i=0;i<interfaceList.count();i++)
+    {
+        QJsonArray dizi=db->Ara("serverAddress",interfaceList[i].ip);
+        if(dizi.empty())
         {
+            qDebug()<<"Yeni Network Ekleniyor.";
+            appendStatus=true;
             //qDebug()<<"broadcast address:"<<i<<ipmaclist[i].broadcast;
             QJsonObject veri;
             veri["networkIndex"] =QString::number(db->getIndex("networkIndex"));
@@ -753,16 +761,18 @@ void MainWindow::networkProfilLoad()
             veri["ftpPort"]="12345";
             veri["rootPath"]="/tmp/";
             veri["language"]="tr_TR";
-
             veri["lockScreenState"]=false;
             veri["webblockState"]=false;
+            if(interfaceList[i].ip.contains("172.17"))veri["selectedNetworkProfil"] =false;
             db->Sil("networkBroadCastAddress",interfaceList[i].broadcast);
             db->Ekle(veri);
         }
-        networkProfilLoad();
+    }
+    if(appendStatus){  networkProfilLoad();}
+*/
         //qDebug()<<"eagconf bilgileri farklı güncelleniyor.";
        // system("systemctl restart e-ag-networkprofil.service");
-    }
+
 }
 
 
