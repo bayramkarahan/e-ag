@@ -13,23 +13,31 @@ NewtworkProfil::NewtworkProfil()
     connect(&networkProfilWather, &QFileSystemWatcher::fileChanged, this,
             [this](){
                 qDebug()<<"Ayarlar güncellendi...";
-                QThread::sleep(5);
+            QTimer::singleShot(5000, this, [this](){
                 multicastJoin();
                 networkProfilLoad();
             });
-    networkProfilLoad();
+
+            });
+
     networkConfigManager = new QNetworkConfigurationManager(this);
 
     connect(networkConfigManager, &QNetworkConfigurationManager::configurationChanged,
             this, [this](const QNetworkConfiguration &config){
                 Q_UNUSED(config);
                 qDebug() << "Network configuration changed!";
-                QThread::sleep(5);
-                qDebug() << "Network configuration changed! Ayarlar yükleniyor...";
-                multicastJoin();
-                networkProfilLoad();
+                 QTimer::singleShot(5000, this, [this](){
+                    qDebug() << "Network configuration changed! Ayarlar yükleniyor...";
+                    multicastJoin();
+                    networkProfilLoad();
+                });
             });
+    udpBroadCastSend = new QUdpSocket(this);
+    udpBroadCastSend->bind(QHostAddress::AnyIPv4,0,
+                           QUdpSocket::ShareAddress | QUdpSocket::ReuseAddressHint);
 
+    multicastJoin(); //udpBroadCastSend nesnesi oluştuktan sonra çalışmalı
+    networkProfilLoad();
 
     /**************************************************************************/
     QTimer *udpSocketSendConsoleTimer = new QTimer(this);
@@ -43,8 +51,8 @@ void NewtworkProfil::multicastJoin()
 {
     qDebug() << "multicastJoin!";
     /**********************************************************************************/
-    DatabaseHelper *db=new DatabaseHelper(localDir+"e-ag-multicastaddress.json");
-    QJsonArray dizi=db->Oku();
+    DatabaseHelper db(localDir+"e-ag-multicastaddress.json");
+    QJsonArray dizi=db.Oku();
     if(dizi.count()>0)
     {
         QJsonValue item=dizi.first();
@@ -57,15 +65,10 @@ void NewtworkProfil::multicastJoin()
     qDebug()<<"multicastAddress: "<<multicastAddress;//networkProfilLoad(); çalışmalı öncesinde
     /*****************************************************************************/
 
-    udpBroadCastSend = new QUdpSocket(this);
-    udpBroadCastSend->bind(QHostAddress::AnyIPv4,0,
-        QUdpSocket::ShareAddress | QUdpSocket::ReuseAddressHint);
-    udpBroadCastSend->setSocketOption(QAbstractSocket::MulticastTtlOption, 2);
-    //multicastGroup = QHostAddress("239.255.0.11");
+     //multicastGroup = QHostAddress("239.255.0.11");
     multicastGroup = QHostAddress(multicastAddress);
     multicastPort = 45454;
     udpBroadCastSend->setSocketOption(QAbstractSocket::MulticastTtlOption, 32);
-
 }
 
 void NewtworkProfil::sendBroadcastDatagram()
@@ -101,7 +104,10 @@ void NewtworkProfil::sendBroadcastDatagram()
 
                 udpBroadCastSend->setMulticastInterface(interfaceList[k].iface);
                 QByteArray datagram = QJsonDocument(sendJson).toJson(QJsonDocument::Compact);
-                udpBroadCastSend->writeDatagram(datagram,multicastGroup,multicastPort);
+                //udpBroadCastSend->writeDatagram(datagram,multicastGroup,multicastPort);
+                if (!udpBroadCastSend->writeDatagram(datagram, multicastGroup, multicastPort)) {
+                    qDebug() << "Multicast send error:" << udpBroadCastSend->errorString();
+                }
                 //qDebug()<<"ServerBroadCast"<<item.networkIndex<<item.networkBroadCastAddress<<sendJson<<uport.toInt()+uport.toInt();
              }
         }
