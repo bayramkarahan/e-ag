@@ -61,8 +61,8 @@ public:
     void emitEndSignal(bool emitFinished, QString errMess);
 
   public:
-
-    SCDImgClient(QString host, quint16 port, int timeout);
+    SCDImgClient(QString host, quint16 port, int timeout = 0, QObject *parent=nullptr);
+    //SCDImgClient(QString host, quint16 port, int timeout);
 
     int sendFile(QString fileName, QString destPath);
 

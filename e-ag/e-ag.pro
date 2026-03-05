@@ -25,6 +25,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+    filetransferclient.cpp \
         main.cpp \
         mainwindow.cpp \
     multicast_receiver.cpp \
@@ -48,6 +49,7 @@ HEADERS += \
     baseWidget.h \
     deviceWidget.h \
     filecopyWidget.h \
+    filetransferclient.h \
     groupWidget.h \
     keyboardmouseWidget.h \
     languageWidget.h \

@@ -71,6 +71,13 @@
 #include<userprivilegehelper.h>
 #include<multicastaddressdialog.h>
 class QStyle;
+struct TransferJob {
+    QString ip;
+    quint16 port;
+    QString sourcePath;
+    QString targetPath;
+    QString mesajtype;
+};
 class IpMac
 {
 public:
@@ -254,7 +261,7 @@ QString getMacForIP(QString ipAddress);
     void slotEkranIzleAllDurdur();
     void slotPcEkle(QString _mac,QString _ip);
     void slotPcSil(int _index,QString _mac,QString _ip);
-
+    void startNextFileTransfer();
 private:
      QWidget *groupwidget1;
     bool pcrightmenu;
@@ -385,6 +392,11 @@ private:
     QSlider *ekranSlider;
     QString trayCommandResult;  // burada sakla
     QComboBox * ses;
+    /*********************/
+    QQueue<TransferJob> transferQueue; // transfer listesi
+    int maxParallelTransfers = 5;      // aynı anda çalışacak transfer sayısı
+    int runningTransfers = 0;          // şu anda çalışan transfer sayısı
+
   };
 
 #endif // MAINWINDOW_H

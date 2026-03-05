@@ -3,6 +3,7 @@
 #include<scdimgclient.h>
 #include <QDir>
 #include <QTextStream>
+#include<filetransferclient.h>
 #define  echo QTextStream(stderr) <<
 
 
@@ -348,7 +349,7 @@ QWidget*  MainWindow::fileWidget()
     return d;
 }
 
-void MainWindow::selectFileCopySlot(QString _mesajtype,QString _sourcePath,QString _targetPath)
+/*void MainWindow::selectFileCopySlot(QString _mesajtype,QString _sourcePath,QString _targetPath)
 {
        for(int i=0;i<onlinePcList.count();i++)
     {
@@ -361,13 +362,100 @@ void MainWindow::selectFileCopySlot(QString _mesajtype,QString _sourcePath,QStri
         qDebug()<<"kopyalanacak dosya: "<<_sourcePath<<_targetPath<<onlinePcList[i]->ip;
         ///QString komut="/usr/bin/scd-client "+onlinePcList[i]->ip+" "+onlinePcList[i]->netProfil.ftpPort+" PUT "+_sourcePath+" /"+_targetPath;
         //system(komut.toStdString().c_str());
-        fileCopyTasks.enqueue({_mesajtype,onlinePcList[i]->ip,onlinePcList[i]->netProfil.ftpPort,_sourcePath,_targetPath});
+       // fileCopyTasks.enqueue({_mesajtype,onlinePcList[i]->ip,onlinePcList[i]->netProfil.ftpPort,_sourcePath,_targetPath});
+        FileTransferClient *transfer =
+        new FileTransferClient(onlinePcList[i]->ip, onlinePcList[i]->netProfil.ftpPort.toUShort());
+        /*connect(transfer, &FileTransferClient::finished,
+                this, &YourClass::onFileTransferFinished);*/
+/*
+        connect(transfer, &FileTransferClient::finished, this,
+                [transfer, src = _sourcePath, dst = _targetPath](bool success, QString message)
+                {
+                    if(success)
+                        qDebug() << "Transfer tamamlandı:" << src << "->" << dst;
+                    else
+                        qDebug() << "Transfer hatası:" << message;
 
-     }
+                    transfer->deleteLater();
+                });
+
+        transfer->uploadFile(_sourcePath,"/"+_targetPath);
+        //transfer->uploadFile("C:/test/file.zip","/server/file.zip");
+        //transfer->downloadFile("/server/file.zip","C:/download/");
+        //transfer->deleteFile("/server/file.zip");*/
+ /*    }
     }
-    listeyiKopyala();
+    //listeyiKopyala();
     mesajSlot("Dosya Seçili Pc'lere Kopyalandı");
 }
+*/
+void MainWindow::selectFileCopySlot(QString _mesajtype, QString _sourcePath, QString _targetPath)
+{
+    for(int i=0; i<onlinePcList.count(); i++)
+    {
+        if(onlinePcList[i]->select || onlinePcList[i]->multiSelect)
+        {
+            if((_mesajtype=="desktopsendworkfile" || _mesajtype=="desktopsendfile") &&
+                onlinePcList[i]->user=="noLogin")
+                continue;
+
+            qDebug() << "Kopyalanacak dosya:" << _sourcePath << _targetPath << onlinePcList[i]->ip;
+
+            // Job oluştur ve queue'ya ekle
+            TransferJob job;
+            job.mesajtype=_mesajtype;
+            job.ip = onlinePcList[i]->ip;
+            job.port = onlinePcList[i]->netProfil.ftpPort.toUShort();
+            job.sourcePath = _sourcePath;
+            job.targetPath = "/" + _targetPath;
+
+            transferQueue.enqueue(job);
+        }
+    }
+
+    // Transferleri başlat
+    startNextFileTransfer();
+}
+void MainWindow::startNextFileTransfer()
+{
+    // Sıralı olarak queue’dan job al ve maxParallelTransfers sınırını aşma
+    while(runningTransfers < maxParallelTransfers && !transferQueue.isEmpty())
+    {
+        TransferJob job = transferQueue.dequeue();
+        runningTransfers++;
+
+        FileTransferClient *client = new FileTransferClient(job.ip, job.port);
+
+        // finished sinyalini bağla
+        connect(client, &FileTransferClient::finished, this,
+                [this, client,job](bool success, QString message)
+                {
+                    runningTransfers--;
+                    client->deleteLater();
+
+                    if(success){
+                        qDebug() << "Transfer tamamlandı:" << message<<job.mesajtype<<job.ip;
+                        udpSendData(job.mesajtype,job.targetPath,"","",false);
+                    }
+                    else
+                    {
+                        qDebug() << "Transfer hatası:" << message;
+                    }
+                    // sıradaki transferi başlat
+                    startNextFileTransfer();
+                });
+
+        client->uploadFile(job.sourcePath, job.targetPath);
+    }
+
+    // Eğer queue boş ve tüm transferler bitti ise mesaj verebilirsiniz
+    if(transferQueue.isEmpty() && runningTransfers == 0)
+    {
+        qDebug() << "Tüm transferler tamamlandı.";
+        mesajSlot("Dosya Seçili Pc'lere Kopyalandı");
+    }
+}
+
 void MainWindow::listeyiKopyala() {
     if (fileCopyTasks.isEmpty()) {
         qDebug() << "Tüm bilgisayarlara dosya gönderildi.";

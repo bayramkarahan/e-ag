@@ -25,9 +25,15 @@
  * @param Port
  * @param Timeout
  */
-SCDImgClient::SCDImgClient(QString host, quint16 port, int timeout=0) : host(host),port(port),timeout(timeout)
-{
-   connect(this, SIGNAL(connected())                        , this, SLOT(onConnected()));
+SCDImgClient::SCDImgClient(QString host,
+                           quint16 port,
+                           int timeout,
+                           QObject *parent)
+    : QTcpSocket(parent),
+    host(host),
+    port(port),
+    timeout(timeout)
+{   connect(this, SIGNAL(connected())                        , this, SLOT(onConnected()));
    connect(this, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(onError(QAbstractSocket::SocketError)));
    connect(this, SIGNAL(disconnected())                     , this, SLOT(onDisconnected()));
    connect(this, SIGNAL(readyRead())                        , this, SLOT(onReadyRead()));
