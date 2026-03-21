@@ -87,17 +87,12 @@ MainWindow::MainWindow(QWidget *parent) :
 //setMouseTracking(true);
 //installEventFilter(this);
     /************************version*******************************************/
-    QStringList arguments;
-    arguments << "-c" << "dpkg -s e-ag|grep -i version";
-    QString resultVersion;
+
     QProcess process;
-    process.start("/bin/bash",arguments);
-    if(process.waitForFinished())
-    {
-        resultVersion = process.readAll();
-    }
-    resultVersion.chop(1);
-    QString version = resultVersion.right(5);
+    process.start("/bin/bash", {"-c", "dpkg -s e-ag | grep -i '^Version:' | awk '{print $2}'"});
+    process.waitForFinished();
+
+    QString version = QString::fromUtf8(process.readAll()).trimmed();
     setWindowTitle("e-ag "+version);
     /***********************************************************************/
     auto appIcon = QIcon(":/icons/e-ag.svg");
