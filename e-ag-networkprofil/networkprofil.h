@@ -13,6 +13,7 @@
 #include<QFileSystemWatcher>
 #include <QNetworkConfigurationManager>
 #include <QThread>
+#include<ipwatcher.h>
 class IpMac
 {
 public:
@@ -46,6 +47,21 @@ class NewtworkProfil: public QObject
 public:
     NewtworkProfil();
     ~NewtworkProfil();
+    QString lastIP;
+
+    QString getCurrentIP() {
+        for (const QNetworkInterface &iface : QNetworkInterface::allInterfaces()) {
+            if (!(iface.flags() & QNetworkInterface::IsUp) ||
+                iface.flags() & QNetworkInterface::IsLoopBack)
+                continue;
+
+            for (const QNetworkAddressEntry &entry : iface.addressEntries()) {
+                if (entry.ip().protocol() == QAbstractSocket::IPv4Protocol)
+                    return entry.ip().toString();
+            }
+        }
+        return "";
+    }
 
 signals:
   public slots:
@@ -71,6 +87,8 @@ private slots:
     QFileSystemWatcher networkProfilWather;
 
     QNetworkConfigurationManager *networkConfigManager;
+    int netlinkSocket;
+    QSocketNotifier *notifier;
 };
 
 #endif // NETWORKPROFIL_H

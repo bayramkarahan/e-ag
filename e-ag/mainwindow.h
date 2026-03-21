@@ -149,9 +149,9 @@ protected:
      void eagtraySendDataDetached(const QString &cmd);
      void eagtraySendData(const QString &cmd,TrayResponseCallback callback);
 
-     void fileReceiveProcess(const QJsonObject &json);
-     void clientConfUpdate(const QJsonObject &json);
-     void clientCommandState(const QJsonObject &json);
+     void fileReceiveProcess(const QJsonObject &json,QString ipAddress);
+     void clientConfUpdate(const QJsonObject &json,QString ipAddress);
+     void clientCommandState(const QJsonObject &json,QString ipAddress);
 
      void slotVnc0();
      void slotVnc1();

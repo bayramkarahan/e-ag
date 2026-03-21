@@ -6,8 +6,11 @@
 #include <QtCore/QCoreApplication>
 #include<Database.h>
 
+
+
 NewtworkProfil::NewtworkProfil()
 {
+
     localDir="/usr/share/e-ag/";
     networkProfilWather.addPath(localDir+"e-ag.json");
     connect(&networkProfilWather, &QFileSystemWatcher::fileChanged, this,
@@ -32,6 +35,17 @@ NewtworkProfil::NewtworkProfil()
                     networkProfilLoad();
                 });
             });
+
+    /***************************-********************************************/
+    IPWatcher *watcher = new IPWatcher(this);
+
+    connect(watcher, &IPWatcher::ipChanged, this, [=](QStringList ips){
+        qDebug() << "Yeni IP’ler:" << ips;
+
+        multicastJoin();       // IP değişince multicast’i tekrar join et
+        networkProfilLoad();   // IP değişince network profil yükle
+    });
+    /************************************************************************/
     udpBroadCastSend = new QUdpSocket(this);
     udpBroadCastSend->bind(QHostAddress::AnyIPv4,0,
                            QUdpSocket::ShareAddress | QUdpSocket::ReuseAddressHint);
@@ -109,7 +123,8 @@ void NewtworkProfil::sendBroadcastDatagram()
                     qDebug() << "Multicast send error:" << udpBroadCastSend->errorString();
                 }
                 //qDebug()<<"ServerBroadCast"<<item.networkIndex<<item.networkBroadCastAddress<<sendJson<<uport.toInt()+uport.toInt();
-             }
+                //qDebug()<<"ServerBroadCast"<<item.serverAddress;
+            }
         }
     }
 }
@@ -220,7 +235,7 @@ void NewtworkProfil::hostAddressMacButtonSlot()
                 im.iface     = networkInterface;   // 🔥 kritik satır
 
                 interfaceList.append(im);
-
+                //qDebug()<<"ip :"<<entry.ip().toString();;
                 QString program = "ethtool -s " + networkInterface.name() + " wol g &";
                 system(program.toStdString().c_str());
             }

@@ -151,6 +151,9 @@ void MainWindow::udpSocketServerRead()
         udpSocketGet->readDatagram(datagram.data(), datagram.size(), &sender, &senderPort);
         //QString rmesaj=datagram.constData();
         //qDebug()<<"Gelen veri:"<<rmesaj;
+        QString ipAddress=QHostAddress(sender.toIPv4Address()).toString();
+
+        qDebug()<<"Gelen ip:"<<QHostAddress(sender.toIPv4Address()).toString();
 
         QJsonParseError parseError;
         QJsonDocument doc = QJsonDocument::fromJson(datagram, &parseError);
@@ -171,13 +174,13 @@ void MainWindow::udpSocketServerRead()
         QString messageType = json["messagetype"].toString();
 
         if (messageType == "eagclientconf") {
-            clientConfUpdate(json);
+            clientConfUpdate(json,ipAddress);
         }
         else if (messageType == "sendfileclient") {
-            fileReceiveProcess(json);
+            fileReceiveProcess(json,ipAddress);
         }
         else if (messageType == "commandstateclient") {
-            clientCommandState(json);
+            clientCommandState(json,ipAddress);
             }
         else {
             qDebug() << "Bilinmeyen message type:" << messageType;
@@ -189,10 +192,10 @@ void MainWindow::udpSocketServerRead()
 
 }
 
-void MainWindow::clientConfUpdate(const QJsonObject &json)
+void MainWindow::clientConfUpdate(const QJsonObject &json,QString ipAddress)
 {
     QString mac = json["mac_address"].toString();
-    QString ip  = json["ip_address"].toString();
+   // QString ip  = json["ip_address"].toString();
 
     // Console bilgileri
     bool console_sshstate = json["console_sshstate"].toBool();
@@ -215,7 +218,7 @@ void MainWindow::clientConfUpdate(const QJsonObject &json)
         if (pc->mac.toUpper() == mac.toUpper()) {
             pc->tcpConnectCounter=0;
             pc->setConnectState(true);
-            pc->ip=ip;
+            pc->ip=ipAddress;
            // qDebug()<<"güncelleniyor.."<<ip<<mac<<json;
             //pc->volumeState=json["tray_volume"].toBool();
             pc->setVersionState(json["consoleVersion"].toString());
@@ -254,11 +257,11 @@ void MainWindow::clientConfUpdate(const QJsonObject &json)
 
     // Eğer listede yoksa, yeni bir client ekle
     if (!found) {
-        slotPcEkle(mac.toUpper(),ip);
+        slotPcEkle(mac.toUpper(),ipAddress);
     }
 }
 
-void MainWindow::clientCommandState(const QJsonObject &json)
+void MainWindow::clientCommandState(const QJsonObject &json,QString ipAddress)
 {
 
     qDebug()<<"komut çıktısı"<<json["command"].toString()<<
@@ -266,7 +269,7 @@ void MainWindow::clientCommandState(const QJsonObject &json)
         json["command_status"].toString();
 
     QString mac = json["mac_address"].toString();
-    QString ip  = json["ip_address"].toString();
+   // QString ip  = json["ip_address"].toString();
 
     for (MyPc *pc : onlinePcList) {
         if (pc->mac.toUpper() == mac.toUpper()) {
@@ -282,7 +285,7 @@ void MainWindow::clientCommandState(const QJsonObject &json)
 
     }
 }
-void MainWindow::fileReceiveProcess(const QJsonObject &json)
+void MainWindow::fileReceiveProcess(const QJsonObject &json,QString ipAddress)
 {
 
     UserPrivilegeHelper helper;
