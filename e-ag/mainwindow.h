@@ -70,6 +70,7 @@
 #include <QLocalSocket>
 #include<userprivilegehelper.h>
 #include<multicastaddressdialog.h>
+#include<userpassword.h>
 class QStyle;
 struct TransferJob {
     QString ip;
@@ -153,21 +154,17 @@ protected:
      void clientConfUpdate(const QJsonObject &json,QString ipAddress);
      void clientCommandState(const QJsonObject &json,QString ipAddress);
 
-     void slotVnc0();
-     void slotVnc1();
-     void slotVnc2();
+
      static  bool karsilastirMyPc(const MyPc *mypc1, const MyPc *mypc2);
      void networkProfilLoad();
-     QString getSeatId();
-     QString getSessionInfo(QString id, QString parametre);
-     //void onProcessFinished(int exitCode, QProcess::ExitStatus exitStatus);
+
      void onProcessFinished(int exitCode, QProcess::ExitStatus exitStatus, fileCopyTask task);
 
      void listeyiKopyala();
      bool killProcessByName(const QString &processName);
 
 private slots:
-     QString getActiveUserName();
+
      void pcMenu(bool singlepc);
 
      void udpSocketServerRead();
@@ -229,7 +226,7 @@ private slots:
 QString getMacForIP(QString ipAddress);
 
     void pcClickSlot(QString _mac);
-    void pcDoubleClickSignalSlot(QString _mac);
+    void pcDoubleClickSignalSlot(QString _mac, QString port);
     void slotWakeOnLan(QString _ip,QString _mac);
 
     void slotVnc(QString _dsp);
@@ -238,7 +235,7 @@ QString getMacForIP(QString ipAddress);
     void slotVncFlipAll(QString scale,QString viewState);
     void slotVncFlipAllStop();
     void slotRdp();
-    void slotTerminal();
+
     void slotKilit();
     void slotTransparanKilit();
     void slotKilitAc();
@@ -389,7 +386,8 @@ private:
     QRadioButton *rb2;
     bool udpSendDataStatus=false;
     bool firstRun=false;
-    QSlider *ekranSlider;
+    QSlider *vncEkranSlider;
+    QSlider *rdpEkranSlider;
     QString trayCommandResult;  // burada sakla
     QComboBox * ses;
     /*********************/

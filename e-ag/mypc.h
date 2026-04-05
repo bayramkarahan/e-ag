@@ -117,7 +117,7 @@ void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 void mouseDoubleClickEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 
 signals:
-void pcDoubleClickSignal(QString mac);
+void pcDoubleClickSignal(QString mac, QString port);
 void pcClickSignal(QString mac);
 void pcRightClickSignal();
 void pcListeSignal();

@@ -34,8 +34,10 @@ void MainWindow::selectPc()
     QAction *vncAction = new QAction(QIcon(":/icons/vnc.svg"), tr("&Uzak Masaüstü Bağlantısı"), this);
     vncAction->setShortcut(tr("VNC"));
     vncAction->setStatusTip(tr("Uzak Masaüstü Bağlantısı Başlatıldı"));
-    connect(vncAction, SIGNAL(triggered()), this, SLOT(vncDisplaySlot()));
-
+    //connect(vncAction, SIGNAL(triggered()), this, SLOT(vncDisplaySlot()));
+    connect(vncAction, &QAction::triggered, this, [=]() {
+        pcDoubleClickSignalSlot(pcMac->text(),"5905");
+    });
 
     QAction *xrdpAction = new QAction(QIcon(":/icons/rdp.svg"), tr("&"), this);
     xrdpAction->setShortcut(tr("XRDP"));
@@ -45,7 +47,7 @@ void MainWindow::selectPc()
     QAction *terminalAction = new QAction(QIcon(":/icons/ssh.svg"), tr("&Terminal"), this);
     terminalAction->setShortcut(tr("Terminal"));
     terminalAction->setStatusTip(tr("Terminal Bağlantısı Yapıldı"));
-    connect(terminalAction, SIGNAL(triggered()), this, SLOT(slotTerminal()));
+    //connect(terminalAction, SIGNAL(triggered()), this, SLOT(slotTerminal()));
 
 
     QAction *wolAction = new QAction(QIcon(":/icons/wol.svg"), tr("&Uzak Pc Başlatma"), this);

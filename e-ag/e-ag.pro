@@ -36,6 +36,7 @@ SOURCES += \
     scdimgclient.cpp \
     scdimgserver.cpp \
     scdimgserverthread.cpp \
+    userpassword.cpp \
     userprivilegehelper.cpp
 
 HEADERS += \
@@ -73,6 +74,7 @@ HEADERS += \
     tcpudp.h \
     selectpc.h \
     funtion.h \
+    userpassword.h \
     userprivilegehelper.h \
     videoWidget.h \
     vncrdpWidget.h \
@@ -87,6 +89,7 @@ unix {
 
     INCLUDEPATH += /usr/include
     LIBS += -lavformat -lavcodec -lavutil -lswscale
+    LIBS += -lqt5keychain
 }
 
 # Windows için FFmpeg ayarları (örnek: FFmpeg statik binary kurulu dizin)

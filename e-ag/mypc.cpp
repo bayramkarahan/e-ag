@@ -237,14 +237,27 @@ void MyPc::setCommandState(QString _command,QString _commandDetail,QString _comm
                                   " text-align: center;"
                                   "background-color: #00ff00;");
     }
-    else
-    {
+   else if (commandState=="1"){
         btncommand->setStyleSheet("border: 1px solid gray; "
                                   "border-radius: 6px;"
                                   "font-size:8px;"
                                   " text-align: center;"
                                   "background-color: #ff0000;");
     }
+    else if (commandState=="2"){
+         btncommand->setStyleSheet("border: 1px solid gray; "
+                                   "border-radius: 6px;"
+                                   "font-size:8px;"
+                                   " text-align: center;"
+                                   "background-color: #00ffff;");
+     }
+    else if (commandState=="3"){
+         btncommand->setStyleSheet("border: 1px solid gray; "
+                                   "border-radius: 6px;"
+                                   "font-size:8px;"
+                                   " text-align: center;"
+                                   "background-color: #00aaff;");
+     }
 }
 void MyPc::setConnectState(bool state){
     connectState=state;
@@ -926,7 +939,7 @@ void MyPc::mouseDoubleClickEvent(QMouseEvent *event)
         slotMouseDoubleClick();
     }else if(connectState)
     {
-        emit pcDoubleClickSignal(mac);
+        emit pcDoubleClickSignal(mac,"");
     }
     // (isteğe bağlı) aksi halde normal davranış istiyorsan:
     QWidget::mouseDoubleClickEvent(event);

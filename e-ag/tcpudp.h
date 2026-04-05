@@ -317,6 +317,8 @@ void MainWindow::fileReceiveProcess(const QJsonObject &json,QString ipAddress)
             system(kmt2.toStdString().c_str());QThread::msleep(50);  // milisaniye
             system(kmt3.toStdString().c_str());QThread::msleep(50);  // milisaniye
             qDebug() << "Dosya alındı:" << filename;
+            pc->setCommandState("Çalışma Toplama","Çalışma Toplama Tamamlandı.","3");//2 kopayalama başla
+
             break;
         }
     }
@@ -413,11 +415,12 @@ void MainWindow::slotPcEkle(QString _mac,QString _ip)
     connect(mypc, SIGNAL(pcClickSignal(QString)),this,
             SLOT(pcClickSlot(QString)));
 
-    connect(mypc, SIGNAL(pcDoubleClickSignal(QString)),this,
-            SLOT(pcDoubleClickSignalSlot(QString)));
+    connect(mypc, SIGNAL(pcDoubleClickSignal(QString, QString)),this,
+            SLOT(pcDoubleClickSignalSlot(QString, QString)));
 
     connect(mypc, SIGNAL(pcHideSignal(QString)),this,
     SLOT(pcHideSignalSlot(QString)));
+
 
     connect(mypc, SIGNAL(pcSettingUpdateSignal(QString,QString)),this,
             SLOT(pcSettingUpdateSignalSlot(QString,QString)));
@@ -431,14 +434,15 @@ void MainWindow::slotPcEkle(QString _mac,QString _ip)
     connect(mypc, SIGNAL(pcRightClickSignal()),
             this, SLOT(pcRightClickSignalSlot()));
 
-    mypc->netProfil=NetProfilList.first();
+    if (!NetProfilList.isEmpty()) {
+        mypc->netProfil = NetProfilList.first();
+    } else {
+        qDebug() << "NetProfilList boş!";
+    }
 
     for (const NetProfil &item : NetProfilList) {
         //qDebug()<<item.networkBroadCastAddress;
-
-        bool result=ayniSubnet(_ip,
-                                 item.serverAddress,
-                                 item.subnet);
+        bool result=ayniSubnet(_ip,item.serverAddress,item.subnet);
         // aynı ağ profilini ekle
         if(result){
             mypc->netProfil=item;

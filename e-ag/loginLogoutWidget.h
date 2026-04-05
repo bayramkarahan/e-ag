@@ -2,6 +2,7 @@
 #define LOGINLOGOUTWIDGET_H
 
 
+
 QWidget* MainWindow::logoutWidget()
 {
     int e=en;
@@ -97,25 +98,37 @@ void MainWindow::slotLogoutAll(){
     mesajSlot("Tüm Hostlarda Oturum Kapatıldı.");
 }
 void MainWindow::slotLogin(){
-    QString seatUser=getSessionInfo(getSeatId(),"USER=");
-    QStringRef _sessionUser=seatUser.rightRef(seatUser.length()-5);
-    seatUser=_sessionUser.toString();
-    bool ok;
+    UserPrivilegeHelper helper;
+    QString seatUser = helper.detectActiveUser();// 1) Aktif kullanıcıyı bul
 
-    CustomInputDialog  cid(tr("İstemci Kullanıcısı"),tr(" İstemcideki Kullanıcının Adını Giriniz :"),seatUser,300,100);
-    seatUser = cid.getText();
-    CustomInputDialog  cid1(tr("İstemci Parolası"),tr(" İstemcideki Kullanıcının Parolasını Giriniz :"),"",300,100);
-    QString _remotepasswd=cid1.getText();
-    if(seatUser!=""&&_remotepasswd!="")
-    {
-        QString komut="sshlogin "+seatUser+" "+_remotepasswd;
-         udpSendData("seatlogin","seatlogin",komut,"",false);
+    CustomInputDialog *cid0=new CustomInputDialog(tr("İstemci Kullanıcısı"),tr(" İstemcideki Kullanıcının Adını Giriniz :"),"",300,100);
+    cid0->setData("lastuser",seatUser,"text");
+    int result0=cid0->exec();
+    seatUser = cid0->getText();
+    //qDebug() << "User geldi:"<<result0 << seatUser;
 
-        QString komut1="pardus-login "+seatUser+" "+_remotepasswd;
-        udpSendData("seatlogin","seatlogin",komut1,"",false);
-        // qDebug()<<"komut:"<<komut;
-    }
-    mesajSlot("Seçili Hostlarda Oturum Açıldı.");
+    CustomInputDialog  *cid1=new CustomInputDialog(tr("İstemci Parolası"),tr(" İstemcideki Kullanıcının Parolasını Giriniz :"),"",300,100);
+    cid1->setData("lastpasswd","","passwd");
+    int result1=cid1->exec();
+    QString seatUserPasswd=cid1->getText();
+    //qDebug() << "password geldi:"<<result1 << seatUserPasswd;
+
+        if(seatUser!=""&&seatUserPasswd!=""&&result0==1&&result1==1)
+        {
+            // Kullanıcı + parola kaydediliyor
+            cid0->saveMetaData("lastuser", seatUser);
+            cid1->saveMetaData("lastpasswd", seatUserPasswd);
+
+            QString komut="sshlogin "+seatUser+" "+seatUserPasswd;
+             udpSendData("seatlogin","seatlogin",komut,"",false);
+
+            QString komut1="pardus-login "+seatUser+" "+seatUserPasswd;
+            udpSendData("seatlogin","seatlogin",komut1,"",false);
+            // qDebug()<<"komut:"<<komut;
+
+
+        }
+        mesajSlot("Seçili Hostlarda Oturum Açıldı.");
 
 }
 

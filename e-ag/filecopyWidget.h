@@ -47,9 +47,8 @@ QWidget*  MainWindow::fileWidget()
 
     connect(fileSelectButton, &QToolButton::clicked, [=]() {
         //pcClickSlot(pcMac->text());
-        QString seatUser=getSessionInfo(getSeatId(),"USER=");
-        QStringRef _sessionUser=seatUser.rightRef(seatUser.length()-5);
-        seatUser=_sessionUser.toString();
+        UserPrivilegeHelper helper;
+        QString seatUser = helper.detectActiveUser();// 1) Aktif kullanıcıyı bul
         //qDebug()<<"Kullanıcı: "<<sessionUser;
         QString fileName = QFileDialog::getOpenFileName(this,tr("Dosya Seç"),"/home/"+seatUser, tr("Files (*)"));
         le->setText(fileName);
@@ -71,6 +70,7 @@ QWidget*  MainWindow::fileWidget()
     fileCopyButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
     connect(fileCopyButton, &QToolButton::clicked, [=]() {
+        if(le->text()=="") return;
         QString name1 = QUrl::fromLocalFile(le->text()).path(QUrl::FullyEncoded);
         name1.replace("%20","%5C%20");
         QUrl pth;
@@ -100,6 +100,7 @@ QWidget*  MainWindow::fileWidget()
     fileCopyInstallButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
     connect(fileCopyInstallButton, &QToolButton::clicked, [=]() {
+        if(le->text()=="") return;
         QString name1 = QUrl::fromLocalFile(le->text()).path(QUrl::FullyEncoded);
         name1.replace("%20","%5C%20");
         QUrl pth;
@@ -147,6 +148,7 @@ QWidget*  MainWindow::fileWidget()
     fileCopyInstallScriptButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
     connect(fileCopyInstallScriptButton, &QToolButton::clicked, [=]() {
+        if(le->text()=="") return;
         QString name1 = QUrl::fromLocalFile(le->text()).path(QUrl::FullyEncoded);
         name1.replace("%20","%5C%20");
         QUrl pth;
@@ -195,6 +197,7 @@ QWidget*  MainWindow::fileWidget()
     fileCopyDesktopNotGetSendButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
     connect(fileCopyDesktopNotGetSendButton, &QToolButton::clicked, [=]() {
+        if(le->text()=="") return;
         QString name1 = QUrl::fromLocalFile(le->text()).path(QUrl::FullyEncoded);
         name1.replace("%20","%5C%20");
         QUrl pth;
@@ -223,6 +226,7 @@ QWidget*  MainWindow::fileWidget()
     fileCopyDesktopSendButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
     connect(fileCopyDesktopSendButton, &QToolButton::clicked, [=]() {
+        if(le->text()=="") return;
         QString name1 = QUrl::fromLocalFile(le->text()).path(QUrl::FullyEncoded);
         name1.replace("%20","%5C%20");
         QUrl pth;
@@ -257,15 +261,12 @@ QWidget*  MainWindow::fileWidget()
     fileCopyDesktopGetButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
     connect(fileCopyDesktopGetButton, &QToolButton::clicked, [=]() {
-        /*for(int i=0;i<onlinePcList.count();i++)
-        {
-            if(onlinePcList[i]->sshState)
+        for (MyPc *pc : onlinePcList) {
+            if ((pc->select || pc->multiSelect)&&pc->connectState)
             {
-                udpSendData("x11command","dosyatopla",onlinePcList[i]->ip);
-
-
+                pc->setCommandState("Çalışma Toplama","Çalışma Toplama Başlatıldı.","2");//2 kopayalama başla
             }
-        }*/
+        }
         udpSendData("dosyatopla","","","Dosya Masaüstlerinden Alındı",false);
 
 
@@ -288,14 +289,18 @@ QWidget*  MainWindow::fileWidget()
         doc->setHtml(tr("<center><h2>Dosya Kopyalama</h2></center>"
                     "<center><img src=\":/icons/dosyakopyalama.png\" /></center> "
                     "<center><img src=\":/icons/istemci.png\" /></center>"
-                    "<br/><br/>1-<b>Dosya Seç</b> seçeneği ile dosya seçimi yapılır."
-                    "<br/><br/>2-<b>Paketi Kur</b> seçeneği ile deb uzantılı paketi istemciye kururulumu yapılır."
-                    "<br/><br/>3-<b>Scripti Çalıştır</b> seçeneği ile scripti istemci üzerinde çalıştırır."
-                    "<br/><br/>4-İstemcide açık kullanıcı masaüstüne dosya kopyalama için <b>Masaüstlerine Dağıt</b> seçeneğini kullanabilirsiniz."
-                    "<br/><br/>5-<b>Ev Dizinine Göder</b> seçeneği İstemcide açık kullanıcının ev dizinine kopyalanacaktır."
-                    "<br/><br/>6-İstemcide açık kullanıcı masaüstüne <b>çalışma dosyası</b> göndermek için <b>Çalışmaları Dağıt</b>  seçeneğini kullanabilirsiniz."
-                    "<br/><br/>7-İstemcide açık kullanıcı masaüstündeki <b>çalışma dosyasını</b> Sunucuya toplamak için <b>Çalışmaları Topla</b> seçeneğini kullanabilirsiniz."
-                    "<br/><br/>8-Birden fazla istemciye kopyalama için istemcileri seçerek kopyalanabilir."
+                    "<br/>1- <b>Dosya Seç</b> seçeneği ile dosya seçimi yapılır."
+                    "<br/>2- <b>Paketi Kur</b> seçeneği ile deb uzantılı paketi istemciye kururulumu yapılır."
+                    "<br/>3- <b>Scripti Çalıştır</b> seçeneği ile scripti istemci üzerinde çalıştırır."
+                    "<br/>4- İstemcide açık kullanıcı masaüstüne dosya kopyalama için <b>Masaüstlerine Dağıt</b> seçeneğini kullanabilirsiniz."
+                    "<br/>5- <b>Ev Dizinine Göder</b> seçeneği İstemcide açık kullanıcının ev dizinine kopyalanacaktır."
+                    "<br/>6- İstemcide açık kullanıcı masaüstüne <b>çalışma dosyası</b> göndermek için <b>Çalışmaları Dağıt</b>  seçeneğini kullanabilirsiniz."
+                    "<br/>7- İstemcide açık kullanıcı masaüstündeki <b>çalışma dosyasını</b> Sunucuya toplamak için <b>Çalışmaları Topla</b> seçeneğini kullanabilirsiniz."
+                    "<br/>8- Birden fazla istemciye kopyalama için istemcileri seçerek kopyalanabilir."
+                    "<br/>9- <b>C</b> simgesi <b>Turkuaz</b> ise dosya kopyalamanın <b>başlatılmış</b> olduğunu ifade eder."
+                    "<br/>10- <b>C</b> simgesi <b>Mavi</b> ise dosya kopyalamanın <b>başarılı tamamlandı</b> ifade eder."
+                    "<br/>11- <b>C</b> simgesi <b>Kırmızı</b> ise dosya kopyalamanın <b>başarısız</b> olduğunu ifade eder."
+
                     ));
         QPrinter pdf;
         pdf.setOutputFileName("/tmp/dosyakopyalama.pdf");
@@ -391,22 +396,26 @@ QWidget*  MainWindow::fileWidget()
 */
 void MainWindow::selectFileCopySlot(QString _mesajtype, QString _sourcePath, QString _targetPath)
 {
-    for(int i=0; i<onlinePcList.count(); i++)
-    {
-        if(onlinePcList[i]->select || onlinePcList[i]->multiSelect)
+    QString kmt="cp "+_sourcePath+" "+"/tmp/"+_targetPath;
+    system(kmt.toStdString().c_str());
+
+    for (MyPc *pc : onlinePcList) {
+    //for(int i=0; i<onlinePcList.count(); i++)
+    //{
+        if((pc->select || pc->multiSelect)&&pc->connectState)
         {
             if((_mesajtype=="desktopsendworkfile" || _mesajtype=="desktopsendfile") &&
-                onlinePcList[i]->user=="noLogin")
+               pc->user=="noLogin")
                 continue;
 
-            qDebug() << "Kopyalanacak dosya:" << _sourcePath << _targetPath << onlinePcList[i]->ip;
-
+            qDebug() << "Kopyalanacak dosya:" << _sourcePath << _targetPath << pc->ip;
+            pc->setCommandState("Dosya Kopyalama","Kopyalama Başlatıldı","2");//2 kopayalama başla
             // Job oluştur ve queue'ya ekle
             TransferJob job;
             job.mesajtype=_mesajtype;
-            job.ip = onlinePcList[i]->ip;
-            job.port = onlinePcList[i]->netProfil.ftpPort.toUShort();
-            job.sourcePath = _sourcePath;
+            job.ip = pc->ip;
+            job.port = pc->netProfil.ftpPort.toUShort();
+            job.sourcePath = "/tmp/" + _targetPath;//_sourcePath;
             job.targetPath = "/" + _targetPath;
 
             transferQueue.enqueue(job);
@@ -418,6 +427,7 @@ void MainWindow::selectFileCopySlot(QString _mesajtype, QString _sourcePath, QSt
 }
 void MainWindow::startNextFileTransfer()
 {
+       qDebug() << "startNextFileTransfer";
     // Sıralı olarak queue’dan job al ve maxParallelTransfers sınırını aşma
     while(runningTransfers < maxParallelTransfers && !transferQueue.isEmpty())
     {
@@ -436,6 +446,16 @@ void MainWindow::startNextFileTransfer()
                     if(success){
                         qDebug() << "Transfer tamamlandı:" << message<<job.mesajtype<<job.ip;
                         udpSendData(job.mesajtype,job.targetPath,"","",false);
+                        /***************************************************/
+                        for (MyPc *pc : onlinePcList) {
+                            if (pc->ip == job.ip&&
+                                    (pc->select || pc->multiSelect)&&
+                                    pc->connectState)
+                            {
+                                pc->setCommandState("Dosya Kopyalama","Kopyalama Tamamlandı.","3");//2 kopayalama başla
+                            }
+                        }
+                        /***************************************************/
                     }
                     else
                     {
@@ -444,7 +464,6 @@ void MainWindow::startNextFileTransfer()
                     // sıradaki transferi başlat
                     startNextFileTransfer();
                 });
-
         client->uploadFile(job.sourcePath, job.targetPath);
     }
 
@@ -463,6 +482,7 @@ void MainWindow::listeyiKopyala() {
     }
     fileCopyTask current = fileCopyTasks.dequeue();
     QString komut="/usr/bin/scd-client "+current.ip+" "+current.port+" PUT "+current.sourcePath+" /"+current.targetPath;
+    qDebug()<<"kopyalama komutu"<<komut;
     /*********************QProcess***********************************/
     /*********************QProcess***********************************/
     QStringList arguments;

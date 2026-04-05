@@ -11,9 +11,18 @@ QWidget* MainWindow::baseWidget()
     QWidget * d = new QWidget();
     // d->setFixedSize(e*180,b*23);
     // d->setStyleSheet("background-color: #ffdced;font-size:"+QString::number(font.toInt()-2)+"px;");
+    // 🔲 Container (kutu)
+    QFrame *vncbox = new QFrame(d);
+    vncbox->setFrameShape(QFrame::Box);
+    //vncbox->setLineWidth(1);
+    vncbox->setStyleSheet("QFrame { border: 1px solid #ccc; border-radius: 2px; }");
 
+    // 📦 Layout
+    QHBoxLayout *layoutvnc = new QHBoxLayout(vncbox);
+    layoutvnc->setSpacing(2);
+    layoutvnc->setContentsMargins(1,1,1,1);
 
-
+    // 🔘 Buton
     QToolButton *vncConnectPcButton = new QToolButton();
     vncConnectPcButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     vncConnectPcButton->setIcon(QIcon(":icons/vnc.svg"));
@@ -21,18 +30,43 @@ QWidget* MainWindow::baseWidget()
     vncConnectPcButton->setAutoRaise(true);
     // vncConnectPcButton->setAutoFillBackground(true);
     vncConnectPcButton->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
-    vncConnectPcButton->setFixedSize(yukseklik*0.95,yukseklik*1.5);
+    vncConnectPcButton->setFixedSize(yukseklik*0.95,yukseklik*1.4);
     vncConnectPcButton->setText(tr("VNC"));
     connect(vncConnectPcButton, &QToolButton::clicked, [=]() {
-        slotVnc(_display);
+        pcDoubleClickSignalSlot(pcMac->text(),"");
     });
 
     // Slider buton boyutunun yarısı kadar olacak
-    ekranSlider = new QSlider(Qt::Vertical);
-    ekranSlider->setFixedSize(yukseklik*0.3, yukseklik*1.5);
-    ekranSlider->setMinimum(0);
-    ekranSlider->setMaximum(200);
-    ekranSlider->setValue(80); // varsayılan değer
+    vncEkranSlider = new QSlider(Qt::Vertical);
+    vncEkranSlider->setFixedSize(yukseklik*0.3, yukseklik*1.4);
+    vncEkranSlider->setMinimum(0);
+    vncEkranSlider->setMaximum(200);
+    vncEkranSlider->setValue(80); // varsayılan değer
+    CustomInputDialog *cid0=new CustomInputDialog(tr("İstemci Kullanıcısı"),tr(" İstemcideki Kullanıcının Adını Giriniz :"),"",300,100,this);
+    cid0->readMetaData("vncEkranSlider", [this](QString _data){
+           if(_data!=""){
+            //qDebug() << "vncEkranSlider geldi:" << _data;
+           int value = _data.toInt();
+           vncEkranSlider->setValue(value);
+           }
+           else
+           {
+             vncEkranSlider->setValue(80);
+             qDebug() << "vncEkranSlider 80 ayarlandı";
+           }
+    });
+    vncEkranSlider->setTracking(false);
+    connect(vncEkranSlider, &QSlider::valueChanged, this, [=](int value){
+        QString vncEkranSliderValue=QString::number(value);
+        cid0->saveMetaData("vncEkranSlider", vncEkranSliderValue);
+    });
+
+    // 📌 Layout’a ekle
+    layoutvnc->addWidget(vncConnectPcButton, 0, Qt::AlignCenter);
+    layoutvnc->addWidget(vncEkranSlider, 0, Qt::AlignCenter);
+    // 📌 Kutunun boyutu (opsiyonel)
+    vncbox->setFixedSize(yukseklik*1.25,yukseklik*1.5);
+
 
     QToolButton *novncConnectPcButton = new QToolButton();
     novncConnectPcButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
@@ -49,6 +83,19 @@ QWidget* MainWindow::baseWidget()
 
         // QDesktopServices::openUrl(QUrl("192.168.1.101:6085"));
     });
+
+    // 🔲 Container (kutu)
+    QFrame *rdpbox = new QFrame(d);
+    rdpbox->setFrameShape(QFrame::Box);
+    //rdpbox->setLineWidth(1);
+    rdpbox->setStyleSheet("QFrame { border: 1px solid #ccc; border-radius: 2px; }");
+
+    // 📦 Layout
+    QHBoxLayout *layoutrdp = new QHBoxLayout(rdpbox);
+    layoutrdp->setSpacing(2);
+    layoutrdp->setContentsMargins(1,1,1,1);
+
+    // 🔘 Buton
      QToolButton *xrdpConnectPcButton = new QToolButton();
     xrdpConnectPcButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     xrdpConnectPcButton->setIcon(QIcon(":icons/rdp.svg"));
@@ -56,11 +103,43 @@ QWidget* MainWindow::baseWidget()
     xrdpConnectPcButton->setAutoRaise(true);
    // xrdpConnectPcButton->setAutoFillBackground(true);
     xrdpConnectPcButton->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
-    xrdpConnectPcButton->setFixedSize(yukseklik*0.95,yukseklik*1.5);
+    xrdpConnectPcButton->setFixedSize(yukseklik*0.95,yukseklik*1.4);
     xrdpConnectPcButton->setText(tr("RDP"));
     connect(xrdpConnectPcButton, &QToolButton::clicked, [=]() {
         slotRdp();
     });
+
+    // Slider buton boyutunun yarısı kadar olacak
+    rdpEkranSlider = new QSlider(Qt::Vertical,d);
+    rdpEkranSlider->setFixedSize(yukseklik*0.3, yukseklik*1.4);
+    rdpEkranSlider->setMinimum(0);
+    rdpEkranSlider->setMaximum(200);
+    rdpEkranSlider->setValue(80); // varsayılan değer
+    CustomInputDialog *cidrdp=new CustomInputDialog(tr("İstemci Kullanıcısı"),tr(" İstemcideki Kullanıcının Adını Giriniz :"),"",300,100,this);
+    cidrdp->readMetaData("rdpEkranSlider", [this](QString _data){
+           if(_data!=""){
+            //qDebug() << "rdpEkranSlider geldi:" << _data;
+           int value = _data.toInt();
+           rdpEkranSlider->setValue(value);
+           }
+           else
+           {
+             vncEkranSlider->setValue(75);
+             qDebug() << "rdpEkranSlider 75 ayarlandı";
+           }
+    });
+    rdpEkranSlider->setTracking(false);
+    connect(rdpEkranSlider, &QSlider::valueChanged, this, [=](int value){
+        QString rdpEkranSliderValue=QString::number(value);
+        cidrdp->saveMetaData("rdpEkranSlider", rdpEkranSliderValue);
+        //qDebug() << "rdpEkranSlider"<<rdpEkranSliderValue;
+    });
+    // 📌 Layout’a ekle
+    layoutrdp->addWidget(xrdpConnectPcButton, 0, Qt::AlignCenter);
+    layoutrdp->addWidget(rdpEkranSlider, 0, Qt::AlignCenter);
+    // 📌 Kutunun boyutu (opsiyonel)
+    rdpbox->setFixedSize(yukseklik*1.25,yukseklik*1.5);
+
 
     QToolButton *terminalPcButton = new QToolButton();
     terminalPcButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
@@ -73,7 +152,36 @@ QWidget* MainWindow::baseWidget()
     terminalPcButton->setFixedSize(yukseklik*0.95,yukseklik*1.5);
     terminalPcButton->setText(tr("Terminal"));
     connect(terminalPcButton, &QToolButton::clicked, [=]() {
-        slotTerminal();
+
+        UserPrivilegeHelper helper;
+        QString seatUser = helper.detectActiveUser();// 1) Aktif kullanıcıyı bul
+
+        CustomInputDialog *cid0=new CustomInputDialog(tr("İstemci Kullanıcısı"),tr(" İstemcideki ssh Kullanıcının Adını Giriniz :"),"",300,100);
+        cid0->setData("sshuser",seatUser,"text");
+        int result0=cid0->exec();
+        seatUser = cid0->getText();
+        //qDebug() << "User geldi:"<<result0 << seatUser;
+            if(seatUser!=""&&result0==1)
+            {
+            // Kullanıcı + parola kaydediliyor
+            cid0->saveMetaData("sshuser", seatUser);
+            QString kmt10="xterm -fa \"Monospace\" -fs 14 -e \"ssh "+seatUser+"@"+pcIp->text()+"\" &";
+            system(kmt10.toStdString().c_str());
+        }
+    // QString kmt10="x-terminal-emulator -e \"ssh "+remoteUserName+"@"+pcIp->text()+"\"";
+        //QString kmt9="ssh etapadmin@"+pcIp->text()+"\" &";
+    // SSH bağlantısını başlat
+        //QTermWidget *terminal=new QTermWidget();
+        //qterm->show();
+        //qterm->sendText(kmt10);
+        //qterm->sendData(kmt9.c_str());
+       // return;
+       /* QStringList komut;
+        komut << "grep" << "-i" << "aranacak_kelime" << "dosya_adi.txt";
+        terminal->startShellProgram(komut);*/
+
+        mesajSlot("Seçili Hostda Terminal Başlatıldı.");
+
     });
 
     QToolButton *selectPcButton = new QToolButton();
@@ -105,26 +213,26 @@ QWidget* MainWindow::baseWidget()
     connect(ftpPc, &QToolButton::clicked, [=]() {
 
         UserPrivilegeHelper helper;
+        QString seatUser = helper.detectActiveUser();// 1) Aktif kullanıcıyı bul
 
-        // 1) Aktif kullanıcıyı bul
-        QString seatUser = helper.detectActiveUser();
-        if (seatUser.isEmpty()) {
-            qWarning() << "Aktif kullanıcı bulunamadı!";
-            return;
-        }
-        // 2) UID/GID bilgilerini çek
-        UserInfo info = helper.getUserInfo(seatUser);
-        // 3) Ortam değişkenlerini hazırla (grafik işlemleri için)
-        QProcessEnvironment env = helper.buildUserEnvironment(info);
+        CustomInputDialog *cid0=new CustomInputDialog(tr("İstemci Kullanıcısı"),tr(" İstemcideki Kullanıcının Adını Giriniz :"),"",300,100);
+        cid0->setData("lastuser",seatUser,"text");
+        int result0=cid0->exec();
+        seatUser = cid0->getText();
+        //qDebug() << "User geldi:"<<result0 << seatUser;
 
+        CustomInputDialog  *cid1=new CustomInputDialog(tr("İstemci Parolası"),tr(" İstemcideki Kullanıcının Parolasını Giriniz :"),"",300,100);
+        cid1->setData("lastpasswd","","passwd");
+        int result1=cid1->exec();
+        QString seatUserPasswd=cid1->getText();
+        //qDebug() << "password geldi:"<<result1 << seatUserPasswd;
 
-        CustomInputDialog  cid(tr("İstemci Kullanıcısı"),tr(" İstemcideki Kullanıcının Adını Giriniz :"),seatUser,300,100);
-        seatUser = cid.getText();
-        CustomInputDialog  cid1(tr("İstemci Parolası"),tr(" İstemcideki Kullanıcının Parolasını Giriniz :"),"",300,100);
-        QString _remotepasswd=cid1.getText();
+            if(seatUser!=""&&seatUserPasswd!=""&&result0==1&&result1==1)
+            {
 
-        if(seatUser!=""&&_remotepasswd!="")
-        {
+            // Kullanıcı + parola kaydediliyor
+            cid0->saveMetaData("lastuser", seatUser);
+            cid1->saveMetaData("lastpasswd", seatUserPasswd);
             QString ftpapp="nemo";
             if(QFile::exists("/usr/bin/nemo")) ftpapp="nemo";
             else if(QFile::exists("/usr/bin/thunar")) ftpapp="thunar";
@@ -136,17 +244,8 @@ QWidget* MainWindow::baseWidget()
                               "Bu uygulamalardan birini kururarak ftp işlemi yapabilirsiniz.."),"","","tamam",500,100).exec();
             }
             textBrowser_receivedMessages->clear();
-
-
             QString  komut;
-            komut.append(ftpapp).append(" sftp://").append(seatUser+":").append(_remotepasswd).append("@"+pcIp->text());
-
-            // Sen root'san ve Nemo'yu aktif GUI kullanıcısı bağlamında açmak istiyorsun:
-            //helper.runGuiAppAsActiveUser(komut);
-
-            // Detached başlatmak istersen (arka planda, zombie yok):
-            //helper.runDetachedGuiAsActiveUser("notify-send 'Merhaba' 'Arka plan bildirimi'");
-
+            komut.append(ftpapp).append(" sftp://").append(seatUser+":").append(seatUserPasswd).append("@"+pcIp->text());
             eagtraySendDataDetached(komut);
 
  }
@@ -279,11 +378,15 @@ QWidget* MainWindow::baseWidget()
     // layout->addWidget(hostListePcButton, 0,0,3,1);
     //layout->addWidget(selectPcButton, 0,1,3,1);
 
-    layout->addWidget(vncConnectPcButton, 0,2,3,1);
-    layout->addWidget(ekranSlider, 0,3,3,1);
+    layout->addWidget(vncbox, 0,2,3,1);
+   // layout->addWidget(vncEkranSlider, 0,2,3,1);
+    //layout->addWidget(vncConnectPcButton, 0,3,3,1);
 
-    layout->addWidget(novncConnectPcButton, 0,5,3,1);
-    layout->addWidget(xrdpConnectPcButton, 0,6,3,1);
+    layout->addWidget(novncConnectPcButton, 0,4,3,1);
+    layout->addWidget(rdpbox, 0,5,3,1);
+
+   // layout->addWidget(rdpEkranSlider, 0,5,3,1);
+   // layout->addWidget(xrdpConnectPcButton, 0,6,3,1);
 
     layout->addWidget(terminalPcButton, 0,7,3,1);
     layout->addWidget(ftpPc, 0,8,3,1);

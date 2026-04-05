@@ -31,7 +31,21 @@ QWidget* MainWindow::rdpWidget()
     cb->setText("");
     cb->setFixedSize(e*3,yukseklik);
     cb->setText("");
-    cb->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
+    cb->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");  
+    // OKU
+    CustomInputDialog *cidcb=new CustomInputDialog(tr("İstemci Kullanıcısı"),tr(" İstemcideki Kullanıcının Adını Giriniz :"),"",300,100,this);
+    cidcb->readMetaData("screencbDurum", [this, cb](QString _data){
+        if(_data != ""){
+            //qDebug() << "checkbox geldi:" << _data;
+            cb->setChecked(_data == "1");  // veya "true"
+        }
+    });
+
+    // KAYDET
+    connect(cb, &QCheckBox::toggled, this,
+        [=](const bool checked){
+            cidcb->saveMetaData("screencbDurum", checked ? "1" : "0");
+        });
     QLabel *cbLabel=new QLabel(sor);
     cbLabel->setText(tr("Client Sunucuyu\nKontrol Edebilsin"));
     cbLabel->setFixedSize(e*20,b*5);
@@ -43,6 +57,20 @@ QWidget* MainWindow::rdpWidget()
     kfcb->setFixedSize(e*3,yukseklik);
     kfcb->setText("");
     kfcb->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
+    // OKU
+    CustomInputDialog *cidkfcb=new CustomInputDialog(tr("İstemci Kullanıcısı"),tr(" İstemcideki Kullanıcının Adını Giriniz :"),"",300,100,this);
+    cidkfcb->readMetaData("screenkfcbDurum", [this, kfcb](QString _data){
+        if(_data != ""){
+           // qDebug() << "checkbox geldi:" << _data;
+            kfcb->setChecked(_data == "1");  // veya "true"
+        }
+    });
+
+    // KAYDET
+    connect(kfcb, &QCheckBox::toggled, this,
+        [=](const bool checked){
+            cidcb->saveMetaData("screenkfcbDurum", checked ? "1" : "0");
+        });
     QLabel *kfcbLabel=new QLabel(sor);
     kfcbLabel->setText(tr("Client Klavye-Fare\nKullanmasın"));
     kfcbLabel->setFixedSize(e*20,b*5);
@@ -64,8 +92,23 @@ QWidget* MainWindow::rdpWidget()
     ekranScale1->addItem("1366x768");
     ekranScale1->addItem("1920x1080");
     ekranScale1->addItem("3840x2160");
-
     ekranScale1->setCurrentIndex(4);
+
+    CustomInputDialog *cid0=new CustomInputDialog(tr("İstemci Kullanıcısı"),tr(" İstemcideki Kullanıcının Adını Giriniz :"),"",300,100,this);
+    cid0->readMetaData("ekranScale", [this,ekranScale1](QString _data){
+         QString ekranScale=_data;
+         if(ekranScale!=""){
+         //qDebug() << "ekranScale geldi:" << ekranScale;
+         ekranScale1->setCurrentText(ekranScale);// set et
+         }
+    });
+
+    connect(ekranScale1, &QComboBox::currentTextChanged, this,
+        [=](const QString &text){
+        //qDebug()<<text;
+        cid0->saveMetaData("ekranScale", text);
+        });
+
 
     vncPc->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
     vncPc->setIcon(QIcon(":/icons/vnc.svg"));
@@ -376,7 +419,7 @@ void MainWindow::slotVnc(QString _dsp){
 
         }
     }
-    float deger=ekranSlider->value()*0.01;
+    float deger=vncEkranSlider->value()*0.01;
     komut.append("nohup ssvncviewer -scale ").append(QString::number(deger)).append(" ").append(pcIp->text()).append(":"+display+" \-passwd \/usr\/bin\/x11vncpasswd &");
 
     //komut.append("nohup ssvncviewer -scale 0.9 ").append(pcIp->text()).append(":"+display+" \-passwd \/usr\/bin\/x11vncpasswd &");
@@ -389,10 +432,6 @@ void MainWindow::slotVncFlip(QString scale,QString viewState){
     QString kmt10="kill $(ps -aux|grep 5901|awk '{print $2 }')";
     system(kmt10.toStdString().c_str());
     QString kmt20="";
-
-    QString seatUser=getSessionInfo(getSeatId(),"USER=");
-    QStringRef _sessionUser=seatUser.rightRef(seatUser.length()-5);
-    seatUser=_sessionUser.toString();
 
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
     QString seatDisplay = env.value("DISPLAY"); // For Unix-like systems
@@ -500,31 +539,43 @@ void MainWindow::slotVncFlipAllStop(){
 }
 void MainWindow::slotRdp(){
     hostAddressMacButtonSlot();
-    QString seatUser=getSessionInfo(getSeatId(),"USER=");
-    QStringRef _sessionUser=seatUser.rightRef(seatUser.length()-5);
-    seatUser=_sessionUser.toString();
-    CustomInputDialog  cid(tr("XRDP Erişim Bilgileri"),tr("Client Kullanıcı Adını Girizin\n"
-                            "Açık Masaüsütünü Kontrol Etmek için VNC Tercih Edin."),seatUser,300,150);
-QString _remoteuser = cid.getText();
-    bool ok;
+    UserPrivilegeHelper helper;
+    QString seatUser = helper.detectActiveUser();// 1) Aktif kullanıcıyı bul
+    CustomInputDialog *cid0=new CustomInputDialog(tr("XRDP Erişim Bilgileri"),tr("Client Kullanıcı Adını Girizin\n"
+                                                  "Açık Masaüsütünü Kontrol Etmek için VNC Tercih Edin."),"",300,150,this);
+    cid0->setData("rdpuser",seatUser,"text");
+    int result0=cid0->exec();
+    seatUser = cid0->getText();
+    //qDebug() << "User geldi:"<<result0 << seatUser;
 
-CustomInputDialog  cid1(tr("İstemci Parolası"),tr(" İstemcideki Kullanıcının Parolasını Giriniz :"),"",300,100);
-QString _remotepasswd=cid1.getText();
+    CustomInputDialog  *cid1=new CustomInputDialog(tr("İstemci Parolası"),tr(" İstemcideki Kullanıcının Parolasını Giriniz :"),"",300,100,this);
+    cid1->setData("rdppasswd","","passwd");
+    int result1=cid1->exec();
+    QString seatUserPasswd=cid1->getText();
 
-    if(_remoteuser!=""&&_remotepasswd!="")
-    {
-        QString  komut;
-        if(pcIp->text()=="")
+
+    int screenscaledeger=rdpEkranSlider->value();
+    QString screenscale=QString::number(screenscaledeger);
+
+
+
+        if(seatUser!=""&&seatUserPasswd!=""&&result0==1&&result1==1)
         {
-        QMessageBox msgBox;
-        msgBox.setText(tr(" Client Bilgisayar Seçiniz..."));
-        msgBox.exec();
-        }else
-        {
-        komut.append("printf \"yes\n\" | rdesktop ").append(" -u ").append(_remoteuser).append(" -p ").append(_remotepasswd+" ").append(pcIp->text()).append(" -g 75% &");
-        system(komut.toStdString().c_str());
-        qDebug()<<"rdp:"<<komut;
-        }
+            // Kullanıcı + parola kaydediliyor
+            cid0->saveMetaData("rdpuser", seatUser);
+            cid1->saveMetaData("rdppasswd", seatUserPasswd);
+            QString  komut;
+            if(pcIp->text()=="")
+            {
+            QMessageBox msgBox;
+            msgBox.setText(tr(" Client Bilgisayar Seçiniz..."));
+            msgBox.exec();
+            }else
+            {
+            komut.append("printf \"yes\n\" | rdesktop ").append(" -u ").append(seatUser).append(" -p ").append(seatUserPasswd+" ").append(pcIp->text()).append(" -g "+screenscale+"% &");
+            system(komut.toStdString().c_str());
+            qDebug()<<"rdp:"<<komut;
+            }
 
     }
 

@@ -38,7 +38,10 @@ Depends: ${shlibs:Depends},
          netcat-openbsd,
          xrdp,
          ethtool,
-         wakeonlan
+         wakeonlan,
+         gnome-keyring,
+         libsecret-1-0,
+         libqt5keychain1
 Description: e-ag Uzaktan Yönetim ve Görüntüleme Sunucusu
  e-ag, yerel ağ üzerindeki bilgisayarları uzaktan izleme, 
  ekran paylaşımı, dosya aktarımı ve yönetim işlemleri için 

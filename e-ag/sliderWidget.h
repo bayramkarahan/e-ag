@@ -50,6 +50,7 @@ QWidget*  MainWindow::sliderWidget()
     layouts->addWidget(label1, 1, 0, 1, 1,Qt::AlignLeft);
     layouts->addWidget(label2, 1, 1, 1, 1,Qt::AlignCenter);
     layouts->addWidget(label3, 1, 2, 1, 1,Qt::AlignRight);
+    slider->setTracking(false);
     connect(slider, SIGNAL(valueChanged(int)), SLOT(updateSlider(int)),Qt::QueuedConnection);
     sWidget->setFixedSize(en*23,boy*5);
     sWidget->setLayout(layouts);

@@ -1,3 +1,12 @@
+e-ag (2.9.5) unstable; urgency=medium
+
+  * get workfile
+  * file space replace del
+  * vncscle add
+  * rdpsclae add
+  * user login cookie add
+  * file trransfer state update
+
 e-ag (2.9.4.0) unstable; urgency=medium
 
   * Initial Release

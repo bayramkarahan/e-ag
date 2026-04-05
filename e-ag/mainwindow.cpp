@@ -420,10 +420,10 @@ void MainWindow::mesajSlot(QString msg)
     statusbar->showMessage(msg);
 }
 
-void MainWindow::pcDoubleClickSignalSlot(QString _mac)
+void MainWindow::pcDoubleClickSignalSlot(QString _mac,QString port)
 {
-    qDebug() << "Çift tıklandı:" << _mac;
-
+    qDebug() << "Çift tıklandı:" << _mac<<port;
+    //return;
     MyPc *targetPc = nullptr;
 
     for (MyPc *pc : onlinePcList) {
@@ -432,6 +432,11 @@ void MainWindow::pcDoubleClickSignalSlot(QString _mac)
             break;
         }
     }
+        if (!targetPc->connectState) {
+            mesajSlot(tr("Bilgisayar açık değil."));
+            return;
+        }
+
 
     if (!targetPc) {
         mesajSlot(tr("Belirtilen MAC adresine sahip bilgisayar bulunamadı."));
@@ -442,19 +447,22 @@ void MainWindow::pcDoubleClickSignalSlot(QString _mac)
 
     QStringList portList = targetPc->vncport.split("-", Qt::SkipEmptyParts);
     QString chosenPort = "5900";
-
-    // 5900 haricinde varsa onu seç
-    for (const QString &p : portList) {
-        if (p != "5900" && !p.isEmpty()) {
-            chosenPort = p;
-            break;
+    if(port==""){
+        // 5900 haricinde varsa onu seç
+        for (const QString &p : portList) {
+            if (p != "5900" && !p.isEmpty()) {
+                chosenPort = p;
+                break;
+            }
         }
+    }else
+    {
+        chosenPort=port;
     }
 
-
-    qDebug() << "Seçilen port:" << chosenPort;
-
-    float scaleValue = ekranSlider->value() * 0.01f;
+    qDebug() << "Seçilen port:" << chosenPort<<targetPc->ip;
+//return;
+    float scaleValue = vncEkranSlider->value() * 0.01f;
     if(targetPc->vncviwerpid!=0&&
         QFile::exists(QString("/proc/%1").arg(targetPc->vncviwerpid))) {
         qDebug() << "önceden çalışmış"<<targetPc->vncviwerpid;

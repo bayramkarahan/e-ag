@@ -518,7 +518,11 @@ void MainWindow::pcMenu(bool singlepc)
                     QAction *pVncAction0 = new QAction(tr("Vnc Bağlan-")+vncports[0],this);
                     pVncAction0->setIcon(QIcon(":/icons/vnc.svg"));
                     pVncAction0->setIconVisibleInMenu(true);
-                    connect(pVncAction0 ,SIGNAL(triggered()),this,SLOT(slotVnc0()));
+                    //connect(pVncAction0 ,SIGNAL(triggered()),this,SLOT(slotVnc0()));
+                    connect(pVncAction0, &QAction::triggered, this, [=]() {
+                        QStringList vncports=onlinePcList[i]->vncport.split("-");
+                        pcDoubleClickSignalSlot(pcMac->text(),vncports[0]);
+                    });
                     pContextMenu->addAction(pVncAction0 );
                     }
                 }
@@ -529,7 +533,12 @@ void MainWindow::pcMenu(bool singlepc)
                     QAction *pVncAction1 = new QAction(tr("Vnc Bağlan-")+vncports[1],this);
                     pVncAction1->setIcon(QIcon(":/icons/vnc.svg"));
                     pVncAction1->setIconVisibleInMenu(true);
-                    connect(pVncAction1 ,SIGNAL(triggered()),this,SLOT(slotVnc1()));
+                    //connect(pVncAction1 ,SIGNAL(triggered()),this,SLOT(slotVnc1()));
+                    connect(pVncAction1, &QAction::triggered, this, [=]() {
+                        QStringList vncports=onlinePcList[i]->vncport.split("-");
+                        pcDoubleClickSignalSlot(pcMac->text(),vncports[1]);
+                    });
+
                     pContextMenu->addAction(pVncAction1 );
                     }
                 }
@@ -539,7 +548,11 @@ void MainWindow::pcMenu(bool singlepc)
                     QAction *pVncAction2 = new QAction(tr("Vnc Bağlan-")+vncports[2],this);
                     pVncAction2->setIcon(QIcon(":/icons/vnc.svg"));
                     pVncAction2->setIconVisibleInMenu(true);
-                    connect(pVncAction2 ,SIGNAL(triggered()),this,SLOT(slotVnc2()));
+                    //connect(pVncAction2 ,SIGNAL(triggered()),this,SLOT(slotVnc2()));
+                    connect(pVncAction2, &QAction::triggered, this, [=]() {
+                        QStringList vncports=onlinePcList[i]->vncport.split("-");
+                        pcDoubleClickSignalSlot(pcMac->text(),vncports[2]);
+                    });
                     pContextMenu->addAction(pVncAction2 );
                     }
                 }
@@ -708,48 +721,6 @@ void MainWindow::pcMenu(bool singlepc)
     //pContextMenu->exec();
 
 
-}
-void MainWindow::slotVnc0(){
-    for(int i=0;i<onlinePcList.length();i++)
-    {
-        if(onlinePcList[i]->mac==selectMac)
-        {
-            QStringList vncports=onlinePcList[i]->vncport.split("-");
-            QString komut="";
-            komut.append("nohup ssvncviewer -scale 0.9 ").append(onlinePcList[i]->ip).append(":"+vncports[0]+" \-passwd \/usr\/bin\/x11vncpasswd &");
-            qDebug()<<"vnc:"<<komut;
-            system(komut.toStdString().c_str());
-        }
-    }
-
-}
-void MainWindow::slotVnc1(){
-    //emit pcClickSignal(mac);//nesneler arası data transferi***
-    //emit pcMenuSignal(mac,ip,"slotVnc1");
-    for(int i=0;i<onlinePcList.length();i++)
-    {
-        if(onlinePcList[i]->mac==selectMac)
-        {
-            QStringList vncports=onlinePcList[i]->vncport.split("-");
-    QString komut="";
-    komut.append("nohup ssvncviewer -scale 0.9 ").append(onlinePcList[i]->ip).append(":"+vncports[1]+" \-passwd \/usr\/bin\/x11vncpasswd &");
-    qDebug()<<"vnc:"<<komut;
-    system(komut.toStdString().c_str());
-        }
-    }
-}
-void MainWindow::slotVnc2(){
-    for(int i=0;i<onlinePcList.length();i++)
-    {
-        if(onlinePcList[i]->mac==selectMac)
-        {
-            QStringList vncports=onlinePcList[i]->vncport.split("-");
-            QString komut="";
-            komut.append("nohup ssvncviewer -scale 0.9 ").append(onlinePcList[i]->ip).append(":"+vncports[2]+" \-passwd \/usr\/bin\/x11vncpasswd &");
-            qDebug()<<"vnc:"<<komut;
-            system(komut.toStdString().c_str());
-        }
-    }
 }
 
 QMenu *MainWindow::languageMenu()

@@ -1,0 +1,2 @@
+sudo apt install qtkeychain-qt5-dev 
+sudo apt install gnome-keyring libsecret-1-0

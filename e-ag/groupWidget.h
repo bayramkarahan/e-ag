@@ -29,9 +29,16 @@ QWidget* MainWindow::groupWidget(QWidget *targetWidget)
                 }
             }
             if (!findState)
+            {
                 PcData::groupListe.append({true, veri.value("groupname").toString()});
+
+            }
+
         }
     }
+
+    /***************************************************************/
+
 
     QWidget *sor = targetWidget;
     if (!sor) {
@@ -87,8 +94,7 @@ QWidget* MainWindow::groupWidget(QWidget *targetWidget)
         QLabel *label = new QLabel(grp.groupName);
         check->setObjectName("checkWidget");
         check->setStyleSheet("#checkWidget { border: 1px solid #e1e1e1; }");
-        connect(check, &QCheckBox::toggled, sor, [this, i, check]() {
-
+        connect(check, &QCheckBox::toggled, sor, [this, i, check,grp]() {
             PcData::groupListe[i].groupSelect = check->isChecked();
             groupListChange(PcData::groupListe);
         });
