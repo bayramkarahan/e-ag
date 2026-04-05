@@ -102,13 +102,13 @@ void MainWindow::slotLogin(){
     QString seatUser = helper.detectActiveUser();// 1) Aktif kullanıcıyı bul
 
     CustomInputDialog *cid0=new CustomInputDialog(tr("İstemci Kullanıcısı"),tr(" İstemcideki Kullanıcının Adını Giriniz :"),"",300,100);
-    cid0->setData("lastuser",seatUser,"text");
+    cid0->setData("loginuser",seatUser,"text");
     int result0=cid0->exec();
     seatUser = cid0->getText();
     //qDebug() << "User geldi:"<<result0 << seatUser;
 
     CustomInputDialog  *cid1=new CustomInputDialog(tr("İstemci Parolası"),tr(" İstemcideki Kullanıcının Parolasını Giriniz :"),"",300,100);
-    cid1->setData("lastpasswd","","passwd");
+    cid1->setData("loginpasswd","","passwd");
     int result1=cid1->exec();
     QString seatUserPasswd=cid1->getText();
     //qDebug() << "password geldi:"<<result1 << seatUserPasswd;
@@ -116,8 +116,8 @@ void MainWindow::slotLogin(){
         if(seatUser!=""&&seatUserPasswd!=""&&result0==1&&result1==1)
         {
             // Kullanıcı + parola kaydediliyor
-            cid0->saveMetaData("lastuser", seatUser);
-            cid1->saveMetaData("lastpasswd", seatUserPasswd);
+            cid0->saveMetaData("loginuser", seatUser);
+            cid1->saveMetaData("loginpasswd", seatUserPasswd);
 
             QString komut="sshlogin "+seatUser+" "+seatUserPasswd;
              udpSendData("seatlogin","seatlogin",komut,"",false);
