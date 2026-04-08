@@ -98,6 +98,7 @@ void MainWindow::slotLogoutAll(){
     mesajSlot("Tüm Hostlarda Oturum Kapatıldı.");
 }
 void MainWindow::slotLogin(){
+
     UserPrivilegeHelper helper;
     QString seatUser = helper.detectActiveUser();// 1) Aktif kullanıcıyı bul
 
@@ -106,7 +107,7 @@ void MainWindow::slotLogin(){
     int result0=cid0->exec();
     seatUser = cid0->getText();
     //qDebug() << "User geldi:"<<result0 << seatUser;
-
+    if(result0==0)return;
     CustomInputDialog  *cid1=new CustomInputDialog(tr("İstemci Parolası"),tr(" İstemcideki Kullanıcının Parolasını Giriniz :"),"",300,100);
     cid1->setData("loginpasswd","","passwd");
     int result1=cid1->exec();
@@ -120,7 +121,7 @@ void MainWindow::slotLogin(){
             cid1->saveMetaData("loginpasswd", seatUserPasswd);
 
             QString komut="sshlogin "+seatUser+" "+seatUserPasswd;
-             udpSendData("seatlogin","seatlogin",komut,"",false);
+            udpSendData("seatlogin","seatlogin",komut,"",false);
 
             QString komut1="pardus-login "+seatUser+" "+seatUserPasswd;
             udpSendData("seatlogin","seatlogin",komut1,"",false);

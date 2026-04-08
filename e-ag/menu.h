@@ -568,6 +568,20 @@ void MainWindow::pcMenu(bool singlepc)
 */
     pContextMenu->setStyleSheet("width:165px; background-color: gray; font-size:"+font+"px;");
 
+    QAction *refreshAction = new QAction(QIcon(":/icons/liste.svg"), tr("&Listeyi Yenile"), this);
+    refreshAction->setShortcut(tr("Yenile"));
+    refreshAction->setStatusTip(tr("Yenile"));
+    connect(refreshAction, &QAction::triggered, this, [=]() {
+        for (MyPc *pc : onlinePcList) {
+           // if (pc->connectState)
+          //  {
+                pc->setCommandState("","","0");//2 kopayalama başla
+                pc->setCommandButonState(false);
+           // }
+        }
+        pcListeGuncelleSlot("yenile");
+    });
+
     QAction *pPcOpenAction = new QAction(tr("Pc Aç"),this);
     pPcOpenAction->setIcon(QIcon(":/icons/wol.svg"));
     pPcOpenAction->setIconVisibleInMenu(true);
@@ -696,6 +710,7 @@ void MainWindow::pcMenu(bool singlepc)
 
          return;
      }*/
+    pContextMenu->addAction(refreshAction);
     pContextMenu->addAction(pPcOpenAction);
     pContextMenu->addAction(pKilitAction);
     pContextMenu->addAction(pKilitAcAction );

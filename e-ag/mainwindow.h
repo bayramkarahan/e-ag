@@ -133,6 +133,16 @@ protected:
          text.replace("Ü", "U");
          return text;
      }
+     bool pcAcikMi()
+     {
+         for (MyPc *pc : onlinePcList) {
+             if ((pc->select || pc->multiSelect)&&pc->connectState)
+             {
+                 return true;
+
+             }
+         }
+     }
      bool ayniSubnet(const QString &ip1,
                      const QString &ip2,
                      const QString &mask)

@@ -546,6 +546,7 @@ void MainWindow::slotRdp(){
     cid0->setData("rdpuser",seatUser,"text");
     int result0=cid0->exec();
     seatUser = cid0->getText();
+    if(result0==0)return;
     //qDebug() << "User geldi:"<<result0 << seatUser;
 
     CustomInputDialog  *cid1=new CustomInputDialog(tr("İstemci Parolası"),tr(" İstemcideki Kullanıcının Parolasını Giriniz :"),"",300,100,this);

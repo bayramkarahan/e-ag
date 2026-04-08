@@ -27,8 +27,11 @@ QWidget* MainWindow::webInternetWidget()
         if(pcMac->text()==""){mesajSlot(tr("Pc Seçiniz"));return;}
 
         CustomInputDialog  cid(tr("Adres Girişi"),tr(" İstemcilerde Açılacak Web Adresini Giriniz."),"google.com",300,100);
+        cid.setData("webOpen","","text");
+        int result0=cid.exec();
         QString urlString = cid.getText().trimmed();
-          if(urlString!="")
+        if(result0==0)return;
+        if(urlString!="")
         {
             // Eğer http:// veya https:// ile başlamıyorsa başına https:// ekle
             if (!urlString.startsWith("http://") && !urlString.startsWith("https://")) {
@@ -39,6 +42,7 @@ QWidget* MainWindow::webInternetWidget()
 
             QString kmt="xdg-open "+url.toString();
             qDebug()<<kmt;
+            cid.saveMetaData("webOpen", url.toString());
             udpSendData("x11command","x11command",kmt,"",false);
             for(int i=0;i<onlinePcList.count();i++)
             {
@@ -99,13 +103,16 @@ QWidget* MainWindow::webInternetWidget()
         //udpSendData("x11command","x11command",webEdit->text());
         CustomInputDialog  cid(tr("Adres Girişi"),tr(" Engellenecek Web Adresini Giriniz.\n"
                                                      "Bu web sitesine girilemez. "),"",300,150);
+        cid.setData("blockDomain","","text");
+        int result0=cid.exec();
         QString raw = cid.getText().trimmed();
-
+        if(result0==0)return;
         if (!raw.startsWith("http://") && !raw.startsWith("https://"))
             raw.prepend("http://");  // QUrl doğru parse etsin
 
         QUrl url(raw);
         QString hostname = url.host();  // sadece domain gelir
+        cid.saveMetaData("blockDomain", hostname);
 
         qDebug() << hostname;
         udpSendData("consolecommand","consolecommand","/usr/share/webblock/script/domainblock add "+hostname,"",true);
@@ -126,12 +133,15 @@ QWidget* MainWindow::webInternetWidget()
         if(pcMac->text()==""){mesajSlot(tr("Pc Seçiniz"));return;}
         CustomInputDialog  cid(tr("Adres Girişi"),tr(" Engel Kaldırılacak Web Adresini Giriniz.\n"
                                                      "Bu adrese engelsiz girebilirsiniz. "),"",300,150);
+        cid.setData("blockDomain","","text");
+        int result0=cid.exec();
         QString raw = cid.getText().trimmed();
-
+        if(result0==0)return;
         if (!raw.startsWith("http://") && !raw.startsWith("https://"))
             raw.prepend("http://");  // QUrl doğru parse etsin
         QUrl url(raw);
         QString hostname = url.host();  // sadece domain gelir
+        cid.saveMetaData("blockDomain", hostname);
         udpSendData("consolecommand","consolecommand","/usr/share/webblock/script/domainblock remove "+hostname,"",true);
     });
 
@@ -166,11 +176,13 @@ QWidget* MainWindow::webInternetWidget()
 
         CustomInputDialog  cid(tr("Adres Girişi"),tr(" Sadece İzin Verilecek Web Adresini Giriniz.\n"
                                                      "Bu adres dışında başka web sitesine girilemez. "),"",300,150);
+
+        cid.setData("onlyAllowStartWeb","","text");
+        int result0=cid.exec();
+        if(result0==0)return;
         QString urlString = cid.getText().trimmed();
-
+        cid.saveMetaData("onlyAllowStartWeb", urlString);
             udpSendData("consolecommand","consolecommand","/usr/share/webblock/script/only-webblock start "+urlString,"only-web-allow-on",true);
-
-
         });
 
     QToolButton *stopInternetButton=new QToolButton();

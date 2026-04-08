@@ -78,9 +78,14 @@ QWidget* MainWindow::baseWidget()
     novncConnectPcButton->setFixedSize(yukseklik*0.95,yukseklik*1.5);
     novncConnectPcButton->setText(tr("noVNC"));
     connect(novncConnectPcButton, &QToolButton::clicked, [=]() {
-        QString kmt26="env MOZ_USE_XINPUT2=1 /usr/lib/firefox/firefox "+pcIp->text()+":6085/vnc.html";
-        system(kmt26.toStdString().c_str());
+        ///QString kmt26="env MOZ_USE_XINPUT2=1 /usr/lib/firefox/firefox "+pcIp->text()+":6085/vnc.html";
+        ///system(kmt26.toStdString().c_str());
 
+        ///QString kmt27="env MOZ_USE_XINPUT2=1 /usr/bin/firefox "+pcIp->text()+":6085/vnc.html";
+        ///system(kmt27.toStdString().c_str());
+       if(!pcAcikMi()) return;
+        QString kmt10="x-www-browser "+pcIp->text()+":6085/vnc.html";
+        system(kmt10.toStdString().c_str());
         // QDesktopServices::openUrl(QUrl("192.168.1.101:6085"));
     });
 
@@ -106,7 +111,8 @@ QWidget* MainWindow::baseWidget()
     xrdpConnectPcButton->setFixedSize(yukseklik*0.95,yukseklik*1.4);
     xrdpConnectPcButton->setText(tr("RDP"));
     connect(xrdpConnectPcButton, &QToolButton::clicked, [=]() {
-        slotRdp();
+       if(!pcAcikMi()) return;
+       slotRdp();
     });
 
     // Slider buton boyutunun yarısı kadar olacak
@@ -152,7 +158,7 @@ QWidget* MainWindow::baseWidget()
     terminalPcButton->setFixedSize(yukseklik*0.95,yukseklik*1.5);
     terminalPcButton->setText(tr("Terminal"));
     connect(terminalPcButton, &QToolButton::clicked, [=]() {
-
+        if(!pcAcikMi()) return;
         UserPrivilegeHelper helper;
         QString seatUser = helper.detectActiveUser();// 1) Aktif kullanıcıyı bul
 
@@ -165,8 +171,10 @@ QWidget* MainWindow::baseWidget()
             {
             // Kullanıcı + parola kaydediliyor
             cid0->saveMetaData("sshuser", seatUser);
-            QString kmt10="xterm -fa \"Monospace\" -fs 14 -e \"ssh "+seatUser+"@"+pcIp->text()+"\" &";
-            system(kmt10.toStdString().c_str());
+           /// QString kmt10="xterm -fa \"Monospace\" -fs 14 -e \"ssh "+seatUser+"@"+pcIp->text()+"\" &";
+
+           QString kmt10="x-terminal-emulator -e \"ssh -o StrictHostKeyChecking=no "+seatUser+"@"+pcIp->text()+"\"";
+           system(kmt10.toStdString().c_str());
         }
     // QString kmt10="x-terminal-emulator -e \"ssh "+remoteUserName+"@"+pcIp->text()+"\"";
         //QString kmt9="ssh etapadmin@"+pcIp->text()+"\" &";
@@ -211,7 +219,7 @@ QWidget* MainWindow::baseWidget()
     // ftpPc->setAutoFillBackground(true);
     ftpPc->setText("FTP");
     connect(ftpPc, &QToolButton::clicked, [=]() {
-
+        if(!pcAcikMi()) return;
         UserPrivilegeHelper helper;
         QString seatUser = helper.detectActiveUser();// 1) Aktif kullanıcıyı bul
 
@@ -219,6 +227,7 @@ QWidget* MainWindow::baseWidget()
         cid0->setData("ftpuser",seatUser,"text");
         int result0=cid0->exec();
         seatUser = cid0->getText();
+        if(result0==0)return;
         //qDebug() << "User geldi:"<<result0 << seatUser;
 
         CustomInputDialog  *cid1=new CustomInputDialog(tr("İstemci Parolası"),tr(" İstemcideki Kullanıcının Parolasını Giriniz :"),"",300,100);

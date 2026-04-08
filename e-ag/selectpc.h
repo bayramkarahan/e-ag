@@ -25,6 +25,19 @@ void MainWindow::selectPc()
     int e=en;
     int b=boy;
 
+    QAction *refreshAction = new QAction(QIcon(":/icons/liste.svg"), tr("&Listeyi Yenile"), this);
+    refreshAction->setShortcut(tr("Yenile"));
+    refreshAction->setStatusTip(tr("Listeyi Yenile"));
+    connect(refreshAction, &QAction::triggered, this, [=]() {
+        for (MyPc *pc : onlinePcList) {
+           // if ((pc->select || pc->multiSelect)&&pc->connectState)
+           // {
+                pc->setCommandState("","","0");//2 kopayalama başla
+                pc->setCommandButonState(false);
+           // }
+        }
+        pcListeGuncelleSlot("yenile");
+    });
 
     QAction *selectAction = new QAction(QIcon(":/icons/select.svg"), tr("&İstemci Seç"), this);
     selectAction->setShortcut(tr("Seç"));
@@ -74,6 +87,7 @@ void MainWindow::selectPc()
     connect(profilAction, SIGNAL(triggered()), this, SLOT( networkProfil()));
 
     QToolBar *toolBar=new QToolBar(this);
+     toolBar->addAction(refreshAction);
     toolBar->addAction(selectAction);
     toolBar->addAction(vncAction);
     toolBar->addAction(xrdpAction);

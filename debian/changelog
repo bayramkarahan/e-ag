@@ -1,11 +1,16 @@
-e-ag (2.9.5) unstable; urgency=medium
+e-ag (2.9.6) unstable; urgency=medium
 
   * get workfile
   * file space replace del
   * vncscle add
   * rdpsclae add
   * user login cookie add
-  * file trransfer state update
+  * file transfer state update
+  * right menu add refresh
+  * webtab add user cooike
+  * ssh terminal x-terminal-emulator add 
+  * novnc x-www-browser  add
+  
 
 e-ag (2.9.4.0) unstable; urgency=medium
 

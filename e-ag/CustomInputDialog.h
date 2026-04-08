@@ -41,10 +41,10 @@ public:
     }
 
      void setData(QString metadata,QString data,QString type){
-       qDebug() <<"setData"<<metadata<< data << type;
+       //qDebug() <<"setData"<<metadata<< data << type;
 
          readMetaData(metadata, [this,metadata,data,type](QString _data){
-              qDebug() <<metadata<< " okundu:" << _data;
+              //qDebug() <<metadata<< " okundu:" << _data;
               if(type=="passwd"){
                   lineEdit_->setEchoMode(QLineEdit::Password);
                   lineEdit_->setContextMenuPolicy(Qt::NoContextMenu);
