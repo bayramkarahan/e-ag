@@ -114,11 +114,12 @@ public:
         NetProfil netProfil;
 protected:
 void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+void mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 void mouseDoubleClickEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 
 signals:
 void pcDoubleClickSignal(QString mac, QString port);
-void pcClickSignal(QString mac);
+void pcClickSignal(QString mac,bool _multiselect);
 void pcRightClickSignal();
 void pcListeSignal();
 void pcHideSignal(QString _mac);
@@ -162,10 +163,10 @@ void setYoutubeState(bool state);
 
 
 void setCommandState(QString _command,QString _commandDetail,QString _commandState);
-void slotMouseClick();
-void slotMouseDoubleClick();
-void slotSelectPc();
-void slotUnselectPc();
+void slotMouseClick(bool _select);
+
+void multiSelectPc();
+void multiUnselectPc();
 void slothidePc();
 QPixmap svgToPixmap(const QString &svgPath, const QSize &size);
 private slots:

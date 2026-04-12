@@ -42,7 +42,14 @@ void MainWindow::selectPc()
     QAction *selectAction = new QAction(QIcon(":/icons/select.svg"), tr("&İstemci Seç"), this);
     selectAction->setShortcut(tr("Seç"));
     selectAction->setStatusTip(tr("İstemcileri Seçme Yapıldı"));
-    connect(selectAction, SIGNAL(triggered()), this, SLOT(selectSlot()));
+
+    connect(selectAction, &QAction::triggered, this, [=]() {
+        for (MyPc *pc : onlinePcList) {
+            qDebug()<<"Tüm liste seçiliyor";
+            pc->multiSelectPc();
+
+        }
+    });
 
     QAction *vncAction = new QAction(QIcon(":/icons/vnc.svg"), tr("&Uzak Masaüstü Bağlantısı"), this);
     vncAction->setShortcut(tr("VNC"));

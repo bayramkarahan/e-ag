@@ -212,8 +212,6 @@ private slots:
     void updateSlider(int val);
     void groupListChange(const QList<groupList> &liste);
 
-    void selectSlot();
-
     void vncDisplaySlot();
 
 
@@ -235,7 +233,8 @@ private slots:
 
 QString getMacForIP(QString ipAddress);
 
-    void pcClickSlot(QString _mac);
+    void pcClickSignalSlot(QString _mac,bool _multiselect);
+    void pcSelect(QString _mac);
     void pcDoubleClickSignalSlot(QString _mac, QString port);
     void slotWakeOnLan(QString _ip,QString _mac);
 

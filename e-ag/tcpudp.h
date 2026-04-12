@@ -149,11 +149,11 @@ void MainWindow::udpSocketServerRead()
         QHostAddress sender;
         quint16 senderPort;
         udpSocketGet->readDatagram(datagram.data(), datagram.size(), &sender, &senderPort);
-        //QString rmesaj=datagram.constData();
-        //qDebug()<<"Gelen veri:"<<rmesaj;
+        ///QString rmesaj=datagram.constData();
+        ///qDebug()<<"Gelen veri:"<<rmesaj;
         QString ipAddress=QHostAddress(sender.toIPv4Address()).toString();
 
-        qDebug()<<"Gelen ip:"<<QHostAddress(sender.toIPv4Address()).toString();
+        //qDebug()<<"Gelen ip:"<<QHostAddress(sender.toIPv4Address()).toString();
 
         QJsonParseError parseError;
         QJsonDocument doc = QJsonDocument::fromJson(datagram, &parseError);
@@ -230,8 +230,10 @@ void MainWindow::clientConfUpdate(const QJsonObject &json,QString ipAddress)
             pc->setYoutubeState(json["console_youtubeState"].toBool());
             pc->setKilitTransparanState(json["tray_tlock"].toBool());
             pc->setKilitState(json["tray_lock"].toBool());
-            pc->setUser(tray_user);
-            pc->setHostname(console_hostname);
+            //qDebug()<<pc->user<<tray_user<<pc->hostname<<console_hostname;
+            if(pc->user!=tray_user) pc->setUser(tray_user);
+            if(pc->hostname!=console_hostname) pc->setHostname(console_hostname);
+
             if(console_sshstate) pc->setSshState("o");
             else pc->setSshState("c");
 
@@ -407,13 +409,12 @@ void MainWindow::pcCloseSignalSlot(QString ip,QString mac)
 
 void MainWindow::slotPcEkle(QString _mac,QString _ip)
 {
-    //qDebug() << "Pc Ekle Başla: "<<_ip;
-    qDebug() << "Açılan Pc: "<<_mac<<_ip;
+    //qDebug() << "Açılan Pc: "<<_mac<<_ip;
     MyPc *mypc=new MyPc(_mac,_ip);
     mypc->setConnectState(false);
 
-    connect(mypc, SIGNAL(pcClickSignal(QString)),this,
-            SLOT(pcClickSlot(QString)));
+    connect(mypc, SIGNAL(pcClickSignal(QString,bool)),this,
+            SLOT(pcClickSignalSlot(QString,bool)));
 
     connect(mypc, SIGNAL(pcDoubleClickSignal(QString, QString)),this,
             SLOT(pcDoubleClickSignalSlot(QString, QString)));
@@ -473,7 +474,7 @@ void MainWindow::slotPcEkle(QString _mac,QString _ip)
 /*******************************************************************/
     //qDebug() << "Pc Ekle Son: "<<_ip<<onlinePcList[0]->groupname;
     //pcListeGuncelleSlot("openpcDetect");
-    pcSettingUpdateSignalSlot(_mac.toUpper(),"pc Eklendi");
+    pcSettingUpdateSignalSlot(_mac.toUpper(),"pc Eklendi: "+_mac.toUpper());
     mypc->setVolumeState(false);
     mypc->setKeyboardState(false);
     mypc->setMouseState(false);
@@ -485,7 +486,7 @@ void MainWindow::slotPcEkle(QString _mac,QString _ip)
 
 void MainWindow::slotPcSil(int _index,QString _mac,QString _ip)
 {
-    qDebug() << "Kapatılan Pc: "<<onlinePcList[_index]->ip;
+    //qDebug() << "Kapatılan Pc: "<<onlinePcList[_index]->ip;
     pcopencount--;
     layout->removeWidget(onlinePcList[_index]);
     onlinePcList[_index]->deleteLater();

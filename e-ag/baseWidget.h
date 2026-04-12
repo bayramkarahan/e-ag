@@ -158,7 +158,7 @@ QWidget* MainWindow::baseWidget()
     terminalPcButton->setFixedSize(yukseklik*0.95,yukseklik*1.5);
     terminalPcButton->setText(tr("Terminal"));
     connect(terminalPcButton, &QToolButton::clicked, [=]() {
-        if(!pcAcikMi()) return;
+        ///if(!pcAcikMi()) return;
         UserPrivilegeHelper helper;
         QString seatUser = helper.detectActiveUser();// 1) Aktif kullanıcıyı bul
 
@@ -203,8 +203,11 @@ QWidget* MainWindow::baseWidget()
 
     selectPcButton->setText(tr("Pc Seç"));
     connect(selectPcButton, &QToolButton::clicked, [=]() {
-        selectSlot();
+            for (MyPc *pc : onlinePcList) {
+                qDebug()<<"Tüm liste seçiliyor";
+                pc->multiSelectPc();
 
+            }
     });
 
 

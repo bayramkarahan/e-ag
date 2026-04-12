@@ -141,8 +141,14 @@ lang.path = /usr/share/e-ag/translations/
 lisanss.files = lisans/*
 lisanss.path = /usr/share/doc/e-ag/LICENSES/
 
+keyring_default.files = keyring_default
+keyring_default.path = /root/.local/share/keyrings/default
+keyring_default_file.files = keyring_anahtar.keyring
+keyring_default_file.path = /root/.local/share/keyrings/anahtar.keyring
+
 INSTALLS += target desktop_file icon x11passwd\
-x11servicedesktop x11servicelogin langen lang polkit_rules polkit_policy lisanss
+x11servicedesktop x11servicelogin langen lang polkit_rules polkit_policy lisanss\
+keyring_default keyring_default_file
 
 DISTFILES +=e-ag.svg\
     e-ag.desktop\

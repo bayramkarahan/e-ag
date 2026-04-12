@@ -64,17 +64,6 @@ bool MainWindow::killProcessByName(const QString &processName) {
     #endif
 }
 
-void MainWindow::selectSlot()
-{
-    for(int i=0;i<onlinePcList.count();i++)
-    {
-        // onlinePcList[i]->select=!(onlinePcList[i]->select);
-        /// onlinePcList[i]->slotMouseClick();
-        onlinePcList[i]->slotMouseDoubleClick();
-    }
-    mesajSlot("Host Seçimi Yapıldı.");
-}
-
 
 
 #endif // FUNTION_H

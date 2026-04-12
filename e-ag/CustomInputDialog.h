@@ -78,8 +78,8 @@ public:
         QObject::connect(job, &Job::finished, [metaData,data](Job *job) {
             if (job->error())
                 qDebug() << "Error:" << job->errorString();
-            else
-                qDebug() << "metaData saved"<<metaData;
+            //else
+                //qDebug() << "metaData saved"<<metaData;
         });
 
         job->start();

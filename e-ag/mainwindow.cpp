@@ -227,13 +227,7 @@ statusbar->addPermanentWidget(sliderWidget(),0);
 
 /*************************************************************************/
  }
-/*
-bool MainWindow::karsilastirMyPc(const MyPc *mypc1, const MyPc *mypc2) {
-    //qDebug()<<"adlar: "<<mypc1->caption;
-    mypc1->hostnameVisible
-        mypc1->hostname
-    return mypc1->caption < mypc2->caption; // caption göre sırala
- }*/
+
  bool MainWindow::karsilastirMyPc(const MyPc *mypc1, const MyPc *mypc2)
  {
      QString name1 = mypc1->hostnameVisible ? mypc1->hostname : mypc1->caption;
@@ -286,9 +280,9 @@ void MainWindow::pcListeGuncelleSlot(QString mission)
      for (MyPc *pc : farkListesi) {
          for (MyPc *pc1 : onlinePcList) {
          if (pc->mac.toUpper() == pc1->mac.toUpper()) {
-                 pc1->multiSelect=false;
+                 ///pc1->multiSelect=false;
                  pc1->select=false;
-                 pc1->slotUnselectPc();
+                 pc1->multiUnselectPc();
                  qDebug()<<pc1->mac;
              }
          }
@@ -334,14 +328,7 @@ void MainWindow::pcListeGuncelleSlot(QString mission)
              sn++;
         }
      }
-
-/***************pc seçimi yapılıyor önemli***********************/
-
-     if(onlinePcList1.size()>0)
-     {
-         onlinePcList1[0]->slotMouseClick();
-         //pcClickSlot(onlinePcList1[onlinePcList1.size()-1]->mac);
-     }
+     pcSelect("");
 
  }
 
@@ -493,44 +480,98 @@ void MainWindow::pcDoubleClickSignalSlot(QString _mac,QString port)
     mesajSlot(tr("Seçili hostta VNC başlatıldı."));
 }
 
-void MainWindow::pcClickSlot(QString _mac)
+void MainWindow::pcClickSignalSlot(QString _mac,bool _multiselect)
 {
+
     QPalette palet;
-    for(int i=0;i<onlinePcList.length();i++)
-     {
-        if(onlinePcList[i]->mac!=_mac)
+    MyPc *endSelectPc=nullptr;
+    for (MyPc *pc : onlinePcList) {
+
+        if (_multiselect)
         {
-         onlinePcList[i]->select=false;
-        /// btnlist[i]->slotUnselectPc();
-         palet.setColor(QPalette::Window, QColor(0,0,0,0));
-         onlinePcList[i]->setPalette(palet);
-         onlinePcList[i]->setAutoFillBackground(true);
+
+            //çoklu seçim
+            if (pc->select)
+            {
+                //qDebug()<<"pcClickSlot select"<<pc->select<<"_multiselect:"<<_multiselect;
+                pc->multiSelectPc();
+                //pc->slotMouseClick(true);
+                endSelectPc=pc;
+            }
+            else
+            {
+               //qDebug()<<"pcClickSlot unselect"<<pc->select<<"_multiselect:"<<_multiselect;
+               pc->multiUnselectPc();
+               pc->slotMouseClick(false);
+               palet.setColor(QPalette::Window, QColor(0,0,0,0));
+               pc->setPalette(palet);
+               pc->setAutoFillBackground(true);
+            }
         }
         else
         {
-            #if defined(Q_OS_WIN)
-                //system("del ~/ssh &");
-            #elif defined(Q_OS_LINUX)
-                system("rm -rf ~/.ssh &");
-            #endif
+            //tekli seçim
+            if (pc->mac==_mac)
+            {
+                //pc->slotMouseClick(true);
+                endSelectPc=pc;
+            }
+            else
+            {
+               pc->multiUnselectPc();
+               pc->slotMouseClick(false);
+               palet.setColor(QPalette::Window, QColor(0,0,0,0));
+               pc->setPalette(palet);
+               pc->setAutoFillBackground(true);
+            }
+        }
 
-           pcIp->setText(onlinePcList[i]->ip);
-           pcMac->setText(onlinePcList[i]->mac);
-           pcName->setText(onlinePcList[i]->caption);
-          /// btnlist[i]->slotUnselectPc();
-            pcNamelbl->setText(tr("Pc Adı: ")+pcName->text());
-            pcIplbl->setText(tr("Ip: ")+pcIp->text());
-            pcMaclbl->setText(tr("Mac: ")+pcMac->text());
-            pcUserlbl->setText(tr("Kullanıcı: ")+onlinePcList[i]->user);
-           /// pcScreenlbl->setText("Ekran: "+onlinePcList[i]->display);
-            pcSystemlbl->setText(tr("Sistem: ")+onlinePcList[i]->hostname.trimmed());
-            pcVersionlbl->setText(tr("Version: ")+onlinePcList[i]->version);
-         }
-      }
-    selectMac=pcMac->text();
+
+
+    }
+       //Pc seçme
+    if(endSelectPc==nullptr)
+        pcSelect("");
+    else
+        pcSelect(endSelectPc->mac);
 
 }
-
+void MainWindow::pcSelect(QString _mac)
+{
+    if(_mac!=""){
+        for (MyPc *pc : onlinePcList) {
+            if(pc->mac==_mac)
+            {
+                system("rm -rf ~/.ssh &");
+                pcIp->setText(pc->ip);
+                pcMac->setText(pc->mac);
+                pcName->setText(pc->caption);
+                pcNamelbl->setText(tr("Pc Adı: ")+pcName->text());
+                pcIplbl->setText(tr("Ip: ")+pcIp->text());
+                pcMaclbl->setText(tr("Mac: ")+pcMac->text());
+                pcUserlbl->setText(tr("Kullanıcı: ")+pc->user);
+                pcSystemlbl->setText(tr("Sistem: ")+pc->hostname.trimmed());
+                pcVersionlbl->setText(tr("Version: ")+pc->version);
+                ///qDebug()<<"Seçilen Pc:"<<pc->mac;
+                pc->slotMouseClick(true);
+                selectMac=pc->mac;
+                break;
+            }
+        }
+    }else
+    {
+        int selecPcCount=0;
+        for (MyPc *pc : onlinePcList) {
+            if(pc->select) selecPcCount++;
+        }
+        if(selecPcCount==0)
+        {
+            ///qDebug()<<"Hiç Seçili Pc Bulunamadı!!";
+            if(onlinePcList.count()>0)
+                pcSelect(onlinePcList.first()->mac);
+        }
+    }
+}
 void MainWindow::pcRightClickSignalSlot()
 {
     pcrightmenu=true;
@@ -602,20 +643,32 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event)
     {
         rubberBand->hide();
         QRect selectionRect = rubberBand->geometry();
+        MyPc *endSelectMyPc= nullptr;   // 🔴 kritik;
         for (MyPc *mypc : findChildren<MyPc *>()) {
             if (selectionRect.intersects(mypc->geometry())) {
-                mypc->slotSelectPc();
+                //qDebug()<<"pc multi seçiliyor.."<<mypc->mac;
+                mypc->slotMouseClick(true);
+                mypc->multiSelectPc();
+                endSelectMyPc=mypc;
             } else {
-                mypc->slotUnselectPc();
+                //qDebug()<<"pc multi un seçiliyor.."<<mypc->mac;
+                mypc->slotMouseClick(false);
+                mypc->multiUnselectPc();
             }
         }
+        if(endSelectMyPc!=nullptr)
+            pcSelect(endSelectMyPc->mac);
+        else
+            pcSelect(selectMac);
+
+
     }
     mouseClickState=false;
 
 }
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
-    // qDebug()<<"main press";
+     //qDebug()<<"main press";
     origin =( event->pos());
     int hostListePos=tabwid->height()+selectWidget->height();
     rubberBand->setGeometry(QRect(QPoint(origin.x(),origin.y()-hostListePos),QSize(0,0)));

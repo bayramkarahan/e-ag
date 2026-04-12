@@ -582,11 +582,11 @@ void MainWindow::pcMenu(bool singlepc)
         pcListeGuncelleSlot("yenile");
     });
 
-    QAction *pPcOpenAction = new QAction(tr("Pc Aç"),this);
-    pPcOpenAction->setIcon(QIcon(":/icons/wol.svg"));
-    pPcOpenAction->setIconVisibleInMenu(true);
+    QAction *pcOpenAction = new QAction(tr("Pc Aç"),this);
+    pcOpenAction->setIcon(QIcon(":/icons/wol.svg"));
+    pcOpenAction->setIconVisibleInMenu(true);
     //connect(pPcOpenAction ,SIGNAL(triggered()),this,SLOT(slotVncFlip()));
-     QObject::connect(pPcOpenAction, &QAction::triggered, [&]() {
+     QObject::connect(pcOpenAction, &QAction::triggered, [&]() {
 
     for(int i=0;i<onlinePcList.count();i++)
     {
@@ -598,6 +598,23 @@ void MainWindow::pcMenu(bool singlepc)
     }
     });
 
+     QAction *pcDeleteAction = new QAction(tr("Pc Sil"),this);
+     pcDeleteAction->setIcon(QIcon(":/icons/delhost.svg"));
+     pcDeleteAction->setIconVisibleInMenu(true);
+     //connect(pcDeleteAction ,SIGNAL(triggered()),this,SLOT(slotVncFlip()));
+      QObject::connect(pcDeleteAction, &QAction::triggered, [&]() {
+        DatabaseHelper db(localDir+"persist.json");
+          for (MyPc *pc : onlinePcList) {
+             if (pc->connectState)
+             {
+                 QString _ip=pc->ip;
+                 QString _mac=pc->mac;
+                pcCloseSignalSlot(_ip,_mac);
+                db.Sil("mac",_mac);
+             }
+          }
+          pcListeGuncelleSlot("delete host");
+     });
     QAction *pVncFlipAction = new QAction(tr("Ekranı Yansıt"),this);
     pVncFlipAction->setIcon(QIcon(":/icons/vnc.svg"));
     pVncFlipAction->setIconVisibleInMenu(true);
@@ -711,7 +728,7 @@ void MainWindow::pcMenu(bool singlepc)
          return;
      }*/
     pContextMenu->addAction(refreshAction);
-    pContextMenu->addAction(pPcOpenAction);
+    pContextMenu->addAction(pcOpenAction);
     pContextMenu->addAction(pKilitAction);
     pContextMenu->addAction(pKilitAcAction );
     //pContextMenu->addAction(pEkranIzleAction );
@@ -727,6 +744,7 @@ void MainWindow::pcMenu(bool singlepc)
     // pContextMenu->addAction(psettingAction );
      pContextMenu->addAction(pvolumeoffAction );
     pContextMenu->addAction(pvolumeonAction );
+    pContextMenu->addAction(pcDeleteAction);
     //btnpc->setMenu(pContextMenu);
     //btnpc->setPopupMode(QToolButton::MenuButtonPopup);
     // btnayar->setMenu(pContextMenu);

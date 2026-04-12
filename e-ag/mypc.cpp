@@ -217,7 +217,8 @@ void MyPc::timertcpConnectControlSlot()
         setSshState("no");
         setVncState("no");
         setXrdpState("no");
-        setUser("noLogin");
+        ///setUser("noLogin");
+        user="noLogin";
         tcpConnectCounter=0;
         ///emit pcCloseSignal(ip,mac);
     }
@@ -271,17 +272,7 @@ void MyPc::setConnectState(bool state){
     {
         //qDebug()<<"gri ayarlandı";
        iconstateLabel->setStyleSheet("background-color:rgba(127,127,127,100)");
-        /*QPixmap pix(":/icons/power.png");
 
-        // QLabel boyutuna göre ölçekle
-        //iconstateLabel->setFixedSize(w*6.9, w*3.4);
-        QPixmap scaled = pix.scaled(w*6.9, w*3.4,
-                                    Qt::KeepAspectRatio,   // oranı korur
-                                    Qt::SmoothTransformation); // yumuşak ölçekleme
-
-        iconstateLabel->setPixmap(scaled);
-        iconstateLabel->setScaledContents(false); // gereksizse kapalı kalsın
-        iconstateLabel->setAlignment(Qt::AlignCenter);*/
     }
 }
 void MyPc::setCommandButonState(bool state){
@@ -589,6 +580,7 @@ void MyPc::setYoutubeState(bool state)
 
 void MyPc::setUser(QString _usr)
 {
+    qDebug()<<"setUser"<<user<<_usr;
     user=_usr;
     if(_usr!="noLogin"&&connectState)
     {
@@ -618,13 +610,14 @@ void MyPc::setUser(QString _usr)
                                       " text-align: center;"
                                       "background-color:rgba(0,0,0,0);");
     }
-    if(select){
-        emit pcClickSignal(mac);//nesneler arası data transferi***
+    if(select&&connectState){
+        qDebug()<<"setUser";
+        emit pcClickSignal(mac,false);//nesneler arası data transferi***
     }
 }
 void MyPc::setHostname(QString _hostname)
 {
-    //qDebug()<<"ilk hali"<<hostname<<_hostname;
+    qDebug()<<"ilk hali"<<hostname<<_hostname;
 
     if(hostname!=_hostname)
     {
@@ -652,7 +645,8 @@ void MyPc::setHostname(QString _hostname)
     }
     //qDebug()<<"son hali"<<hostname<<_hostname;
     if(select){
-        emit pcClickSignal(mac);//nesneler arası data transferi***
+        qDebug()<<"hostname";
+        emit pcClickSignal(mac,false);//nesneler arası data transferi***
     }
 }
 void MyPc::setSize(int _w, int _h, QString _font)
@@ -715,33 +709,25 @@ MyPc::~MyPc()
 }
 
 
-void MyPc::slotMouseClick()
+void MyPc::slotMouseClick(bool _select)
 {
-
-    ///if(connectState)
-    ///{
-        QPalette palet;
-
-        //qDebug()<<"tıklllllandıı";
-        select=true;
-         emit pcClickSignal(mac);//nesneler arası data transferi***
-
-        if(select){
-            palet.setColor(QPalette::Window, QColor(0,200,250,150));
-            setPalette(palet);
-            setAutoFillBackground(true);
-           //selectLabel->setStyleSheet("QLabel{border: 1px solid gray;background-color: rgba(0, 200, 250, 150); border-radius: 5px;}");
-
-        }
-        else{
-            palet.setColor(QPalette::Window, QColor(0,0,0,0));
-            setPalette(palet);
-            setAutoFillBackground(true);
-           //selectLabel->setStyleSheet("QLabel{border: 1px solid gray;background-color: rgba(0, 0, 0, 0); border-radius: 5px;}");
-
-        }
-    ///}
-
+    QPalette palet;
+    select=_select;
+    //qDebug()<<"slotMouseClick"<<_select;
+    if(_select){
+        palet.setColor(QPalette::Window, QColor(0,200,250,150));
+        setPalette(palet);
+        setAutoFillBackground(true);
+        //selectLabel->setStyleSheet("QLabel{border: 1px solid gray;background-color: rgba(0, 200, 250, 150); border-radius: 5px;}");
+        //emit pcClickSignal(mac,_multiSelect);//nesneler arası data transferi***
+    }
+    else{
+        palet.setColor(QPalette::Window, QColor(0,0,0,0));
+        setPalette(palet);
+        setAutoFillBackground(true);
+        //selectLabel->setStyleSheet("QLabel{border: 1px solid gray;background-color: rgba(0, 0, 0, 0); border-radius: 5px;}");
+        //emit pcClickSignal(mac,_multiSelect);//nesneler arası data transferi***
+    }
 }
 void MyPc::slotPcAyar()
 {
@@ -915,55 +901,61 @@ void MyPc::slotPcAyar()
 }
 void MyPc::mousePressEvent(QMouseEvent *event)
 {
-slotMouseClick();
+
     if (event->button()==Qt::RightButton)
     {
-    if(!multiSelect){
-        //pcselectMenu();
-        //pContextSelectMenu->exec(mapToGlobal(event->pos()),nullptr);
         //qDebug()<<"burası pc içi";
         emit pcRightClickSignal();
         QWidget::mousePressEvent(event);
+
     }
-    else
+    if (event->button()==Qt::LeftButton)
     {
-        //qDebug()<<"burası pc içi";
-        emit pcRightClickSignal();
-        QWidget::mousePressEvent(event);
-    }
+        if (event->modifiers() & Qt::ControlModifier) {
+            if(multiSelect)
+            {
+               multiUnselectPc();
+               slotMouseClick(false);
+               emit pcClickSignal(mac,true);//nesneler arası data transferi***
+               //qDebug()<<"çoklu seçimden çıkarılıyor";
+            }else
+            {
+               slotMouseClick(true);
+               multiSelectPc();
+               emit pcClickSignal(mac,true);//nesneler arası data transferi***
+               //qDebug()<<"çoklu seçim modunda";
+            }
+        }else
+        {
+             slotMouseClick(true);
+             //qDebug()<<"tekli seçim modunda";
+             emit pcClickSignal(mac,false);//nesneler arası data transferi***
+        }
     }
 }
 void MyPc::mouseDoubleClickEvent(QMouseEvent *event)
 {
-    if (event->modifiers() & Qt::ControlModifier) {
-        slotMouseDoubleClick();
-    }else if(connectState)
+    if(connectState)
     {
         emit pcDoubleClickSignal(mac,"");
+        qDebug()<<"tekli seçim modunda";
     }
     // (isteğe bağlı) aksi halde normal davranış istiyorsan:
     QWidget::mouseDoubleClickEvent(event);
-
+}
+void MyPc::mouseReleaseEvent(QMouseEvent *event)
+{
+ // QWidget::mouseReleaseEvent(event);
 }
 
-void MyPc::slotMouseDoubleClick(){
-    //if(connectState)
-   // {
-        //qDebug()<<"--------"<<multiSelect;
-        if(multiSelect)
-            slotUnselectPc();
-        else
-            slotSelectPc();
-   // }
-}
-void MyPc::slotSelectPc(){
+void MyPc::multiSelectPc(){
     //if(connectState)
    // {
         multiSelect=true;
         selectLabel->setStyleSheet("QLabel{border: 2px solid blue;border-radius: 5px;}");
     //}
 }
-void MyPc::slotUnselectPc(){
+void MyPc::multiUnselectPc(){
     //if(connectState)
     //{
         multiSelect=false;

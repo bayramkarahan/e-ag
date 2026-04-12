@@ -115,7 +115,7 @@ QWidget* MainWindow::videoWidget()
         UserPrivilegeHelper helper;
         QString seatUser = helper.detectActiveUser();// 1) Aktif kullanıcıyı bul
         //qDebug()<<"Kullanıcı: "<<sessionUser;
-        pcClickSlot(pcMac->text());
+        pcClickSignalSlot(pcMac->text(),false);
         QString fileName = QFileDialog::getOpenFileName(this,tr("Dosya Seç"),"/home/"+seatUser, tr("Files (*.*)"));
         //qDebug()<<fileName;
         commandFileLE->setText(fileName);

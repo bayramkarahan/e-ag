@@ -17,7 +17,7 @@ QWidget*  MainWindow::fileWidget()
     QWidget * d = new QWidget();
     d->setWindowTitle(tr("Dosya Kopyalama Penceresi"));
     QLineEdit *le = new QLineEdit();
-    le->setFixedSize(e*75,boy*15);
+    le->setFixedSize(e*70,boy*15);
     le->setStyleSheet("font-size:"+QString::number(font.toInt()+2)+"px;");
 
     // le->setFont(ff);
@@ -250,11 +250,28 @@ QWidget*  MainWindow::fileWidget()
          mesajSlot("Dosya Masaüstlerine Gönderildi.");
     });
 
+    QCheckBox *calismaToplaCB=new QCheckBox(d);
+    calismaToplaCB->setFixedSize(e*18,yukseklik*2);
+    calismaToplaCB->setText("İstemciden Sil");
+    calismaToplaCB->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
+    // OKU
+    CustomInputDialog *cidctcb=new CustomInputDialog(tr(""),tr(""),"",300,100,this);
+    cidctcb->readMetaData("calismaToplaCB", [this, calismaToplaCB](QString _data){
+        if(_data != ""){
+            //qDebug() << "checkbox geldi:" << _data;
+            calismaToplaCB->setChecked(_data == "1");  // veya "true"
+        }
+    });
+    // KAYDET
+    connect(calismaToplaCB, &QCheckBox::toggled, this,
+        [=](const bool checked){
+            cidctcb->saveMetaData("calismaToplaCB", checked ? "1" : "0");
+        });
     QToolButton *fileCopyDesktopGetButton=new QToolButton();
-    fileCopyDesktopGetButton->setFixedSize(e*13,yukseklik*2);
+    fileCopyDesktopGetButton->setFixedSize(e*20,yukseklik*1.5);
     fileCopyDesktopGetButton->setAutoRaise(true);
     //fileCopyDesktopGetButton->setAutoFillBackground(true);
-    fileCopyDesktopGetButton->setText(tr("Çalışma\n Topla"));
+    fileCopyDesktopGetButton->setText(tr("Çalışma Topla"));
     fileCopyDesktopGetButton->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
     fileCopyDesktopGetButton->setIcon(QIcon(":/icons/getdesktopquiz.svg"));
     fileCopyDesktopGetButton->setIconSize(QSize(b*8,yukseklik*0.9));
@@ -267,9 +284,8 @@ QWidget*  MainWindow::fileWidget()
                 pc->setCommandState("Çalışma Toplama","Çalışma Toplama Başlatıldı.","2");//2 kopayalama başla
             }
         }
-        udpSendData("dosyatopla","","","Dosya Masaüstlerinden Alındı",false);
-
-
+       QString toplaVeSil = calismaToplaCB->isChecked() ? "true" : "false";
+        udpSendData("dosyatopla",toplaVeSil,"","Dosya Masaüstlerinden Alındı",false);
         mesajSlot("Dosya Masaüstlerinden Alındı.");
     });
 
@@ -330,6 +346,7 @@ QWidget*  MainWindow::fileWidget()
         d1->exec();
     });
     QGridLayout * vbox = new QGridLayout();
+
     vbox->setContentsMargins(0, 0, 0,0);
     vbox->setVerticalSpacing(0);
     //vbox->addWidget(pathLabel,2,1,1,1);
@@ -344,8 +361,10 @@ QWidget*  MainWindow::fileWidget()
 
     vbox->addWidget(fileCopyDesktopNotGetSendButton,1,8,2,1);
 
-    vbox->addWidget(fileCopyDesktopSendButton,1,9,2,1);
-    vbox->addWidget(fileCopyDesktopGetButton,1,10,2,1);
+    vbox->addWidget(fileCopyDesktopSendButton,1,9,2,1,Qt::AlignCenter);
+
+    vbox->addWidget(fileCopyDesktopGetButton,1,10,1,1,Qt::AlignCenter);
+    vbox->addWidget(calismaToplaCB,2,10,2,1,Qt::AlignCenter);
 
 
     vbox->addWidget(helpButton,1,11,2,1);
@@ -444,7 +463,7 @@ void MainWindow::startNextFileTransfer()
                     client->deleteLater();
 
                     if(success){
-                        qDebug() << "Transfer tamamlandı:" << message<<job.mesajtype<<job.ip;
+                        qDebug() << "Transfer tamamlandı...:" << message<<job.mesajtype<<job.ip;
                         udpSendData(job.mesajtype,job.targetPath,"","",false);
                         /***************************************************/
                         for (MyPc *pc : onlinePcList) {
@@ -470,6 +489,7 @@ void MainWindow::startNextFileTransfer()
     // Eğer queue boş ve tüm transferler bitti ise mesaj verebilirsiniz
     if(transferQueue.isEmpty() && runningTransfers == 0)
     {
+
         qDebug() << "Tüm transferler tamamlandı.";
         mesajSlot("Dosya Seçili Pc'lere Kopyalandı");
     }
