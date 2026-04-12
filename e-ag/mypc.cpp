@@ -155,12 +155,6 @@ MyPc::MyPc(const QString _mac, QString _ip, QWidget *parent) : QWidget(parent)
     this->mac=_mac;
 
 
-    setConnectState(false);
-    setSshState("no");
-    setVncState("no");
-    setXrdpState("no");
-    setUser("noLogin");
-    setCommandButonState(false);
 
     DatabaseHelper *db=new DatabaseHelper(localDir+"persist.json");
     QJsonArray dizi=db->Ara("mac",this->mac);
@@ -200,6 +194,13 @@ MyPc::MyPc(const QString _mac, QString _ip, QWidget *parent) : QWidget(parent)
         db->Ekle(veri);
     }
 
+    setConnectState(false);
+    setSshState("no");
+    setVncState("no");
+    setXrdpState("no");
+    setUser("noLogin");
+    setCommandButonState(false);
+
 }
 void MyPc::timertcpConnectControlSlot()
 {
@@ -213,12 +214,11 @@ void MyPc::timertcpConnectControlSlot()
      //iconstateLabel->setText(QString::number(tcpConnectCounter));
     if(tcpConnectCounter>5)
     {
-        setConnectState(false);
+        if(connectState) setConnectState(false);
         setSshState("no");
         setVncState("no");
         setXrdpState("no");
-        ///setUser("noLogin");
-        user="noLogin";
+        if(user!="noLogin") setUser("noLogin");
         tcpConnectCounter=0;
         ///emit pcCloseSignal(ip,mac);
     }
@@ -262,17 +262,17 @@ void MyPc::setCommandState(QString _command,QString _commandDetail,QString _comm
 }
 void MyPc::setConnectState(bool state){
     connectState=state;
+    setUser("noLogin");
     if(state)
     {
-
          //qDebug()<<"yeşil ayarlandı";
         iconstateLabel->setStyleSheet("background-color:rgba(0,230,0,130)");
+
     }
     else
     {
         //qDebug()<<"gri ayarlandı";
        iconstateLabel->setStyleSheet("background-color:rgba(127,127,127,100)");
-
     }
 }
 void MyPc::setCommandButonState(bool state){

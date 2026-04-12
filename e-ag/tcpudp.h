@@ -61,7 +61,7 @@ void  MainWindow::udpSendData(QString _mesajTur,QString _gorev,QString _ekmesaj,
 
             QByteArray datagram = QJsonDocument(sendJson).toJson(QJsonDocument::Compact);
             udpSocketSend->writeDatagram(datagram,QHostAddress(onlinePcList[i]->ip), uport.toInt());
-            ///qDebug()<<"Mesaj Gönderildi:"<<msg;
+            ///qDebug()<<"Mesaj Gönderildi:"<<sendJson;
            // }
         }
     }
@@ -217,7 +217,7 @@ void MainWindow::clientConfUpdate(const QJsonObject &json,QString ipAddress)
     for (MyPc *pc : onlinePcList) {
         if (pc->mac.toUpper() == mac.toUpper()) {
             pc->tcpConnectCounter=0;
-            pc->setConnectState(true);
+            if(!pc->connectState) pc->setConnectState(true);
             pc->ip=ipAddress;
            // qDebug()<<"güncelleniyor.."<<ip<<mac<<json;
             //pc->volumeState=json["tray_volume"].toBool();

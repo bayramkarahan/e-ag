@@ -285,7 +285,8 @@ QWidget*  MainWindow::fileWidget()
             }
         }
        QString toplaVeSil = calismaToplaCB->isChecked() ? "true" : "false";
-        udpSendData("dosyatopla",toplaVeSil,"","Dosya Masaüstlerinden Alındı",false);
+       qDebug()<<"dosya toplama: "<<toplaVeSil;
+        udpSendData("dosyatopla","",toplaVeSil,"Dosya Masaüstlerinden Alındı",false);
         mesajSlot("Dosya Masaüstlerinden Alındı.");
     });
 
