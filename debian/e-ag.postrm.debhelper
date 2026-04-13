@@ -1,5 +1,0 @@
-# Automatically added by dh_icons/13.11.4
-if command -v update-icon-caches >/dev/null; then
-	update-icon-caches /usr/share/icons/e-ag.svg
-fi
-# End automatically added section
