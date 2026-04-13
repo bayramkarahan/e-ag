@@ -219,10 +219,12 @@ statusbar->addPermanentWidget(sliderWidget(),0);
              }
          }
          if(!findedStatus){
-             slotPcEkle(veri["mac"].toString().toUpper(),veri["ip"].toString());
+             slotPcEkle(veri["mac"].toString().toUpper(),veri["ip"].toString(),"firstload");
          }
 
      }
+     pcListeGuncelleSlot("firstload");
+
  }
 
 /*************************************************************************/
@@ -328,7 +330,14 @@ void MainWindow::pcListeGuncelleSlot(QString mission)
              sn++;
         }
      }
-     pcSelect("");
+     if(mission=="firstload")
+         if(onlinePcList.count()>0)
+             pcSelect(onlinePcList1[0]->mac);
+
+     if(mission=="mainresize")
+         if(onlinePcList.count()>0)
+             pcSelect(selectMac);
+
 
  }
 
@@ -531,13 +540,14 @@ void MainWindow::pcClickSignalSlot(QString _mac,bool _multiselect)
     }
        //Pc seçme
     if(endSelectPc==nullptr)
-        pcSelect("");
+        pcSelect(_mac);
     else
         pcSelect(endSelectPc->mac);
 
 }
 void MainWindow::pcSelect(QString _mac)
 {
+    qDebug()<<"pcSelect"<<_mac;
     if(_mac!=""){
         for (MyPc *pc : onlinePcList) {
             if(pc->mac==_mac)
@@ -554,8 +564,13 @@ void MainWindow::pcSelect(QString _mac)
                 pcVersionlbl->setText(tr("Version: ")+pc->version);
                 ///qDebug()<<"Seçilen Pc:"<<pc->mac;
                 pc->slotMouseClick(true);
+                //pc->multiSelect=true;
                 selectMac=pc->mac;
                 break;
+            }else
+            {
+
+                //pc->slotMouseClick(false);
             }
         }
     }else
@@ -568,7 +583,7 @@ void MainWindow::pcSelect(QString _mac)
         {
             ///qDebug()<<"Hiç Seçili Pc Bulunamadı!!";
             if(onlinePcList.count()>0)
-                pcSelect(onlinePcList.first()->mac);
+                pcSelect(onlinePcList[0]->mac);
         }
     }
 }

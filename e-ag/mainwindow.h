@@ -265,7 +265,7 @@ QString getMacForIP(QString ipAddress);
     void slotEkranIzleDurdur();
     void slotEkranIzleAll();
     void slotEkranIzleAllDurdur();
-    void slotPcEkle(QString _mac,QString _ip);
+    void slotPcEkle(QString _mac,QString _ip,QString info);
     void slotPcSil(int _index,QString _mac,QString _ip);
     void startNextFileTransfer();
 private:

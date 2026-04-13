@@ -1,0 +1,27 @@
+e-ag (2.9.7) unstable; urgency=medium
+
+  * get file and delete
+  * select pc updated
+  * pc select updated
+  * keyring first user hide
+  
+  
+e-ag (2.9.6) unstable; urgency=medium
+
+  * get workfile
+  * file space replace del
+  * vncscle add
+  * rdpsclae add
+  * user login cookie add
+  * file transfer state update
+  * right menu add refresh
+  * webtab add user cooike
+  * ssh terminal x-terminal-emulator add 
+  * novnc x-www-browser  add
+  
+
+e-ag (2.9.4.0) unstable; urgency=medium
+
+  * Initial Release
+
+ -- Bayram KARAHAN <bayramk@gmail.com>  Sun, 27 Dec 2020 14:31:08 +0300

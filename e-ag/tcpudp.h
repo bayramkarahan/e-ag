@@ -259,7 +259,7 @@ void MainWindow::clientConfUpdate(const QJsonObject &json,QString ipAddress)
 
     // Eğer listede yoksa, yeni bir client ekle
     if (!found) {
-        slotPcEkle(mac.toUpper(),ipAddress);
+        slotPcEkle(mac.toUpper(),ipAddress,"newhost");
     }
 }
 
@@ -407,7 +407,7 @@ void MainWindow::pcCloseSignalSlot(QString ip,QString mac)
     pcListeGuncelleSlot("closepcDetect");
 }
 
-void MainWindow::slotPcEkle(QString _mac,QString _ip)
+void MainWindow::slotPcEkle(QString _mac,QString _ip,QString info)
 {
     //qDebug() << "Açılan Pc: "<<_mac<<_ip;
     MyPc *mypc=new MyPc(_mac,_ip);
@@ -472,16 +472,17 @@ void MainWindow::slotPcEkle(QString _mac,QString _ip)
     }
 
 /*******************************************************************/
-    //qDebug() << "Pc Ekle Son: "<<_ip<<onlinePcList[0]->groupname;
-    //pcListeGuncelleSlot("openpcDetect");
-    pcSettingUpdateSignalSlot(_mac.toUpper(),"pc Eklendi: "+_mac.toUpper());
+
+
     mypc->setVolumeState(false);
     mypc->setKeyboardState(false);
     mypc->setMouseState(false);
     mypc->setInternetState(false);
     mypc->setWebblockState(false);
     mypc->setYoutubeState(false);
-
+    //qDebug() << "Pc Ekle Son: "<<_ip<<onlinePcList[0]->groupname;
+    //pcSettingUpdateSignalSlot(_mac.toUpper(),"pc Eklendi: "+_mac.toUpper());
+    if(info=="newhost") pcListeGuncelleSlot("pc Eklendi: "+info+" :"+_mac.toUpper());
 }
 
 void MainWindow::slotPcSil(int _index,QString _mac,QString _ip)

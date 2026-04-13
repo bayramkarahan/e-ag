@@ -1,0 +1,14 @@
+FFmpeg Library License Notice
+=============================
+
+This application uses FFmpeg libraries licensed under the LGPLv2.1.
+No GPL or non-free codecs have been enabled in this build.
+
+Official FFmpeg source code and license information can be obtained from:
+https://ffmpeg.org/download.html
+https://ffmpeg.org/legal.html
+
+To comply with LGPL, users are free to replace or relink FFmpeg libraries
+with modified versions as long as the resulting binaries remain compliant
+with the same license.
+

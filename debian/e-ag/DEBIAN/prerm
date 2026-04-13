@@ -1,0 +1,9 @@
+#!/bin/sh
+
+mkdir -p /var/local/e-ag
+[ -f /usr/share/e-ag/persist.json ] && cp -f /usr/share/e-ag/persist.json /var/local/e-ag/
+
+rm -rf  /usr/share/e-ag/*
+
+
+exit 0

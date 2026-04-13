@@ -580,7 +580,7 @@ void MyPc::setYoutubeState(bool state)
 
 void MyPc::setUser(QString _usr)
 {
-    qDebug()<<"setUser"<<user<<_usr;
+    ///qDebug()<<"setUser"<<user<<_usr;
     user=_usr;
     if(_usr!="noLogin"&&connectState)
     {
@@ -1007,24 +1007,45 @@ void MyPc::slothidePc()
 
 QPixmap MyPc::svgToPixmap(const QString &svgPath, const QSize &size)
 {
-    QSvgRenderer r(svgPath);
-    QSize defaultSize = r.defaultSize();
+    QSize safeSize = size;
+    if (safeSize.isEmpty()) {
+        safeSize = QSize(64, 64); // fallback
+    }
 
-    QPixmap pixmap(size);
+    QSvgRenderer r(svgPath);
+    if (!r.isValid()) {
+        qDebug() << "HATA: SVG yüklenemedi:" << svgPath;
+        return QPixmap();
+    }
+
+    QSize defaultSize = r.defaultSize();
+    if (defaultSize.isEmpty())
+        defaultSize = safeSize;
+
+    QPixmap pixmap(safeSize);
     pixmap.fill(Qt::transparent);
 
     QPainter p(&pixmap);
-    QRectF target(QPointF(0,0), size);
+    if (!p.isActive()) {
+        qDebug() << "HATA: Painter aktif değil!";
+        return QPixmap();
+    }
+
+    QRectF target(QPointF(0,0), safeSize);
     QRectF source(QPointF(0,0), defaultSize);
 
-    // oran koru
     QSizeF scaled = source.size();
     scaled.scale(target.size(), Qt::KeepAspectRatio);
-    QRectF rect((size.width() - scaled.width())/2,
-                (size.height() - scaled.height())/2,
-                scaled.width(),
-                scaled.height());
+
+    QRectF rect(
+        (safeSize.width() - scaled.width()) / 2,
+        (safeSize.height() - scaled.height()) / 2,
+        scaled.width(),
+        scaled.height()
+    );
 
     r.render(&p, rect);
+
     return pixmap;
 }
+

@@ -92,7 +92,7 @@ public:
 
         QObject::connect(job, &QKeychain::Job::finished, [job, callback]() {
             if (job->error()) {
-                qDebug() << "Error:" << job->errorString();
+                ///qDebug() << "Error:" << job->errorString();
                 callback(""); // hata durumunda boş gönder
             } else {
                 callback(job->textData()); // ✅ data burada güvenli şekilde dönüyor
