@@ -1,0 +1,9 @@
+[Unit]
+Description=Start x11vnclogin at startup.
+After=multi-user.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/x11vnc -auth /run/user/115/gdm/Xauthority -forever -loop -noxdamage -repeat -rfbauth /usr/bin/x11vncpasswd -rfbport 5902 -shared -display :0
+[Install]
+WantedBy=multi-user.target

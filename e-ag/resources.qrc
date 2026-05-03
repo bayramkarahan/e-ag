@@ -104,5 +104,6 @@
         <file>icons/multicast.png</file>
         <file>icons/device.png</file>
         <file>icons/delhost.svg</file>
+        <file>icons/getdesktopextension.svg</file>
     </qresource>
 </RCC>

@@ -17,7 +17,7 @@ QWidget*  MainWindow::fileWidget()
     QWidget * d = new QWidget();
     d->setWindowTitle(tr("Dosya Kopyalama Penceresi"));
     QLineEdit *le = new QLineEdit();
-    le->setFixedSize(e*70,boy*15);
+    le->setFixedSize(e*50,boy*15);
     le->setStyleSheet("font-size:"+QString::number(font.toInt()+2)+"px;");
 
     // le->setFont(ff);
@@ -216,6 +216,34 @@ QWidget*  MainWindow::fileWidget()
         mesajSlot("Dosya Masaüstlerine Gönderildi.");
     });
 
+    QLineEdit *fileGetUzantiLE=new QLineEdit(d);
+    fileGetUzantiLE->setFixedSize(e*15,yukseklik*0.5);
+    fileGetUzantiLE->setText("*.docx");
+    fileGetUzantiLE->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
+
+    QToolButton *fileGetUzantiliButton=new QToolButton();
+    fileGetUzantiliButton->setFixedSize(e*15,yukseklik*1.5);
+    fileGetUzantiliButton->setAutoRaise(true);
+    //fileGetUzantiliButton->setAutoFillBackground(true);
+    fileGetUzantiliButton->setText(tr("Dosya Topla"));
+    fileGetUzantiliButton->setStyleSheet("font-size:"+QString::number(font.toInt()-2)+"px;");
+    fileGetUzantiliButton->setIcon(QIcon(":/icons/getdesktopextension.svg"));
+    fileGetUzantiliButton->setIconSize(QSize(b*8,yukseklik*0.9));
+    fileGetUzantiliButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+
+    connect(fileGetUzantiliButton, &QToolButton::clicked, [=]() {
+        for (MyPc *pc : onlinePcList) {
+            if ((pc->select || pc->multiSelect)&&pc->connectState)
+            {
+                pc->setCommandState("Çalışma Toplama","Çalışma Toplama Başlatıldı.","2");//2 kopayalama başla
+            }
+        }
+        qDebug()<<"dosya toplama: "<<fileGetUzantiLE->text();
+        udpSendData("dosyatopla","",fileGetUzantiLE->text(),"Dosya Masaüstlerinden Alındı",false);
+        mesajSlot("Dosya Masaüstlerinden Alındı.");
+    });
+
+
     QToolButton *fileCopyDesktopSendButton=new QToolButton();
     fileCopyDesktopSendButton->setFixedSize(e*13,yukseklik*2);
     fileCopyDesktopSendButton->setAutoRaise(true);
@@ -359,8 +387,10 @@ QWidget*  MainWindow::fileWidget()
     vbox->addWidget(fileCopyInstallScriptButton,1,5,2,1);
     vbox->addWidget(fileCopyButton,1,6,2,1);
     //vbox->addWidget(fileCopyAllButton,1,7,2,1);
+    vbox->addWidget(fileCopyDesktopNotGetSendButton,1,7,2,1);
 
-    vbox->addWidget(fileCopyDesktopNotGetSendButton,1,8,2,1);
+    vbox->addWidget(fileGetUzantiliButton,1,8,1,1);
+    vbox->addWidget(fileGetUzantiLE,3,8,2,1);
 
     vbox->addWidget(fileCopyDesktopSendButton,1,9,2,1,Qt::AlignCenter);
 
