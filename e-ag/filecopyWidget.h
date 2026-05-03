@@ -239,7 +239,7 @@ QWidget*  MainWindow::fileWidget()
             }
         }
         qDebug()<<"dosya toplama: "<<fileGetUzantiLE->text();
-        udpSendData("dosyatopla","",fileGetUzantiLE->text(),"Dosya Masaüstlerinden Alındı",false);
+        udpSendData("dosyatoplauzanti","",fileGetUzantiLE->text(),"Dosya Masaüstlerinden Alındı",false);
         mesajSlot("Dosya Masaüstlerinden Alındı.");
     });
 
