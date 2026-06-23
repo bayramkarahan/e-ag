@@ -297,9 +297,15 @@ QWidget* MainWindow::baseWidget()
             {
                 ///qDebug()<<onlinePcList[i]->ip<<onlinePcList[i]->mac;
                 //slotWakeOnLan(onlinePcList[i]->ip,onlinePcList[i]->mac);
-                QString kmt29="wakeonlan "+onlinePcList[i]->mac+" &";
+                ///qDebug()<<"mac adresiii:"<<_mac<<_ip<<
+                ///onlinePcList[i]->netProfil.networkBroadCastAddress;
+                QString _mac=onlinePcList[i]->mac.toUpper();
+                sendWakeOnLan(_mac,
+                    onlinePcList[i]->netProfil.networkBroadCastAddress,9);
+                /*QString kmt29="wakeonlan "+onlinePcList[i]->mac+" &";
                 system(kmt29.toStdString().c_str());
-                qDebug()<<"Açılana Pc: "<<kmt29;
+                qDebug()<<"sendWakeOnLan: "<<kmt29;*/
+
             }
         }
 

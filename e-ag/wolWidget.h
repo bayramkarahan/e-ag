@@ -122,18 +122,72 @@ QWidget *MainWindow::wolWidget()
 void MainWindow::slotWakeOnLan(QString _ip,QString _mac)
 {
     _mac=_mac.toUpper();
-    qDebug()<<"mac adresi:"<<_mac<<_ip;
+    ///qDebug()<<"mac adresi:"<<_mac<<_ip;
     for(int i=0;i<onlinePcList.count();i++)
     {
         if(onlinePcList[i]->connectState==false&&onlinePcList[i]->ip==_ip&&onlinePcList[i]->mac==_mac)
         {
-            QString kmt29="wakeonlan "+onlinePcList[i]->mac+" &";
+
+            QString kmt29="wakeonlan -i "+onlinePcList[i]->netProfil.networkBroadCastAddress+
+                    " "+onlinePcList[i]->mac+" &";
             system(kmt29.toStdString().c_str());
-            qDebug()<<"Açılana Pc: "<<kmt29;
+            qDebug()<<"Açılan Pc: "<<kmt29;
+            ///qDebug()<<"mac adresiii:"<<_mac<<_ip<<onlinePcList[i]->netProfil.networkBroadCastAddress;
         }
     }
-    mesajSlot(tr("Seçili Hostlar Uzaktan  Başlatıl."));
+    mesajSlot(tr("Seçili Hostlar Uzaktan  Başlatıldı."));
 
 }
+
+bool MainWindow::sendWakeOnLan(const QString &macAddress,
+                   const QString &broadcastAddress,
+                   quint16 port)
+{
+    qDebug()<<"sendWakeOnLan: "<<macAddress<<broadcastAddress<<port;
+    // MAC adresini temizle
+    QString mac = macAddress;
+    mac.remove(':');
+    mac.remove('-');
+
+    if(mac.length() != 12)
+        return false;
+
+    QByteArray macBytes;
+
+    for(int i = 0; i < 12; i += 2)
+    {
+        bool ok;
+        char byte = static_cast<char>(
+            mac.mid(i, 2).toUInt(&ok, 16));
+
+        if(!ok)
+            return false;
+
+        macBytes.append(byte);
+    }
+
+    // Magic Packet oluştur
+    QByteArray packet;
+
+    // 6 byte FF
+    packet.append(QByteArray(6, char(0xFF)));
+
+    // MAC'i 16 kez ekle
+    for(int i = 0; i < 16; ++i)
+        packet.append(macBytes);
+
+    // Gönder
+    QUdpSocket socket;
+   /// socket.setSocketOption(QAbstractSocket::BroadcastTtlOption, true);
+    //socket.setSocketOption(QAbstractSocket::BroadcastTtlOption, 1);
+
+    qint64 sent = socket.writeDatagram(
+        packet,
+        QHostAddress(broadcastAddress),
+        port);
+
+    return sent == packet.size();
+}
+
 
 #endif // WOLWIDGET_H

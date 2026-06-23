@@ -57,6 +57,7 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
+
     //QTermWidget *qterm=new QTermWidget();
     //qterm->sendData();
       /*****************************************************/

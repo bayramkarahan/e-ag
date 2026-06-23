@@ -174,7 +174,9 @@ protected:
      bool killProcessByName(const QString &processName);
 
 private slots:
-
+     bool sendWakeOnLan(const QString &macAddress,
+                        const QString &broadcastAddress,
+                        quint16 port = 9);
      void pcMenu(bool singlepc);
 
      void udpSocketServerRead();
